@@ -1,0 +1,14 @@
+@import '../../../styles';
+.grupos{
+    & .card-notf{
+        border-color:2px solid map-get($colors, alight-gray );
+        border-top:2px solid map-get($colors,primary);
+        
+    }
+}
+ 
+ 
+ 
+ 
+
+  

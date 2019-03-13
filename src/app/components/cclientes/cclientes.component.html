@@ -1,0 +1,252 @@
+<div class="container grupos m-t-30">
+  <div class="row">
+      <div class="col-4">
+          <h4>Clientes Y Proveedores</h4>
+      </div>
+      <div class="col-6">
+              <div class="input-group">
+                      <input type="text" class="form-control" [(ngModel)]="palabra" (keyup)="buscarcliente()" placeholder="Buscar" >
+                          <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                           </div>
+              </div>
+      </div>   
+      <div class="col-2 text-rigth">
+          <div class="row d-flex justify-content-end">
+              <div class="col-12 m-b-30 text-center">
+                      
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-secondary" (click)="open(modalclint,'')" >Agregar</button>
+                     
+                   </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-12">
+        <table class="table table-hover">
+                <thead class="bg-primary">
+                 
+                  <th scope="col">Razón Social</th>
+                  <th scope="col">Nombre Comercial</th>
+                  <th scope="col">R.F.C.</th>
+                  <th scope="col">Accion</th>
+                  <th scope="col">Estado</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let clint of Listclientes | paginate: {itemsPerPage: 20, currentPage: pageActual} ; index as i">
+                    
+                    <td scope="col">{{clint.Nombre}}</td>
+                    <td scope="col">{{clint.NombreComercial}}</td>
+                    <td scope="col">{{clint.RFC}}</td>
+                    <td scope="col">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col">
+                            <div ngbDropdown class="d-inline-block">
+                              <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
+                              <div ngbDropdownMenu aria-labelledby="dropdownBasic1"> 
+                                <button (click)="qr(modalqr,clint.Usuario)" class="dropdown-item"><i class="fas fa-qrcode"></i> Código QR</button>
+                                <button (click)="requestuser(modalclint,clint.IDCliente)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
+                                
+                                <button (click)="delete(clint.IDCliente ,clint.Estado === '1' ? '0':'1')" class="dropdown-item"><i class="fas fa-{{clint.Estado === '1' ? 'ban':'check-circle'}}"></i>{{clint.Estado === '1' ? ' Desactivar':' Activar' }}</button>
+
+                                <button (click)="alertdele(clint.IDCliente )" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar</button>
+                                
+
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                    </td>
+                    <td>
+                      <button (click)="delete(clint.IDCliente,clint.Estado === '1' ? '0':'1')" class=" text-white btn {{clint.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{clint.Estado === '1' ? 'ban':'check-circle'}}"></i> {{clint.Estado === '1' ? 'Desactivar':'Activar'}}</button>
+                  </td>
+                  </tr>
+                </tbody>
+        </table>  
+        <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>    
+</div>
+  </div>
+</div>
+<ng-template #modalclint let-modal>
+    <div class="fixed-top alert alert-danger alert-dismissible fade alert-funciones w-50 mx-auto" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+  <form #formaclient="ngForm" (submit)="enviarform()">
+    <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">{{(cliente.IDCliente!=="" ? 'Modificar Cliente/Proveedor': 'Registrar Cliente/Proveedor')}}</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    <div class="modal-body">
+      <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Razón Social</label>
+                    <input type="text" [(ngModel)]="cliente.Nombre" [ngModelOptions]="{standalone: true}" name="Nombre"  class="form-control">
+                </div>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Nombre Comercial</label>
+                    <input type="text" [(ngModel)]="cliente.NombreComercial" [ngModelOptions]="{standalone: true}" name="comercial"  class="form-control">
+                </div>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">R.F.C.</label>
+                    <input type="text" [(ngModel)]="cliente.RFC" [ngModelOptions]="{standalone: true}" name="RFC"  class="form-control">
+                </div>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Tipo Persona</label>
+                    <input type="text" [(ngModel)]="cliente.TPersona" [ngModelOptions]="{standalone: true}" name="TPersona"  class="form-control">
+                </div>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Estatus</label>
+                    <select  [(ngModel)]="cliente.Estado" [ngModelOptions]="{standalone: true}" name="Estado"  class="form-control">
+                      <option [value]="1">Activo</option>
+                      <option [value]="0">Desactivado</option>
+                    </select>
+                    
+                </div>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Activar Contraseña al calificar</label>
+                    <select  [(ngModel)]="cliente.Actipass" [ngModelOptions]="{standalone: true}" name="Actipass"  class="form-control">
+                      <option [value]="1">Si</option>
+                      <option [value]="0">No</option>
+                    </select>
+                    
+                </div>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Grupo</label>
+                    <select  [(ngModel)]="cliente.IDConfig" [ngModelOptions]="{standalone: true}" name="IDConfig"  class="form-control">
+                      <option *ngFor="let grupo of grupos"  [value]="grupo.IDGrupo">{{grupo.Nombre}}</option>
+                    </select>
+                    
+                </div>
+             </div>
+             <div class="col-12 m-t-20 m-b-30"> 
+                <h5><strong>Teléfono y Dirección</strong></h5>
+              </div>
+              
+              <div class="col-12">
+                  <div class="form-group">
+                      <label for="exampleInputEmail1">Calle y Número</label>
+                      <input type="text" [(ngModel)]="cliente.Direccion" [ngModelOptions]="{standalone: true}" name="Direccion"  class="form-control">
+                  </div>
+               </div>
+               <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Teléfono Empresa</label>
+                    <input type="text" [(ngModel)]="cliente.Tel" [ngModelOptions]="{standalone: true}" name="Tel"  class="form-control">
+                </div>
+             </div>
+               <div class="col-6">
+                  <div class="form-group">
+                      <label for="exampleInputEmail1">Municipio</label>
+                      <input type="text" [(ngModel)]="cliente.Municipio" [ngModelOptions]="{standalone: true}" name="Municipio"  class="form-control">
+                  </div>
+               </div>
+               <div class="col-6">
+                  <div class="form-group">
+                      <label for="exampleInputEmail1">Estado</label>
+                      <select [(ngModel)]="cliente.EEstado" [ngModelOptions]="{standalone: true}" name="EEstado"  class="form-control">
+                            <option *ngFor="let estado of estados"  [value]="estado.estadonombre">{{estado.estadonombre}}</option>
+                      </select>
+                      
+                  </div>
+               </div>
+             <div class="col-12 m-t-20 m-b-30"> 
+               <h5><strong>Datos de Contacto</strong></h5>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Nombre</label>
+                    <input type="text" [(ngModel)]="cliente.Apellidos" [ngModelOptions]="{standalone: true}" name="Apellidos"  class="form-control">
+                </div>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Correo Electrónico</label>
+                    <input type="text" [(ngModel)]="cliente.Correo" [ngModelOptions]="{standalone: true}" name="Correo"  class="form-control">
+                </div>
+             </div>
+             
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Teléfono Contacto/Celular</label>
+                    <input type="text" [(ngModel)]="cliente.Telcontact" [ngModelOptions]="{standalone: true}" name="Tel"  class="form-control">
+                </div>
+             </div>
+             <div class="col-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Puesto</label>
+                    <input type="text" [(ngModel)]="cliente.Puesto" [ngModelOptions]="{standalone: true}" name="Puesto"  class="form-control">
+                </div>
+             </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
+        <button type="submit" class="btn btn-outline-primary">Guardar</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #modalqr let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Código QR</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row d-felx justify-content-center">
+                <div class="col-6">
+                    <img class="img-fluid" src="https://chart.googleapis.com/chart?cht=qr&chs=400x400&choe=ISO-8859-1&chl=E|{{this.codeqr}}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<ngx-spinner class="spiner" bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-multiple">
+<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
+<ngb-alert *ngIf="staticAlertClosed" type="danger" style="position: fixed;z-index: 1000;top: 0;width: 100%" (close)="close(alert)">{{ alertterror }}</ngb-alert>
+
+<swal
+  #errorrfcSwal
+  title="¿Está seguro de eliminar este registro?"
+  text=""
+  type="question"
+  (confirm)="borrarcliente()"
+  [showCancelButton]="true"
+  confirmButtonText="Eliminar"
+  cancelButtonText="Cancelar"
+   >
+</swal>
+<swal
+  #errorralert
+  title="Sin Autorización"
+  text="No esta autorizado para realizar esta acción, contacte a su administrador"
+  type="warning"
+  confirmButtonText="Entendido"
+   >
+</swal>

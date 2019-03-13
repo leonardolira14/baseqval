@@ -1,0 +1,175 @@
+<div class="container grupos m-t-30">
+  <div class="row">
+      <div class="col-4">
+          <h4>Cuestionarios</h4>
+      </div>
+      <div class="col-6">
+              <div class="input-group">
+                      <input type="text" class="form-control" [(ngModel)]="palabra" (keyup)="buscarcuestionario()" placeholder="Buscar" >
+                          <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                           </div>
+              </div>
+      </div>   
+      <div class="col-2 text-rigth">
+          <div class="row d-flex justify-content-end">
+              <div class="col-12 m-b-30 text-center">
+                      
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-secondary" (click)="open(datoscuest)" >Agregar</button>
+                     
+                   </div>
+              </div>
+          </div>
+      </div>
+     <div class="col-12">
+        <table class="table table-hover">
+          <thead class="bg-primary">
+            
+            <th scope="col">Nombre</th>
+            <th scope="col">P.Emisor</th>
+            <th scope="col">P.Receptor</th>
+            <th scope="col">Accion</th>
+            <th scope="col">Estado</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let resp of cuestionariolist | paginate: {itemsPerPage: 20, currentPage: pageActual} ; index as i">
+             
+              <td>{{resp.Nombre}}</td>
+              <td>{{resp.Emisor}}</td>
+              <td>{{resp.Receptor}}</td>
+              <td>
+                  <div class="container">
+                      <div class="row">
+                        <div class="col">
+                          <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1"> 
+                              <button (click)="requestuser(datoscuest,resp.IDCuestionario)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
+                              <button (click)="delete(resp.IDCuestionario ,resp.Estado === '1' ? '0':'1')" class="dropdown-item"><i class="fas fa-{{resp.Estado === '1' ? 'ban':'check-circle' }}"></i>{{resp.Estado === '1' ? ' Desactivar':' Activar' }}</button>
+                               <button (click)="alertdele(resp.IDCuestionario )" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar</button>
+                              
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+              </td>
+              <td>
+                <button (click)="delete(resp.IDCuestionario ,resp.Estado === '1' ? '0':'1')" class=" text-white btn {{resp.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{resp.Estado === '1' ? 'ban':'check-circle' }}"></i>{{resp.Estado === '1' ? ' Desactivar':' Activar'}}</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+      </div>
+  </div>
+</div>
+<ng-template #datoscuest let-modal>
+  <div class="fixed-top alert alert-danger alert-dismissible fade alert-funciones w-50 mx-auto" role="alert">
+    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form #formcues="ngForm" [formGroup]="form" (submit)="enivarform()">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{(cuestionario.IDCuestionario==="" ? 'Registrar Cuestionario' : 'Modificar Cuestionario')}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container">
+          <div class="row">
+              <div class="col-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Nombre</label>
+                    <input type="text" [(ngModel)]="cuestionario.Nombre" [ngModelOptions]="{standalone: true}" class="form-control">
+                  </div>
+                </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Emisor</label>
+                  <select multiple [(ngModel)]="cuestionario.PerfilCalifica" [ngModelOptions]="{standalone: true}" class="form-control">
+                    <option *ngFor="let grupo of grupos" [value]="grupo.IDGrupo">{{grupo.Nombre}}</option>
+
+                  </select>
+                </div>
+              </div>
+              <div class="col-6">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Receptor</label>
+                    <select multiple [(ngModel)]="cuestionario.PerfilCalificado" [ngModelOptions]="{standalone: true}" class="form-control">
+                        <option *ngFor="let grupo of grupos" [value]="grupo.IDGrupo">{{grupo.Nombre}}</option>
+                    </select>
+                  </div>
+              </div>
+              <div class="col-12">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Lista de Preguntas</label>
+                    <div class="card preg" >
+                      <div class="card-body">
+                        <ul class="ltpreg">
+                          <li formArrayName="orders"  *ngFor="let order of form.controls.orders.controls; let i = index">
+                              <div class="custom-control custom-checkbox">
+                                  <input [formControlName]="i" (change)="chengepreg($event)" name="{{i}}" type="checkbox" class="custom-control-input" [checked]="orders[i].checado" id="{{i}}">
+                                  <label class="custom-control-label" for="{{i}}">{{orders[i].Pregunta}}</label>
+                                </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-6 d-none">
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input  type="checkbox" [(ngModel)]="cuestionario.Email" [ngModelOptions]="{standalone: true}" class="custom-control-input" id="eemail">
+                      <label class="custom-control-label" for="eemail">Contestar por Email</label>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-6 d-none">
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input  type="checkbox" [(ngModel)]="cuestionario.Wats" [ngModelOptions]="{standalone: true}" class="custom-control-input" id="ewats">
+                        <label class="custom-control-label" for="ewats">Contestar por WhatsApp</label>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+     </div>
+     <div class="modal-footer">
+       <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
+       <input type="submit" value="Guardar" class="btn btn-outline-primary">
+     </div>
+  </form>
+</ng-template>
+<ngx-spinner  class="spiner" class="spiner" bdColor="rgba(51,51,51,0.8)" fullScreen="true"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-multiple">
+<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
+
+<ngb-alert *ngIf="staticAlertClosed" type="danger" style="position: fixed;z-index: 1000;top: 0;width: 100%" (close)="close(alert)">{{ alertterror }}</ngb-alert>
+
+<swal
+  #errorrfcSwal
+  title="¿Está seguro de eliminar este registro?"
+  text=""
+  type="question"
+  (confirm)="borrarcuestionario()"
+  [showCancelButton]="true"
+  confirmButtonText="Eliminar"
+  cancelButtonText="Cancelar"
+   >
+</swal>
+<swal
+  #errorralert
+  title="Sin Autorización"
+  text="No esta autorizado para realizar esta acción, contacte a su administrador"
+  type="warning"
+  confirmButtonText="Entendido"
+   >
+</swal>

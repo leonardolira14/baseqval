@@ -1,0 +1,11 @@
+@import '../../../styles';
+
+div.rptlis{
+    max-height:200px !important;
+    height: 200px !important;
+    overflow: auto;
+}
+.badge{
+    background: map-get($colors ,primary);
+    color:map-get($colors,blanco);
+}

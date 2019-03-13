@@ -1,0 +1,213 @@
+<div class="container grupos m-t-30">
+    <div class="row">
+        <div class="col-4">
+            <h4>Usuarios</h4>
+        </div>
+        <div class="col-6">
+                <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="palabra" (keyup)="buscarusuario()" placeholder="Buscar" >
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                             </div>
+                </div>
+        </div>   
+        <div class="col-2 text-rigth">
+            <div class="row d-flex justify-content-end">
+                <div class="col-12 m-b-30 text-center">
+                        
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-secondary" (click)="open(datsus,'')" >Agregar</button>
+                        
+                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+                <table class="table table-hover">
+                        <thead class="bg-primary">
+                          
+                          <th scope="col">Nombre</th>
+                          <th scope="col">Apellidos</th>
+                          <th scope="col">Usuario</th>
+                          <th scope="col">Accion</th>
+                          <th scope="col">Estado</th>
+                        </thead>
+                        <tbody *ngFor="let usuario of listausuarios | paginate: {itemsPerPage: 20, currentPage: pageActual}; index as i">
+                                
+                                <td scope="col">{{usuario.nombre}}</td>
+                                <td scope="col">{{usuario.apellido}}</td>
+                                <td scope="col">{{usuario.Usuario}}</td>
+                                <td scope="col">
+                                        <div class="container">
+                                                <div class="row">
+                                                  <div class="col">
+                                                    <div ngbDropdown class="d-inline-block">
+                                                      <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
+                                                      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                        <button (click)="qr(modalqr,usuario.Usuario)" class="dropdown-item"><i class="fas fa-qrcode"></i> Código QR</button>
+                                                       
+                                                        <button (click)="addfunciones(usuario.Id,datfunus)" class="dropdown-item"><i class="fas fa-pencil-ruler"></i> Agregar funciones</button> 
+
+                                                        <button (click)="open(datsus,usuario.Id)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
+                                                        
+                                                        <button (click)="alertdele(usuario.Id)" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar </button>
+
+                                                        <button (click)="delete(usuario.Id,usuario.Estado === '1' ? '0':'1')" class="dropdown-item"><i class="fas fa-{{usuario.Estado === '1' ? 'ban':'check-circle' }}"></i>{{usuario.Estado === '1' ? ' Desactivar':' Activar' }}</button>
+
+                                                      </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              </div>
+                                </td>
+                                <td>
+                                    <button (click)="delete(usuario.Id,usuario.Estado === '1' ? '0':'1')" class=" text-white btn {{usuario.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{usuario.Estado === '1' ? 'ban':'check-circle' }}"></i>{{usuario.Estado === '1' ? ' Desactivar':' Activar'}}</button>
+                                </td>
+                        </tbody>
+                </table>
+                <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+        </div>
+    </div>
+</div>
+<ng-template #datsus let-modal>
+        <form #fromregister="ngForm" (ngSubmit)="enviarform()">
+        <div class="fixed-top alert alert-danger alert-dismissible fade alert-datosgen w-50 mx-auto" role="alert">
+          <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">{{(user.Id!=="" ? 'Modificar Usuario': 'Registrar Usuario')}}</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                 <div class="col-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nombre(s)</label>
+                        <input type="text" [(ngModel)]="user.Nombre" [ngModelOptions]="{standalone: true}" name="Nombre"  class="form-control">
+                    </div>
+                 </div>
+                 <div class="col-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Apellidos</label>
+                        <input type="text" [(ngModel)]="user.Apellidos" [ngModelOptions]="{standalone: true}" name="Apellidos" class="form-control">
+                    </div>
+                 </div>
+                 <div class="col-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Correo Electrónico</label>
+                            <input type="text" [(ngModel)]="user.Correo" name="Correo" [ngModelOptions]="{standalone: true}"  class="form-control">
+                        </div>
+                     </div>
+                     <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Usuario</label>
+                                <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="user.Usuario" name="Usuario"  class="form-control">
+                            </div>
+                    </div>
+                    <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Puesto</label>
+                                <input type="text" [(ngModel)]="user.Puesto" name="Puesto" [ngModelOptions]="{standalone: true}" class="form-control">
+                            </div>
+                    </div>
+                    <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Grupo</label>
+                                <select [(ngModel)]="user.Configuracion" [ngModelOptions]="{standalone: true}" class="form-control">
+                                    <option *ngFor="let grupo of grupos" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</option>
+                                </select>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
+            <input type="submit" class="btn btn-outline-primary" value="Guardar">
+        </div>
+        </form>
+      </ng-template>
+<ng-template #datfunus let-modal>
+    <form [formGroup]="form">
+        <div class="fixed-top alert alert-danger alert-dismissible fade alert-funciones w-50 mx-auto" role="alert">
+          <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Asignar Funciones a usuario</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            
+                        <div class="container">
+                            <div class="row" id="frmfunc">
+                            <div  class="col-12 m-t-20" formArrayName="orders"  *ngFor="let order of form.controls.orders.controls; let i = index">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" [formControlName]="i" (change)="changefunt($event)" name="{{i}}"  [checked]="orders[i].checado"  class="custom-control-input" id="{{orders[i].name}}">
+                                    <label class="custom-control-label"  for="{{orders[i].name}}" >{{orders[i].label}}</label>
+                                </div>
+                            </div>                                
+                        </div>
+                    </div>
+
+        </div>
+        <div class="modal-footer">
+               <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
+                <button (click)="check-circlefunciones()" class="btn btn-outline-primary">Guardar</button>
+
+        </div>
+    </form>
+</ng-template>
+<ngx-spinner class="spiner" bdColor="rgba(51,51,51,0.8)" fullScreen="true"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-multiple">
+<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
+<ngb-alert *ngIf="staticAlertClosed" type="danger" style="position: fixed;z-index: 1000;top: 0;width: 100%" (close)="close(alert)">{{ alertterror }}</ngb-alert>
+
+<ng-template #modalqr let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Código QR</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row d-felx justify-content-center">
+                <div class="col-6">
+                    <img class="img-fluid" src="https://chart.googleapis.com/chart?cht=qr&chs=400x400&choe=ISO-8859-1&chl={{this.codeqr}}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<swal
+  #errorrfcSwal
+  title="¿Está seguro de eliminar este Usuario?"
+  text=""
+  type="question"
+  (confirm)="borrarusuario()"
+  [showCancelButton]="true"
+  confirmButtonText="Eliminar"
+  cancelButtonText="Cancelar"
+   >
+</swal>
+<swal
+  #errorralert
+  title="Sin Autorización"
+  text="No esta autorizado para realizar esta acción, contacte a su administrador"
+  type="warning"
+  confirmButtonText="Entendido"
+   >
+</swal>

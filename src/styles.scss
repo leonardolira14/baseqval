@@ -1,0 +1,172 @@
+/* You can add global styles to this file, and also import other style files */
+
+$colors: (
+  blanco:#fff,
+  primary:    #005d8f,
+  succes: #00a65a,
+  secondary:  #f7ac43,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222,
+  gary-lte:  #d2d6de,
+  aqua: #00c0ef,
+  yellow: #f39c12,
+  blue: #0073b7,
+  navy: #001F3F,
+  teal: #39CCCC,
+  olive: #3D9970,
+  lime: #01FF70,
+  orange: #FF851B,
+  fuchsia: #F012BE,
+  purple: #605ca8,
+  maroon: #D81B60,
+  black: #111,
+  dark-2: #222d32,
+  light-gray: #444,
+  alight-gray:#777
+);
+$spaceamounts: (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,55,60,65,70, 75,80,85,90,95,100,110,120,130,140);
+$sides: (top, bottom, left, right);
+@each $space in $spaceamounts {
+	@each $side in $sides {
+		.m-#{str-slice($side, 0, 1)}-#{$space} {
+			margin-#{$side}: #{$space}px !important;
+		}
+		.p-#{str-slice($side, 0, 1)}-#{$space} {
+			padding-#{$side}: #{$space}px !important;
+		}
+	}
+}
+.btn-secondary{
+  background: map-get($colors,secondary);
+  border-color:map-get($colors,secondary) !important;
+}
+.bg-gary-lte{
+  background: map-get($colors,gary-lte);
+}
+.text-primary{
+  color:map-get( $colors, primary);
+}
+.titulo{
+  color:map-get( $colors, secondary);
+}
+.bg-primary{
+  color:map-get( $colors, blanco);
+  background-color: map-get( $colors, primary) !important;
+}
+.bg-orange{
+  color:map-get( $colors, blanco);
+  background-color: map-get( $colors, secondary) !important;
+}
+.alert-success{
+  color:map-get( $colors, blanco);
+  border-color:map-get( $colors, succes) !important;
+  background-color: map-get( $colors, succes) !important;
+} 
+.alert-danger{
+  color:map-get( $colors, blanco);
+  border-color:map-get( $colors, danger) !important;
+  background-color: map-get( $colors, danger) !important;
+} 
+.modal{
+  max-height: 100vh;
+  overflow: hidden;
+  & .modal-body{
+    padding: 0px !important;
+    max-height: calc(100vh - 164px);
+    overflow: auto;
+    & input,& textarea,& select{
+      border-radius: 0px !important;
+      border-color: map-get($colors,black );
+    }
+    & select{
+      appearance: none;
+      background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 50%;
+    }
+  }
+  & .modal-header{
+    padding: .5rem 1rem !important;
+  }
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.m-c-alight-gray{
+  padding: 1rem;
+   border-left:.5px solid map-get($colors,gary-lte);
+   border-right:.5px solid map-get($colors,gary-lte);
+   border-bottom:.5px solid map-get($colors,gary-lte);
+}
+.my-pagination /deep/ .ngx-pagination {
+  & a,& button{
+      background: map-get($colors,secondary);
+      color:map-get($colors,blanco);
+      &:hover{
+          background: map-get($colors,primary);
+      }
+  }
+  & .current {
+      background: map-get($colors,primary);
+  }
+}
+.btn-primary{
+  background: map-get($colors,primary);
+}
+.dropdown-item{
+  &:hover{
+    color:#fff;
+    background: map-get($colors,secondary)
+  }
+}
+ul.ltpreg{
+  width: 100%;
+  display: block;
+  & li{
+    list-style: none;
+  }
+}
+.accordion{
+  & .card{
+    & .card-header{
+        border-color:map-get($colors,secondary);
+        background: map-get($colors,secondary);
+        padding:1px 1px;
+        & .btn-link{
+          color:#fff;
+          background: map-get($colors,secondary);
+          text-decoration: none !important;
+        }
+    }
+    & .card-body{
+       padding:0px;
+       & .list-group{
+        width: 100%;
+        & .list-group-item{
+          cursor: pointer;
+        }
+       }
+    }
+  }
+  
+  
+}
+.p-fixed{
+  position: fixed;
+  z-index: 1000;
+  
+}
+.spiner /deep/ .black-overlay{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+}

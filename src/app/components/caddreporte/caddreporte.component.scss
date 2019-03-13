@@ -1,0 +1,36 @@
+@import '../../../styles';
+.cont-reportes{
+	& .keys{
+	overflow: auto;
+	height-max: calc(100vh-20px);
+	}
+	& .hoja{
+		position: relative;
+		width: 100%;
+		height: calc(100vh - 154px);
+		& .cont-hoja{
+			overflow: auto;
+			position: relative !important;
+			width: 100%;
+			height: 100%;
+			top:0;
+			left: 0;
+			background: map-get($colors,alight-gray);
+			& .hoja{
+				margin-bottom: 60px;
+				background: #fff;
+				position: absolute;
+				width: 612px;
+				height: 792px; 
+				left: 50%;
+				top:10px;
+				transform: translateX(-50%);
+				& .herra{
+					position: absolute;
+				}
+			}
+		}
+	}
+
+}
+

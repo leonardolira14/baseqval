@@ -1,0 +1,25 @@
+@import '../../../styles';
+
+.notificaciones {
+    position: relative;
+    top:0;
+    left: 0;
+    display: block;
+    width: 100%;
+   
+    & .card{
+        & .card-header{
+            background: map-get($colors,primary )
+        }
+        & .card-body.cont-not{
+            
+            max-height: 730px;
+            overflow: auto;  
+        }
+    }
+    & hr{
+        height: 2px;
+        width: 90%;
+        margin: 10px auto;
+    }
+}

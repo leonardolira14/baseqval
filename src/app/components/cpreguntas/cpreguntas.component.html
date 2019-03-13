@@ -1,0 +1,188 @@
+<div class="container grupos m-t-30">
+    <div class="row">
+        <div class="col-4">
+            <h4>Preguntas</h4>
+        </div>
+        <div class="col-6">
+                <div class="input-group">
+                        <input type="text" class="form-control" [(ngModel)]="palabra" (keyup)="buscarpregunta()" placeholder="Buscar" >
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                             </div>
+                </div>
+        </div>   
+        <div class="col-2 text-rigth">
+            <div class="row d-flex justify-content-end">
+                <div class="col-12 m-b-30 text-center">
+                        
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-secondary" (click)="open(modaldatos,'')" >Agregar</button>
+                        
+                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+        <table class="table table-hover">
+          <thead class="bg-primary">
+            
+            <th scope="col">Descripción</th>
+            <th scope="col">Forma</th>
+            <th scope="col">Peso/Puntaje</th>
+            <th scope="col">Accion</th>
+            <th scope="col">Estado</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let resp of lista | paginate: {itemsPerPage: 20, currentPage: pageActual} ; index as i">
+              
+              <td>{{resp.Pregunta}}</td>
+              <td>{{(resp.Forma==="AB") ? 'ABIERTA': resp.Forma}}</td>
+              <td class="text-center">{{resp.Peso}}</td>
+              <td>
+                  <div class="container">
+                      <div class="row">
+                        <div class="col">
+                          <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1"> 
+                              <button (click)="requestask(modaldatos,resp.IDPregunta)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
+                              <button (click)="delete(resp.IDPregunta ,resp.Estado === '1' ? '0':'1')" class="dropdown-item"><i class="fas fa-{{resp.Estado === '1' ? 'ban':'check-circle' }}"></i>{{resp.Estado === '1' ? ' Desactivar':' Activar' }}</button>
+
+                               <button (click)="alertdele(resp.IDPregunta)" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar</button>
+                              
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+              </td>
+              <td><button (click)="delete(resp.IDPregunta ,resp.Estado === '1' ? '0':'1')" class=" text-white btn {{resp.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{resp.Estado === '1' ? 'ban':'check-circle' }}"></i> {{resp.Estado === '1' ? 'Desactivar':'Activar'}}</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+      </div>
+    </div>
+</div>
+<ngx-spinner  class="spiner" bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-multiple">
+<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
+
+<ng-template #modaldatos let-modal>
+    <div class="fixed-top alert alert-danger alert-dismissible fade alert-funciones w-50 mx-auto" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+     
+          <div class="modal-header">
+              <h4 class="modal-title" id="modal-basic-title">{{(pregunta.IDPregunta==="" ? 'Registrar Pregunta' : 'Modificar Pregunta')}}</h4>
+              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Pregunta</label>
+                      <input type="text" (keyup)="addrespr($event)" [(ngModel)]="pregunta.Pregunta" [ngModelOptions]="{standalone: true}" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-12">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Formas de Pregunta</label>
+                        <select (change)="cambiorespuesta(false)" [(ngModel)]="pregunta.Forma" [ngModelOptions]="{standalone: true}" class="form-control">
+                            <option value="">Selecciona</option>
+                            <option value="SI/NO">SI/NO</option>
+                            <option value="SI/NO/NA">SI/NO/NA</option>
+                            <option value="SI/NO/NA/NS">SI/NO/NA/NS</option>
+                            <option value="SI/NO/NS">SI/NO/NS</option>
+                            <option value="AB">ABIERTA</option>
+                            <option value="NUMERO">NUMERO</option>
+                            <option value="DIAS">DIAS</option>
+                            <option value="HORAS">HORAS</option>
+                            <option value="MINUTOS">MINUTOS</option>
+                            <option value="MLC">OPCIÓN MULTIPLE (CHECK-LIST)</option>
+                            <option value="ML">OPCIÓN MULTIPLE (UNA SOLA RESPUESTA)</option>
+                      </select>
+                        
+                      </div>
+                  </div>
+                  
+                  <div class="col-12 colmf" [hidden]="pscin">
+                      <div class="form-group" id="rp">
+                        <label for="exampleInputEmail1">Respuesta Positiva</label>
+                        <select [hidden]="selectsn"  [(ngModel)]="pregunta.Respuesta" [ngModelOptions]="{standalone: true}" class="form-control">'
+                            <option *ngFor="let pos of posresplt" [value]="pos.val">{{pos.val}}</option>
+                          </select>
+                        <input [hidden]="inputrespp" type="{{tipor}}" [(ngModel)]="pregunta.Respuesta" [ngModelOptions]="{standalone: true}" class="form-control">
+                      </div>
+                  </div>
+                  <div class="col-12 mltpe" [hidden]="lismulte">
+                    <div class="fomr-group">
+                        <input type="text" [(ngModel)]="posresp" [ngModelOptions]="{standalone: true}" (keyup)="addrespr($event)" placeholder="" class="form-control">
+                        <small class="text-muted m-b-15">Al finalizar de escribir la posible respuesta preciona la tecla Enter</small>
+                        <div class="card rptlis">
+                          <div class="card-body" id="listmult">
+                            <div class='btn btn-primary m-l-10 m-t-10' *ngFor="let elemnt of listf; let i=index;">{{elemnt.label}}<button type="button" (click)="removeposlist(i)" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Frecuencia</label>
+                          <select [(ngModel)]="pregunta.Frecuencia" [ngModelOptions]="{standalone: true}" class="form-control">
+                              <option value="">Selecciona</option>
+                              <option value="1V">Cada Visita</option>
+                              <option value="1M">Cada Mes</option>
+                              <option value="2M">Cada Dos Meses</option>
+                              <option value="3M">Cada Tres Meses</option>
+                              <option value="6M">Semestral</option>
+                              <option value="P15">Primeros 15 Dias del mes(1-15)</option>
+                              <option value="S15">Segundos 15 Dias del mes(16-31)</option>
+                        </select>
+                          
+                        </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Puntaje</label>
+                            
+                            <input type="text" [(ngModel)]="pregunta.Peso" [ngModelOptions]="{standalone: true}" class="form-control">
+                          </div>
+                        </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="enviarform()"  class="btn btn-outline-primary">Guardar</button>
+            </div>
+      
+</ng-template>
+<ngb-alert  *ngIf="staticAlertClosed" type="danger" style="position: fixed;z-index: 1000;top: 0;width: 100%" (close)="close(alert)">{{ alertterror }}</ngb-alert>
+
+<swal
+  #errorrfcSwal
+  title="¿Está seguro de eliminar este registro?"
+  text=""
+  type="question"
+  (confirm)="borrarpregunta()"
+  [showCancelButton]="true"
+  confirmButtonText="Eliminar"
+  cancelButtonText="Cancelar"
+   >
+</swal>
+<swal
+  #errorralert
+  title="Sin Autorización"
+  text="No esta autorizado para realizar esta acción, contacte a su administrador"
+  type="warning"
+  confirmButtonText="Entendido"
+   >
+</swal>

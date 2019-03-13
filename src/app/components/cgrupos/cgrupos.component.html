@@ -1,0 +1,267 @@
+
+<div class="container grupos m-t-30">
+  <div class="row">
+      <div class="col-6 text-rigth">
+        <h4>Grupos</h4>
+      </div>
+    <div class="col-6 text-rigth">
+      <div class="row d-flex justify-content-end">
+        <div class="col-5 m-b-30 text-center">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary" (click)="open(datsgrups,'','N')" >Agregar</button>
+                
+             </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+        <ngb-tabset >
+            <ngb-tab>
+              <ng-template ngbTabTitle >Todos</ng-template>
+              <ng-template ngbTabContent>
+                <div class="container" class="m-c-alight-gray">
+                   <div class="row">
+                    <div class="col-6 m-t-20">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" [(ngModel)]="todos" (keyup)="buscartodos($event)" placeholder="Buscar" >
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                        </div>
+                      </div> 
+                    </div>
+                    <div class="col-12">
+                      <table class="table table-hover">
+                          <thead class="bg-primary">
+                            
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Acciones</th>
+                            <th scope="col">Estatus</th>
+                          </thead>
+                          <tbody>
+                             <tr  *ngFor="let grupo of todoslosgrupos | paginate: {itemsPerPage: 20, currentPage: paginatodos}; index as i">
+                              
+                              <td scope="col">{{grupo.Nombre}}</td>
+                              <td scope="col">{{grupo.Tipo=='E'?'Externo':'Interno'}}</td>
+                              <td scope="col">
+                                <div class="container">
+                                  <div class="row">
+                                    <div class="col">
+                                      <div ngbDropdown class="d-inline-block">
+                                        <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
+                                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                          
+                                          <button (click)="open(datsgrups,grupo.IDGrupo,grupo.Tipo)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
+
+                                          <button (click)="eliminar(grupo.IDGrupo,grupo.Status==0 ? '1' :'0')" class="dropdown-item"><i class="fas fa-{{ grupo.Status==0 ? 'check-circle' :'ban' }}"></i> {{ grupo.Status==0 ? ' Activar' :' Desactivar' }}</button>
+
+                                          <button (click)="alertdele(grupo.IDGrupo)" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar</button>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <button (click)="eliminar(grupo.IDGrupo,grupo.Status==0 ? '1' :'0')" class="btn btn-{{(grupo.Status==0)?'success':'danger'}}"><i class="fas fa-{{ grupo.Status==0 ? 'check-circle' :'ban' }}"></i>{{ grupo.Status==0 ? ' Activar' :' Desactivar' }}</button>
+                              </td>
+                             </tr>
+                          </tbody>
+                        </table>
+                        <pagination-controls class="my-pagination" (pageChange)="paginatodos = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                    </div>
+                   </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+              <ng-template ngbTabTitle >Internos</ng-template>
+              <ng-template ngbTabContent >
+                <div class="container" class="m-c-alight-gray">
+                  <div class="row">
+                    <div class="col-6 m-t-20">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" [(ngModel)]="palinterno" (keyup)="buscarinterno($event)" placeholder="Buscar" >
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                              </div>
+                          </div> 
+                    </div>
+                    <div class="col-12">
+                      <table class="table table-hover">
+                          <thead class="bg-primary">
+                            
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Acciones</th>
+                            <th scope="col">Estatus</th>
+                          </thead>
+                          <tbody>
+                            <tr  *ngFor="let interno of internos | paginate: {itemsPerPage: 7, currentPage: pageActual}; index as i">
+                              
+                              <td scope="col">{{interno.Nombre}}</td>
+                              <td scope="col">Interno</td>
+                              <td scope="col">
+                                <div class="container">
+                                  <div class="row">
+                                    <div class="col">
+                                      <div ngbDropdown class="d-inline-block">
+                                        <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
+                                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                          
+                                          <button (click)="open(datsgrups,interno.IDGrupo,interno.Tipo)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
+                                          <button (click)="eliminar(interno.IDGrupo,interno.Status==0 ? '1' :'0')" class="dropdown-item"><i class="fas fa-{{ interno.Status==0 ? 'check-circle' :'ban' }}"></i> {{ interno.Status==0 ? ' Activar' :' Desactivar' }}</button>
+                                          <button (click)="alertdele(interno.IDGrupo)" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar</button>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <button (click)="eliminar(interno.IDGrupo,interno.Status==0 ? '1' :'0')" class="btn btn-{{(interno.Status==0)?'success':'danger'}}"><i class="fas fa-{{ interno.Status==0 ? 'check-circle' :'ban' }}"></i>{{ interno.Status==0 ? ' Activar' :' Desactivar' }}</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                      </table>
+                      <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+              <ng-template ngbTabTitle>Externos</ng-template>
+              <ng-template ngbTabContent>
+                  <div class="container" class="m-c-alight-gray">
+                      <div class="row">
+                        <div class="col-6 m-t-20">
+                            <div class="input-group mb-3">
+                                <input type="text" (keyup)="buscarexterno($event)" [(ngModel)]="palexterno" class="form-control" placeholder="Buscar" >
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                                  </div>
+                              </div> 
+                        </div>
+                        <div class="col-12">
+                            <table class="table table-hover">
+                                <thead class="bg-primary">
+                                  
+                                  <th scope="col">Nombre</th>
+                                  <th scope="col">Tipo</th>
+                                  <th scope="col">Acciones</th>
+                                  <th scope="col">Estatus</th>
+                                </thead>
+                                <tbody>
+                                    <tr  *ngFor="let externo of externos | paginate: {itemsPerPage: 7, currentPage: pageActual2};index as i">
+                                      
+                                      <td scope="col">{{externo.Nombre}}</td>
+                                      <td scope="col">Externo</td>
+                                      <td scope="col">
+                                        <div class="container">
+                                          <div class="row">
+                                            <div class="col">
+                                              <div ngbDropdown class="d-inline-block">
+                                                <button class="btn btn-primary"  ngbDropdownToggle>Acciones</button>
+                                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                                  
+                                                  <button (click)="open(datsgrups,externo.IDGrupo,externo.Tipo)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
+                                                  <button (click)="eliminar(externo.IDGrupo,externo.Status==0 ? '1' :'0')" class="dropdown-item"><i class="fas fa-{{ externo.Status==0 ? 'check-circle' :'ban' }}"></i>{{ externo.Status==0 ? ' Activar' :' Desactivar' }}</button>
+                                                  
+                                                  <button (click)="alertdele(externo.IDGrupo)" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar</button>
+                                                </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <button (click)="eliminar(externo.IDGrupo,externo.Status==0 ? '1' :'0')"  class="btn btn-{{ (externo.Status==0) ? 'success' :'danger' }}"><i class="fas fa-{{ externo.Status==0 ? 'check-circle' :'ban' }}"></i>{{ externo.Status==0 ? ' Activar' :' Desactivar' }}</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                            </table>
+                            <pagination-controls class="my-pagination" (pageChange)="pageActual2 = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+                          </div>
+                      </div>
+                    </div>
+              </ng-template>
+            </ngb-tab>
+            
+          </ngb-tabset>
+    </div>
+  </div>
+</div>
+<ng-template #datsgrups let-modal>
+  <form [formGroup]="formdatsg" (ngSubmit)="enviarform(formdatsg)">
+  <div class="fixed-top alert alert-danger alert-dismissible fade alert-datosgen w-50 mx-auto" role="alert">
+    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Datos de Grupos</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="container">
+          <div class="row">
+            <div class="col-12  m-b-10">
+                <label for="" class="m-t-30">Nombre Grupo</label>
+            </div>
+            <div class="col-12 ">
+              <input type="text" class="form-control" formControlName="nombregrupo" [(ngModel)]="upnmbre" placeholder="Nombre Grupo" aria-label="Nombre Grupo" aria-describedby="basic-addon1">
+              </div>
+            <div class="col-12 m-t-30 m-b-10">
+                <label for="">Tipo Grupo</label>
+            </div>
+            <div class="col-6 ">
+              <div class="custom-control custom-radio">
+                <input type="radio" id="interno" formControlName="tipog" [(ngModel)]="uptipo" name="tipog" value="I" class="custom-control-input">
+                <label class="custom-control-label" for="interno">Interno</label>
+              </div>
+            </div>
+            <div class="col-6  ">
+             
+              <div class="custom-control custom-radio">
+                <input type="radio" [(ngModel)]="uptipo" formControlName="tipog" id="externo" name="tipog" value="E" class="custom-control-input">
+                <label class="custom-control-label" for="externo">Externo</label>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
+      <input type="submit" class="btn btn-outline-primary" value="Guardar">
+  </div>
+  </form>
+</ng-template>
+<ngx-spinner class="spiner" bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-multiple">
+<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
+
+<swal
+  #errorrfcSwal
+  title="¿Está seguro de eliminar este Grupo?"
+  text="Al eliminar este grupo se borraran todas la relaciones entre usuarios y clientes o proveedores."
+  type="question"
+  (confirm)="borrargrupo()"
+  [showCancelButton]="true"
+  confirmButtonText="Eliminar"
+  cancelButtonText="Cancelar"
+   >
+</swal>
+<swal
+  #errorralert
+  title="Sin Autorización"
+  text="No esta autorizado para realizar esta acción, contacte a su administrador"
+  type="warning"
+  confirmButtonText="Entendido"
+   >
+</swal>

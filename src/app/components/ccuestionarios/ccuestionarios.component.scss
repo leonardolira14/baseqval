@@ -1,0 +1,10 @@
+@import '../../../styles';
+
+
+.card.preg{
+    max-height: 300px;
+    overflow: auto;
+    & .card-body{
+        padding: .2rem .2rem
+    }
+}

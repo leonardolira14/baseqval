@@ -1,0 +1,43 @@
+<div class="container m-b-30">
+  <div class="row ">
+    <div class="col-12 notificaciones m-t-30 ">
+      <div class="card">
+        <div class="card-header bg-primary">
+            <strong class="text-white">Notificaciones</strong>
+        </div>
+        <div class="card-body cont-not">
+            <div class="container-fluid">
+              <div class="row" *ngIf="notificaciones!=false">
+                  <div class="col-12" >
+                      <div class="row">
+                        <div class="col-12">
+                         {{notificaciones}}
+                        </div>
+                        <div class="col-12 tex-rigth">
+                          <small class="text-muted">24/02/2019</small>
+                        </div>
+                      <hr>
+                    </div>
+                  </div>
+              </div>
+              <div class="row"  *ngIf="notificaciones==false">
+                  <div class="col-12" >
+                      <div class="row">
+                        <div class="col-12">
+                          No tienes notificaciones estas al dia.
+                        </div>
+                      <hr>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner class="spiner" bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-multiple">
+<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
