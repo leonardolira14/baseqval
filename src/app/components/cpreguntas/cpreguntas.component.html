@@ -29,8 +29,8 @@
             <th scope="col">Descripción</th>
             <th scope="col">Forma</th>
             <th scope="col">Peso/Puntaje</th>
-            <th scope="col">Accion</th>
-            <th scope="col">Estado</th>
+            <th scope="col" class="wpx-180 text-center">Accion</th>
+            <th scope="col" class="wpx-180 text-center">Estado</th>
           </thead>
           <tbody>
             <tr *ngFor="let resp of lista | paginate: {itemsPerPage: 20, currentPage: pageActual} ; index as i">
@@ -38,9 +38,9 @@
               <td>{{resp.Pregunta}}</td>
               <td>{{(resp.Forma==="AB") ? 'ABIERTA': resp.Forma}}</td>
               <td class="text-center">{{resp.Peso}}</td>
-              <td>
+              <td class="wpx-180">
                   <div class="container">
-                      <div class="row">
+                      <div class="row d-flex justify-content-center">
                         <div class="col">
                           <div ngbDropdown class="d-inline-block">
                             <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
@@ -56,7 +56,7 @@
                     </div>
                     </div>
               </td>
-              <td><button (click)="delete(resp.IDPregunta ,resp.Estado === '1' ? '0':'1')" class=" text-white btn {{resp.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{resp.Estado === '1' ? 'ban':'check-circle' }}"></i> {{resp.Estado === '1' ? 'Desactivar':'Activar'}}</button></td>
+              <td class="wpx-180 text-center"><button (click)="delete(resp.IDPregunta ,resp.Estado === '1' ? '0':'1')" class=" text-white btn {{resp.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{resp.Estado === '1' ? 'ban':'check-circle' }}"></i> {{resp.Estado === '1' ? 'Desactivar':'Activar'}}</button></td>
             </tr>
           </tbody>
         </table>
@@ -186,3 +186,116 @@ type="ball-clip-rotate-multiple">
   confirmButtonText="Entendido"
    >
 </swal>
+
+<div class=" d-none container-fluid bg-gris1 p-t-40 p-b-40">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header card-header bg-primary text-white text-monse text-uppercase text-center">
+              <h5>Encuestas</h5>
+          </div>
+          <div class="card-body">
+             <div class="container-fluid">
+               <div class="row">
+                 <div class="col-12 input-group">
+                    <div class="input-group-prepend">
+                        <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Todas las Categorías</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                              <button ngbDropdownItem>Action - 1</button>
+                              <button ngbDropdownItem>Another Action</button>
+                              <button ngbDropdownItem>Something else is here</button>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control b-r-blanco" placeholder="Buscar en todos los bancos de preguntas" >
+                    <div class="input-group-append ">
+                        <span class="input-group-text text-gris3 bg-white b-l-blanco"><i class="fas fa-search"></i></span>
+                    </div>
+                 </div>
+                  <div class="col-6 m-t-20">
+                    <div class="btn btn-transparent text-gris3" (click)="isCollapsed = !isCollapsed"
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </div>
+                  </div>
+                  <div class="col-6 m-t-20 text-gris3 text-right">
+                    <small>2,511 Preguntas Registradas.</small>
+                  </div>
+                  <div class="col-12 " [ngbCollapse]="isCollapsed">
+                      <div class="form-group m-t-20 m-b-20">
+                          <label for="" class="text-gris3">Buscar etiquetas</label>
+                          <input
+                          (focus)="focus$.next($event.target.value)"
+                          (click)="click$.next($event.target.value)"
+                          #instance="ngbTypeahead" id="typeahead-basic" type="text" class="form-control" [(ngModel)]="modeltags" (selectItem)="selectedItem($event)"  [ngbTypeahead]="search"/>  
+                      </div>
+                      <span *ngFor='let tag of tags' class="p-l-10 p-r-10 p-t-10 p-b-10 bg-olive text-white mr-3">{{tag}} <span class="badge bg-transparent text-white">X</span></span>
+                      <div class="container-fluid m-t-20">
+                        <div class="row">
+                          <div class="col-12 text-right">
+                              <div class="btn-group" role="group" aria-label="Basic example">
+                                  <button type="button" class="btn btn-succes mr-3">Aplicar</button>
+                                  
+                                  <button type="button" class="btn btn-outline-danger">Cerrar</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                 <div class="col-8 bg-gris2 cont-banco"
+                    cdkDropList
+                     #preguntasBanco="cdkDropList"
+                    [cdkDropListConnectedTo]='[listaPregunta]'
+                    [cdkDropListData] = 'preguntasbanco'
+                    (cdkDropListDropped)="droper($event)"
+                 >
+                    <ul>
+                        <li cdkDrag class="list-style w-50" *ngFor='let item of preguntasbanco'>
+                            <mat-card class="card-pregunta" >
+                                <mat-card-header>
+                                    <mat-card-title>{{ item.pregunta }}</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                  <small class="text-primary">Ver Detalles</small>                                             
+                                </mat-card-content>
+                            </mat-card>
+                        </li>
+                    </ul>                                
+                 </div>
+                 <div class="col-4">
+                   <div class="row">
+                     <div class="col-12">
+                        <h5 class="text-gris3 text-monse">Lista de Preguntas</h5>
+                     </div> 
+                   </div>
+                   <div class="bg-gris2 cont-banco2 p-l-10 p-r-10"
+                    cdkDropList
+                    #listaPregunta='cdkDropList'
+                    [cdkDropListConnectedTo]='[preguntasBanco]'
+                    [cdkDropListData] = 'listapregunta'
+                    (cdkDropListDropped)="droper($event)"
+                    >
+                      <mat-card cdkDrag class="m-b-20 m-t-10 card-pregunta" *ngFor='let item of listapregunta'>
+                          <mat-card-header>
+                               <mat-card-title>{{ item.pregunta }}</mat-card-title>
+                          </mat-card-header>
+                      </mat-card>
+                    </div>
+                 </div>
+                 <div class="col-12 text-right m-t-20">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-azulcielo mr-3">Registrar Pregunta</button>
+                        <button type="button" class="btn btn-succes mr-3">Vista Previa</button>
+                        <button type="button" class="btn btn-outline-primary">Guardar Encuesta</button>
+                      </div>
+                 </div>
+               </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

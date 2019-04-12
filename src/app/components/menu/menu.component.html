@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-  
+  <a class="navbar-brand cursor_pointer" (click)='goto("general")'>
+    <img src="/assets/img/svg_qval_logo.svg" width="100" height="50" alt="">
+  </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -7,27 +9,28 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" (click)='goto("general")'><i class="fas fa-sitemap"></i> General <span class="sr-only">(current)</span></a>
+        <a class="nav-link" (click)='goto("general")'> Panel de Control <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"   (click)='goto("grupos")'><i class="fas fa-layer-group"></i> Grupos</a>
+        <a class="nav-link" (click)='goto("encuestas")'>Encuestas</a>
+      </li>
+     
+      <li class="nav-item">
+        <a class="nav-link"   (click)='goto("grupos")'> Grupos</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" (click)='goto("usuarios")'><i class="fas fa-user"></i> Usuarios</a>
+        <a class="nav-link" (click)='goto("usuarios")'>Usuarios</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"  (click)='goto("clientes")' ><i class="fas fa-user-tie"></i> Clientes/Proveedores</a>
+        <a class="nav-link"  (click)='goto("clientes")' >Clientes/Proveedores</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)='goto("cuestionarios")'><i class="fas fa-question-circle"></i> Cuestionarios</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" (click)='goto("preguntas")'><i class="fas fa-file"></i> Preguntas</a>
-      </li>
-      <li class="nav-item">
+      
+      <!--====== <li class="nav-item">
         <a class="nav-link" (click)='goto("resultados")'><i class="fas fa-poll"></i> Resultados</a>
       </li>
-      <!--====== 
+       <li class="nav-item">
+        <a class="nav-link" (click)='goto("encuestas")'>Precios Y Planes</a>
+      </li>
       <li class="nav-item">
         <div ngbDropdown class="d-inline-block">
           <button class="btn btn-primary" id="dropreportes" ngbDropdownToggle >Reportes</button>
@@ -38,13 +41,14 @@
           </div>
         </div>
       </li>====-->
-      <li class="nav-item">
-        <a class="nav-link" href="https://admyo.com" target="_blank">Admyo</a>
-      </li>
-      <li class="nav-item">
-        <div class="nav-link"  (click)="salir()">Salir</div>
-      </li>
-      
+    </ul>
+    <ul class=" navbar-nav justify-content-end">
+        <li class="nav-item">
+          <a class="nav-link" href="https://admyo.com" target="_blank">Admyo</a>
+        </li>
+        <li class="nav-item">
+          <div class="nav-link"  (click)="salir()">Salir</div>
+        </li>
     </ul>
     <div class="my-2 my-lg-0">
       <div class=" btn btn-primry text-white">

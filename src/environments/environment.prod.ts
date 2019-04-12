@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  urlserverp:"https://admyo.com/serverqval/",
+  urlserverp:"https://testqval.admyo.com/server_qval/",
   urlserver:"http://localhost/serverqval/"
 };

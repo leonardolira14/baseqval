@@ -1,105 +1,329 @@
-<div class="container-fluid ">
-  <div class="row ">
-    <div class="col-12 dat-gen m-t-30 ">
-      <div class="cont-gen">
-        <div class="banner" [ngStyle]="{'background-image': 'url('+ rut+'assets/img/bannerempresa/'  + Banner + ')'}">
-            
-        </div>  
-        <div class="img-redon" [ngStyle]="{'background-image': 'url('+ rut+'assets/img/logoempresa/' + Logoempresa + ')'}"></div>
-        <div class="container-fluid">
-          <div class="row">
-              
-              <div class="col-7 datos-usuariog">
-                <div class="row">
-                  <div class="col-12">
-                    <h4>{{nombreus}} {{apellidos}}</h4>
-                  </div>
-                  <div class="col-12">
-                      <p>{{puesto}}</p>
-                  </div>
-                  <div class="col-12">
-                      <p>{{correo}}</p>
-                  </div>
-                  <div class="col-12">
-                      <button class="btn btn-primary text-white" (click)="open(content)"><i class="fas fa-pen"></i> Editar Datos</button>
-                  </div>
+<div class="container-fluid bg-gris1 p-b-30">
+    <div class="container text-girsmenu">
+        <div class="row">
+            <div class="col-12 dat-gen m-t-30">
+                <div class="cont-gen">
+                    <div class="banner" [ngStyle]="{'background-image': 'url('+ logo_banner + ')'}">   
+                    </div> 
                 </div>
-              </div>
-              <div class="col-5 datos-generales">
-                <div class="row">
-                  <div class="col-12">
-                      <p><i class="fas fa-building"></i> {{razon_social}}</p>
-                  </div>
-                  <div class="col-12">
-                      <p><i class="fas fa-globe-americas"></i> {{nombre_comercial}}</p>
-                   </div>
-                   <div class="col-12">
-                     <p><i class="fas fa-users"></i> No de Empleados: {{nempleados}}</p>
-                   </div>
-                   <div class="col-12">
-
-                      <button class="btn btn-primary text-white" (click)="open(datsem)"><i class="fas fa-pen"></i> Editar Datos</button>
-                   </div>
-                </div>
-              </div>
-              <hr class="m-t-30 m-b-30">
-              <div class="col-12 text-center">
-               {{perfile}}
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 m-t-40">
-      <div class="card  panel bg-primary">
-          <div class="container">
-            <div class="row d-flex justify-content-center">
-              <div class="col-4 m-t-20 ">
-                <div class="card bg-orange " (click)='goto("usuarios")'>
-                    <div class="card-body">
-                        <h6 class="card-title">Usuarios</h6>
-                        <h6 class="card-subtitle mb-2">{{nousaurios}}</h6>
+            </div>
+            <div class="col-12 card">
+                <div class="row p-t-20 p-b-20">
+                    <div class="col-3 text-center">
+                        <img src="{{logo_logo}}" class="avatar" alt="">
                     </div>
-                </div>
-              </div>
-              <div class="col-4 m-t-20">
-                  <div class="card bg-orange" (click)='goto("clientes")'>
-                      <div class="card-body">
-                          <h6 class="card-title">Clientes/Proveedores</h6>
-                          <h6 class="card-subtitle mb-2">{{noclientes}}</h6>
-                      </div>
-                  </div>
-                </div>
-                <div class="col-4 m-t-20">
-                    <div class="card bg-orange" (click)='goto("cuestionarios")'>
-                        <div class="card-body">
-                            <h6 class="card-title">Cuestionarios</h6>
-                            <h6 class="card-subtitle mb-2">{{nocuestionario}}</h6>
-                        </div>
-                    </div>
-                  </div>
-                  <div class="col-4 m-t-20">
-                      <div class="card bg-orange" (click)='goto("preguntas")'>
-                          <div class="card-body">
-                              <h6 class="card-title">Preguntas</h6>
-                              <h6 class="card-subtitle mb-2">{{nopreguntas}}</h6>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="col-4 m-t-20">
-                        <div class="card bg-orange" (click)='goto("grupos")'>
-                            <div class="card-body">
-                                <h6 class="card-title">Grupos</h6>
-                                <h6 class="card-subtitle mb-2">{{nogrupo}}</h6>
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="titulo-empresa">{{razon_social}}</span>
+                            </div>
+                            <div class="col-12">
+                                <span class="subtitulo-empresa">{{nombre_comercial}}</span>
+                            </div>
+                            <div class="col-12  descrip">
+                                <span class="">R.F.C. {{r_f_c}}</span>
+                            </div>
+                            <div class="col-12 m-t-20 descrip">
+                                <span class="">No de Empleados: {{nempleados}}</span>
+                                <p>
+                                    <span class="">Facturación Anual: {{facanual}}</span>
+                                </p>
+                                
                             </div>
                         </div>
+                    </div>
+                    <mat-divider class="col-12 m-t-30 m-b-30" [inset]="true"></mat-divider>
+                    <div class="col-12 text-center m-b-30">
+                    {{perfile}}
+                    </div>
+                    <div class="col-12 text-center">
+                            <button class="btn btn-primary text-white" (click)="open_datos_empresa()"><i class="fas fa-pen"></i> Editar Datos</button>
+                        </div>
+                </div>
+            </div>
+            <div class="col-4 m-t-30">
+                <div class="card w-100 card-num">
+                    <div class="card-body text-center">
+                        <div class="card-title ">
+                            <h5>Usuarios</h5>
+                        </div>
+                        <p class="card-text">{{nousaurios}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 m-t-30 ">
+                <div class="card w-100 card-num">
+                    <div class="card-body text-center">
+                        <div class="card-title"><h5>Encuestas</h5></div>
+                        <p class="card-text">{{nocuestionario}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 m-t-30">
+                <div class="card w-100 card-num">
+                    <div class="card-body text-center">
+                        <div class="card-title"><h5>Clientes/Proveedores</h5></div>
+                        <p class="card-text">{{noclientes}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-30  d-flex">
+            <div class="col-8">
+                <div class="row">
+                    <div class="col-12">
+                        <span class="text-muted text-monse"><h5>Encuestas recientes</h5></span>
+                    </div>
+                        <div  *ngFor="let encuesta of ultimas_encuestas" (click)="goto('encuestas/select/'+encuesta.IDCuestionario)"  class="col-12 card p-t-20 p-b-20  m-b-20 cursor_pointer">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-6">
+                                    <div class="row d-flex justify-content-center align-items-center">
+                                        <div class="col-12">
+                                        <strong class="text-monse">{{encuesta.Nombre}}</strong> 
+                                        </div>
+                                        <div class="col-12">
+                                            <small class="text-muted text-roboto">Creada: {{encuesta.Fecha}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                        <div class="row d-flex justify-content-center align-items-center">
+                                            <div class="col-6 text-center border-right">
+                                                {{encuesta.NumeroPreguntas}} 
+                                                <p><small class="text-muted">Preguntas</small></p>
+                                            </div>
+                                            <div class="col-6 text-center">
+                                                {{encuesta.NumerodeRegistros}} 
+                                                    <p><small class="text-muted">No de Calificaciones</small></p>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div *ngIf="!ultimas_encuestas">
+                        <div class="col-12 card p-t-20 p-b-20  m-b-20 ">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-12 text-monse text-center">
+                                    No hay actividad. Es hora de enviar un encuesta.
+                                </div>
+                                <div class="col-12 text-monse text-center mt-3">
+                                    <button class="btn btn-succes" (click)="goto('encuestas/select/N')">Nueva Encuesta</button>
+                                </div>
+                                <div class="col-12 text-center text-monse">
+                                    <small (click)="goto('encuestas')" class="text-muted cursor_pointer">O administrar las {{nocuestionario}} encuestas </small>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>                            
+            </div>
+            <div class="col-4 p-l-30">
+                    <div class="row ">
+                        <div class="col-12">
+                            <span class="text-muted text-monse"><h5>Tu Perfil</h5></span>
+                         </div>
+                         <div class="col-12 card">
+                                <div class="card-body">
+                                        <div class="row d-flex justify-content-center align-items-center">
+                                            <div class="col-12 text-center">
+                                                    <img src="{{logo_avatar}}" class="avatar" alt="">
+                                            </div>
+                                            <div class="col-12 text-center text-monse m-t-20 text-primary">
+                                                {{nombreus}} {{apellidos}}
+                                            </div>
+                                            <div class="col-12 text-center text-monse mt-1 text-muted">
+                                               {{puesto}}
+                                            </div>
+                                            <div class="col-12 text-center text-monse mt-1 text-muted">
+                                                <small>{{IDGrupo_usuario}}</small>
+                                            </div>
+                                            <mat-divider class="col-12 m-t-30 m-b-30" [inset]="true"></mat-divider>
+                                            <div class="col-12  text-center">
+                                                <button (click)="datsus = true" class="btn btn-outline-primary">Editar Datos</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                         </div>
+                    </div>
+                       
+                               
+                            
+            </div>
+        </div>     
+     </div>
+</div>
+
+
+
+<div class="container-fluid fondomodal" *ngIf="alert_datos_empresa">
+<form  [formGroup]="registerForm"  (ngSubmit)="guardar_datos_empresa(registerForm)"> 
+    <div class="card container">
+        <div class="row">
+                <div class="col-12 dat-gen m-t-30">
+                        <div class="cont-gen">
+                            <div class="banner" [ngStyle]="{'background-image': 'url('+logo_banner+')'}">   
+                            </div> 
+                        </div>
+                </div>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col-12 text-center m-t-30">
+                        <img src="{{logo_logo}}" class="avatar" alt="">
+                     </div>
+                    <div class="col-12 text-center mt-3">
+                        <div (click)="logoempresa.click()" class="btn btn-outline-succes">Cambiar Avatar</div>
+                        <input accept="image/gif, image/jpeg, image/png" (change)="change_img_logo(logoempresa.files)" class="d-none" type="file" #logoempresa>
+                    </div>
+                    <div class="col-12 text-center mt-3">
+                            <div (click)="bannerempresa.click()"  class="btn btn-outline-succes">Cambiar Banner</div>
+                            <input (change)="change_img_banner(bannerempresa.files)" accept="image/gif, image/jpeg, image/png" type="file" class="d-none" #bannerempresa>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-12 m-b-20 m-t-20">
+                        <span class="text-monse"><h5>Datos Empresa</h5></span>
+                    </div>
+                    <mat-form-field class="col-12">
+                        <input matInput formControlName="razon_social" [(ngModel)]="razon_social" placeholder="Razón Social">
+                    </mat-form-field>
+                    <mat-form-field class="col-6">
+                            <input matInput formControlName="nombre_comercial" [(ngModel)]="nombre_comercial"  aria-describedby="" placeholder="Nombre Comercial">
+                    </mat-form-field>
+                    <mat-form-field class="col-6">
+                            <input matInput formControlName="rfc" [(ngModel)]="r_f_c"   aria-describedby="" placeholder="R.F.C.">
+                    </mat-form-field>
+                    <mat-form-field  class="col-6">
+                            <mat-label>Tipo de Empresa</mat-label>
+                            <mat-select  formControlName="tem" [(ngModel)]="tem">
+                              <mat-option [value]='value.TipoEmpresa' *ngFor="let value of TipoEmpresa">
+                                    {{value.TipoEmpresa}}
+                              </mat-option>
+                            </mat-select>
+                    </mat-form-field>
+                    <mat-form-field  class="col-6">
+                            <mat-label>No de Empleados</mat-label>
+                            <mat-select  formControlName="nempleados" [(ngModel)]="nempleados">
+                              <mat-option [value]='value.Empleados' *ngFor="let value of NoEmpleados">
+                                  {{value.Empleados}}
+                              </mat-option>
+                            </mat-select>
+                    </mat-form-field>
+                    <mat-form-field  class="col-6">
+                            <mat-label>Facturación Anual</mat-label>
+                            <mat-select   formControlName="facanual" [(ngModel)]="facanual">
+                              <mat-option [value]='value.Facturacion' *ngFor="let value of FacAnual">
+                                  {{value.Facturacion}}
+                              </mat-option>
+                            </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-6">
+                            <input matInput formControlName="tel" [(ngModel)]="tel"   aria-describedby="" placeholder="Télefono">
+                    </mat-form-field>
+                    <mat-form-field class="col-12">
+                            <textarea matInput [(ngModel)]="perfile"  formControlName="perfile"  placeholder="Descripción de la Empresa"></textarea>
+                    </mat-form-field>
+                    <mat-divider class="col-12" [inset]="true"></mat-divider>
+                    <div class="col-12 m-t-10">
+                        <span class="text-monse"><h5>Datos de Contacto</h5></span>
+                    </div>
+                    <mat-form-field class="col-6">
+                            <input matInput formControlName="calle" [(ngModel)]="calle"    aria-describedby="" placeholder="Calle y Número">
+                    </mat-form-field>
+                    <mat-form-field class="col-6">
+                            <input matInput formControlName="municipio" [(ngModel)]="municipio"   aria-describedby="" placeholder="Municipio">
+                    </mat-form-field>
+                    <mat-form-field class="col-4">
+                            <input matInput formControlName="colonia" [(ngModel)]="colonia"   aria-describedby="" placeholder="Colonia">
+                    </mat-form-field>
+                    <mat-form-field  class="col-4">
+                            <mat-label>Estado</mat-label>
+                            <mat-select  formControlName="estado"  aria-describedby="" [(ngModel)]="estado"  placeholder="Estado">
+                              <mat-option [value]='Estado.estadonombre' *ngFor="let Estado of Estados">
+                                    {{Estado.estadonombre}}
+                              </mat-option>
+                            </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-4">
+                            <input matInput formControlName="cp"  [(ngModel)]="cp" aria-describedby="" placeholder="Código Postal">
+                    </mat-form-field>
+                    <div class="col-12 text-right m-b-20
+                    ">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                                    <div (click)="alert_datos_empresa=false" class="btn btn-outline-danger mr-3" > Cerrar</div>
+                                    <button type="submit" class="btn btn-success">Guardar</button>
+                                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    </form>
+</div>
+<div class="container-fluid fondomodal" *ngIf="datsus">
+    <div class="container">
+      <div class="row">
+        <mat-card class="col-8 m-auto card-datos">  
+          <div class="row">
+            <div class="col-12 m-b-20">
+                <span class="titulo-card">Perfil de Usuario</span>
+            </div>
+            <div class="col-4 justify-content-center align-content-center">
+              <div class="row">
+                <div class="col-12 text-center">
+                    <img src="{{logo_avatar}}"  mat-card-avatar  class="avatar">
+                </div>
+                <div class="col-12 text-center m-t-20">
+                    <button type="button" (click)="img_avatar.click()" class="btn btn-outline-succes">Cambiar Avatar</button>
+                    <input type="file" (change)="change_img_avatar(img_avatar.files)" accept="image/gif, image/jpeg, image/png" #img_avatar class="d-none">
+                </div>
+  
+              </div>
+                
+            </div>
+            <div class="col-8">
+                <div class="row">
+                  <mat-form-field class="col-6">
+                    <input matInput auto placeholder="Nombre(s)" name="nombre" [(ngModel)]="nombreus" value="">
+                  </mat-form-field>
+                  <mat-form-field class="col-6">
+                      <input matInput placeholder="Apellidos"  name="apellidos" [(ngModel)]="apellidos" value="">
+                  </mat-form-field>
+                  <mat-form-field class="col-6">
+                      <input matInput placeholder="Correo Electrónico" [(ngModel)]="correo"  aria-describedby="" placeholder="Correo Electronico"   value="">
+                  </mat-form-field>
+                  <mat-form-field class="col-6">
+                      <input matInput placeholder="Usuario" disabled  [(ngModel)]="correo" name="correo"  value="">
+                  </mat-form-field>
+                  <mat-form-field class="col-6">
+                      <input matInput placeholder="Puesto" [(ngModel)]="puesto"  aria-describedby="" placeholder="Puesto">
+                  </mat-form-field>
+                  <mat-form-field class="col-6">
+                      <mat-label>Grupo</mat-label>
+                      <mat-select [(ngModel)]="grupo_usuario" (valueChange)="update_grupo_usuario($event)">
+                          <mat-option *ngFor="let grupo of grupos" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                  
+                </div>
+                <div class="col-12 m-t-20 text-right">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button (click)="datsus=false" type="button" class="btn btn-outline-danger mr-3">Cerrar</button>
+                        <button (click)="updatedataus()" type="button" class="btn btn-succes">Guardar</button>
                       </div>
+                </div>
             </div>
           </div>
+        </mat-card>
       </div>
-    </div>
+    </div> 
   </div>
-</div>
+
 <ng-template #content let-modal>
         <div class="fixed-top alert alert-danger alert-dismissible fade alert-datosus w-50 mx-auto" role="alert">
                 <strong>Holy guacamole!</strong> You should check in on some of those fields below.
@@ -176,151 +400,8 @@
       <button type="button" (click)="updatedataus()" class="btn btn-outline-primary">Guardar</button>
     </div>
 </ng-template>
-<ng-template #datsem let-modal>
-        <div class="fixed-top alert alert-danger alert-dismissible fade alert-datosgen w-50 mx-auto" role="alert">
-                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-    <form  [formGroup]="registerForm"  (ngSubmit)="guardar_datos_empresa(registerForm)">    
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Editar Datos Empresa</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
+<div *ngIf="spiner" class="spinner">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
-    <div class="modal-body">
-        <div class="container-fluid">
-            <div  class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            Datos Generales
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                    <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="">Razón Social *</label>
-                                                <input type="text" class="form-control" formControlName="razon_social" [(ngModel)]="razon_social"  aria-describedby="" placeholder="Razón Social">
-                                            </div>
-                                    </div>
-                                    <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">Nombre Comercial *</label>
-                                                    <input type="text"
-                                                              class="form-control" formControlName="nombre_comercial" [(ngModel)]="nombre_comercial"  aria-describedby="" placeholder="Razon Social">
-                                                </div>
-                                        </div>
-                                        <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">R.F.C. *</label>
-                                                    <input type="text"
-                                                                  class="form-control" formControlName="rfc" [(ngModel)]="r_f_c"   aria-describedby="" placeholder="Razon Social">
-                                                </div>
-                                        </div>
-                                        <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">Tipo Empresa</label>
-                                                    <select class="form-control" formControlName="tem" [(ngModel)]="tem" >
-                                                            <option [value]='value.TipoEmpresa' *ngFor="let value of TipoEmpresa">{{value.TipoEmpresa}}</option>
-                                                    </select>
-                                                </div>
-                                        </div>
-                                        <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">No de Empleados</label>
-                                                    <select class="form-control" formControlName="nempleados" [(ngModel)]="nempleados" >
-                                                            <option [value]='value.Empleados' *ngFor="let value of NoEmpleados">{{value.Empleados}}</option>
-                                                    </select>
-                                                </div>
-                                        </div>
-                                        <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">Facturación Anual</label>
-                                                    <select class="form-control" formControlName="facanual" [(ngModel)]="facanual">
-                                                        <option [value]='value.Facturacion' *ngFor="let value of FacAnual">{{value.Facturacion}}</option>
-                                                    </select>
-                                                </div>
-                                        </div>
-                                        <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">Telefono</label>
-                                                    <input type="text"
-                                                                  class="form-control" formControlName="tel" [(ngModel)]="tel"   aria-describedby="" placeholder="Razon Social">
-                                                </div>
-                                        </div>
-                                        <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="">Descripción de la empresa</label>
-                                                    <textarea col="10" row="20" class="form-control" [(ngModel)]="perfile"  formControlName="perfile" ></textarea>
-                                                </div>
-                                        </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 m-t-20">
-                        <div class="card">
-                            <div class="card-header bg-primary text-white">
-                                Datos de Contacto
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="">Calle y Numero *</label>
-                                            <input type="text"
-                                                                  class="form-control" formControlName="calle" [(ngModel)]="calle"    aria-describedby="" placeholder="Calle y Número">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Municipio *</label>
-                                            <input type="text"
-                                                                  class="form-control" formControlName="municipio" [(ngModel)]="municipio"   aria-describedby="" placeholder="Municipio">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Colonia *</label>
-                                            <input type="text"
-                                                                  class="form-control" formControlName="colonia" [(ngModel)]="colonia"   aria-describedby="" placeholder="Colonia">
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Estado *</label>
-                                            <select  class="form-control" formControlName="estado"  aria-describedby="" [(ngModel)]="estado"  placeholder="Estado">
-                                                <option [value]='Estado.estadonombre' *ngFor="let Estado of Estados">
-                                                    {{Estado.estadonombre}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-group">
-                                            <label for="">Código Postal *</label>
-                                            <input type="text"
-                                                                  class="form-control" formControlName="cp"  [(ngModel)]="cp" aria-describedby="" placeholder="Código Postal">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-       <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
-            <input type="submit" class="btn btn-outline-primary" value="Guardar">
-    </div>
-</form>
-</ng-template>
-<ngx-spinner class="spiner" bdColor="rgba(51,51,51,0.8)"
-size="medium"
-color="#fff"
-type="ball-clip-rotate-multiple">
-<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
+</div>

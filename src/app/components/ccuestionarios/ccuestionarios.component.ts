@@ -1,6 +1,6 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
-import { CuestionariosService } from '../../services/cuestionarios.service'
-import { ClientesList } from '../../class/clientes-list'; 
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CuestionariosService } from '../../services/cuestionarios.service';
+import { ClientesList } from '../../class/clientes-list';
 import { CuestionarioInterface } from 'src/app/models/cuestionario-interface';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
@@ -8,7 +8,8 @@ import * as $ from 'jquery';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import {  SwalComponent } from '@toverux/ngx-sweetalert2';
-import swal from 'sweetalert2'
+import swal from 'sweetalert2';
+import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 @Component({
   selector: 'app-ccuestionarios',
   templateUrl: './ccuestionarios.component.html',
@@ -18,228 +19,257 @@ export class CcuestionariosComponent implements OnInit {
     @ViewChild('errorrfcSwal') private errorrfcSwal: SwalComponent;
     @ViewChild('errorralert') private errorralert: SwalComponent;
      @ViewChild('datoscuest') private datoscuest;
-public cuestionario:CuestionarioInterface={
-  Email:"",
-  Fecha:"",
-  IDCuestionario:"",
-  IDEmpresa:"",
-  Nombre:"",
-  Status:"",
-  Wats:"",
-  cuestionario:"",
-  PerfilCalifica:"",
-  PerfilCalificado:"",
-  TPEmisor:"",
-  TPReceptor:""
-}
-alertterror:string;
-datosusuario:any[]=JSON.parse(localStorage.usuarioqval);
-funcionesusuario:any[]=[];
+public cuestionario: CuestionarioInterface = {
+  Email: '',
+  Fecha: '',
+  IDCuestionario: '',
+  IDEmpresa: '',
+  Nombre: '',
+  Status: '',
+  Wats: '',
+  cuestionario: '',
+  PerfilCalifica: '',
+  PerfilCalificado: '',
+  TPEmisor: '',
+  TPReceptor: ''
+};
+alertterror: string;
+datosusuario: any[] = JSON.parse(localStorage.usuarioqval);
+funcionesusuario: any[] = [];
 staticAlertClosed = false;
 closeResult: string;
-public pageActual:number=1;
-public palabra:string;
+public pageActual = 1;
+public palabra: string;
 public datosempresa;
-public cuestionariolist:any[]=[];
-public cuestionario_lista=new ClientesList();
-public grupos:any[]=[];
-public preguntas:any[]=[];
-public orders= [];
+public cuestionariolist: any[] = [];
+public cuestionario_lista = new ClientesList();
+public grupos: any[] = [];
+public preguntas: any[] = [];
+public orders = [];
+public preguntasorden = [];
 orderForm: FormGroup;
-form:FormGroup;
-deleteclientid:string="";
-  constructor(private spinner: NgxSpinnerService,private formBuilder: FormBuilder,private modalService: NgbModal,public http:CuestionariosService) { 
-   
-    this.datosempresa=JSON.parse(localStorage.empresa);
-     this.funcionesusuario=JSON.parse(this.datosusuario["funciones"]);
+form: FormGroup;
+deleteclientid = '';
+  constructor(private spinner: NgxSpinnerService, private formBuilder: FormBuilder, private modalService: NgbModal, public http: CuestionariosService) {
+
+    this.datosempresa = JSON.parse(localStorage.empresa);
+     this.funcionesusuario = JSON.parse(this.datosusuario['funciones']);
   }
-  nggeneral(){
-    
-    this.http.getdatos(this.datosempresa["IDEmpresa"])
-    .subscribe((resp)=>{
-      if(resp["grupos"]!=false){
-          this.grupos=resp["grupos"];
-      } 
-      if(resp["preguntas"]!=false){
-        this.orders=resp["preguntas"];
+  nggeneral() {
+
+    this.http.getdatos(this.datosempresa['IDEmpresa'])
+    .subscribe((resp) => {
+      if (resp['grupos'] !== false) {
+          this.grupos = resp['grupos'];
+      }
+      if (resp['preguntas'] !== false) {
+        this.orders = resp['preguntas'];
       }
       const controls = this.orders.map(c => new FormControl(false));
-      controls[0].setValue(true); 
+      controls[0].setValue(true);
       this.form = this.formBuilder.group({
         orders: new FormArray(controls)
-      })
-      
-    })
+      });
+
+    });
   }
   ngOnInit() {
     this.spinner.show();
     this.nggeneral();
     this.cuestionario_lista.limpiarlista();
-    this.http.getall(this.datosempresa["IDEmpresa"])
-    .subscribe((resp)=>{
+    this.http.getall(this.datosempresa['IDEmpresa'])
+    .subscribe((resp) => {
       this.spinner.hide();
-      if(resp["ok"]!=false){
-        resp["ok"].forEach(element => {
-          this.cuestionario_lista.addcliente(element)
+      if (resp['ok'] !== false) {
+        resp['ok'].forEach(element => {
+          this.cuestionario_lista.addcliente(element);
         });
-        this.cuestionariolist=this.cuestionario_lista.getList();
+        this.cuestionariolist = this.cuestionario_lista.getList();
       }
-    })
+    });
   }
-  open(model){
-    if(this.funcionesusuario[6]==="0"){
-      this.errorralert.show() 
+  open(model) {
+    if (this.funcionesusuario[6] === '0') {
+      this.errorralert.show();
       return;
     }
-    this.cuestionario.Email="";
-    this.cuestionario.Fecha="";
-    this.cuestionario.IDCuestionario="";
-    this.cuestionario.Nombre="";
-    this.cuestionario.IDEmpresa="";
-    this.cuestionario.PerfilCalifica="";
-    this.cuestionario.PerfilCalificado="";
-    this.cuestionario.Status="";
-    this.cuestionario.TPEmisor=""
-    this.cuestionario.Wats="";
-    this.cuestionario.cuestionario="";
-    this.modalService.open(model, {ariaLabelledBy: 'modal-basic-title',centered: true,size: 'lg' }).result.then((result) => {
+    this.orders.forEach((p) => {
+      p.checado = false;
+    });
+    this.cuestionario.Email = '';
+    this.cuestionario.Fecha = '';
+    this.cuestionario.IDCuestionario = '';
+    this.cuestionario.Nombre = '';
+    this.cuestionario.IDEmpresa = '';
+    this.cuestionario.PerfilCalifica = '';
+    this.cuestionario.PerfilCalificado = '';
+    this.cuestionario.Status = '';
+    this.cuestionario.TPEmisor = '';
+    this.cuestionario.Wats = '';
+    this.cuestionario.cuestionario = '';
+    this.modalService.open(model, {ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  export(){
+  export() {
 
   }
-  buscarcuestionario(){
-    this.cuestionariolist=this.cuestionario_lista.buscarpalabra(this.palabra);
+  buscarcuestionario() {
+    this.cuestionariolist = this.cuestionario_lista.buscarpalabra(this.palabra);
   }
-  requestuser(x,y){
+  requestuser(x, y) {
 
-   if(this.funcionesusuario[6]==="0"){
-      this.errorralert.show() 
+   if (this.funcionesusuario[6] === '0') {
+      this.errorralert.show();
       return;
     }
     this.spinner.show();
     this.http.getdata(y)
-    .subscribe((resp)=>{
-      this.cuestionario.IDCuestionario=resp["cuestionario"]["IDCuestionario"];
-      this.cuestionario.Nombre=resp["cuestionario"]["Nombre"];
-      this.cuestionario.Status=resp["cuestionario"]["Status"];
-      this.cuestionario.Wats=(resp["cuestionario"]["Wats"]=="1")? true:false;
-      this.cuestionario.Email=(resp["cuestionario"]["Email"]=="1")? true:false;
-      this.cuestionario.PerfilCalifica=[resp['detalles']["PerfilCalifica"]];
-      this.cuestionario.PerfilCalificado=[resp['detalles']["PerfilCalificado"]];
-      this.cuestionario.IDEmpresa=this.datosempresa["IDEmpresa"];
-      let lis=resp['detalles']["Cuestionario"];
-      lis=lis.split(",");
-      console.log(lis);
+    .subscribe((resp) => {
+      this.orders.forEach((p) => {
+        p.checado = false;
+      });
+      this.cuestionario.IDCuestionario = resp['cuestionario']['IDCuestionario'];
+      this.cuestionario.Nombre = resp['cuestionario']['Nombre'];
+      this.cuestionario.Status = resp['cuestionario']['Status'];
+      this.cuestionario.Wats = (resp['cuestionario']['Wats'] === '1') ? true : false;
+      this.cuestionario.Email = (resp['cuestionario']['Email'] === '1') ? true : false;
+      this.cuestionario.PerfilCalifica = [resp['detalles']['PerfilCalifica']];
+      this.cuestionario.PerfilCalificado = [resp['detalles']['PerfilCalificado']];
+      this.cuestionario.IDEmpresa = this.datosempresa['IDEmpresa'];
+      let lis = resp['detalles']['Cuestionario'];
+      console.log(lis );
+      lis = lis.split(',');
+      this.preguntasorden = lis;
       lis.forEach(element => {
-          this.orders.forEach((p)=>{
-              if(p.Nomenclatura===element){
-                p.checado=true;
+          this.orders.forEach((p) => {
+              if (p.Nomenclatura === element) {
+                p.checado = true;
               }
-          })
+          });
       });
       this.spinner.hide();
-      this.modalService.open(x, {ariaLabelledBy: 'modal-basic-title',centered: true,size: 'lg' }).result.then((result) => {
+      this.modalService.open(x, {ariaLabelledBy: 'modal-basic-title', centered: true, size: 'lg' }).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
-    },(error)=>{
-      console.log(error)
-    })
+    }, (error) => {
+      console.log(error);
+    });
   }
-  delete(x,y){
-    if(this.funcionesusuario[6]==="0"){
-      this.errorralert.show() 
+  delete(x, y) {
+    if (this.funcionesusuario[6] === '0') {
+      this.errorralert.show();
       return;
     }
     this.spinner.show();
-    this.http.delete(x,y)
-    .subscribe((resp)=>{    
+    this.http.delete(x, y)
+    .subscribe((resp) => {
       this.ngOnInit();
-    })
+    });
   }
 
-  enivarform(){
-    if(this.funcionesusuario[6]==="0"){
-      this.errorralert.show() 
+  enivarform() {
+    if (this.funcionesusuario[6] === '0') {
+      this.errorralert.show();
       return;
     }
     this.spinner.show();
-    if(this.cuestionario.IDCuestionario===""){
+    if (this.cuestionario.IDCuestionario === '') {
       this.save();
-    }else{  
+    } else {
       this.update();
     }
 
   }
-  chengepreg(e){
-    this.orders[e.target.name]["checado"]=e.target.checked;
-  
-  }
-  save(){
-    if(this.funcionesusuario[6]==="0"){
-      this.errorralert.show() 
+  chengepreg(e) {
+    this.orders[e.target.name]['checado'] = e.target.checked;
+    if (e.target.checked === true) {
+        this.preguntasorden.push(e.target.value);
+    } else {
+      this.preguntasorden.forEach((item, index) => {
+        if ( item === e.target.value) {
+          this.preguntasorden.splice(index, 1);
+        }
+      });
+    }
+}
+  save() {
+    if (this.funcionesusuario[6] === '0') {
+      this.errorralert.show();
       return;
     }
-    let cues:string="";
-    this.orders.forEach((pregunta)=>{
-        if(pregunta["checado"]===true){
-          cues+=pregunta["Nomenclatura"]+",";
-        }
-    })
-    this.cuestionario.IDEmpresa=this.datosempresa["IDEmpresa"];
-    this.cuestionario.cuestionario=cues;
-    this.cuestionario.Status="1";
+    let cues = '';
+    this.preguntasorden.forEach((pregunta) => {
+          cues += pregunta + ',';
+    });
+    if ( cues === '') {
+      this.spinner.hide();
+      $('.alert-funciones').addClass('show').html(' <strong>Error! </strong>EL cuestionario no puede estar vacio.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+        setTimeout(() => {
+          $('.alert-funciones').removeClass('show');
+        }, 4000);
+        return;
+    }
+    console.log(this.preguntasorden, cues);
+    this.cuestionario.IDEmpresa = this.datosempresa['IDEmpresa'];
+    this.cuestionario.cuestionario = cues;
+    this.cuestionario.Status = '1';
     this.http.save(this.cuestionario)
-    .subscribe((resp)=>{
-      $(".alert-funciones").removeClass("alert-danger").addClass("alert-success").addClass("show").html(' <strong>Exito! </strong>Cuestionario Registrado...<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-        setTimeout(()=>{
-          $(".alert-funciones").removeClass("show");
-        },4000)
+    .subscribe((resp) => {
+      $('.alert-funciones').removeClass('alert-danger').addClass('alert-success').addClass('show').html(' <strong>Exito! </strong>Cuestionario Registrado...<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+        setTimeout(() => {
+          $('.alert-funciones').removeClass('show');
+        }, 4000);
       this.ngOnInit();
-    },(error)=>{
+    }, (error) => {
       this.spinner.hide();
-      $(".alert-funciones").addClass("show").html(' <strong>Error! </strong>No se puede conectar con el servidor.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-        setTimeout(()=>{
-          $(".alert-funciones").removeClass("show");
-        },4000)
-    })
-    this.closemodel(this.datoscuest)
-    //console.log(this.cuestionario);
+      $('.alert-funciones').addClass('show').html(' <strong>Error! </strong>No se puede conectar con el servidor.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+        setTimeout(() => {
+          $('.alert-funciones').removeClass('show');
+        }, 4000);
+    });
+    this.closemodel(this.datoscuest);
+    // console.log(this.cuestionario);
   }
-  update(){
-    if(this.funcionesusuario[6]==="0"){
-      this.errorralert.show() 
+  update() {
+    if (this.funcionesusuario[6] === '0') {
+      this.errorralert.show();
       return;
     }
-    let cues:string="";
-    this.orders.forEach((pregunta)=>{
-        if(pregunta["checado"]===true){
-          cues+=pregunta["Nomenclatura"]+",";
-        }
-    })
-    this.cuestionario.cuestionario=cues;
-    this.http.update(this.cuestionario)
-    .subscribe((resp)=>{
-      $(".alert-funciones").removeClass("alert-danger").addClass("alert-success").addClass("show").html(' <strong>Exito! </strong>Cuestionario Actualizado...<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-      setTimeout(()=>{
-        $(".alert-funciones").removeClass("show");
-      },4000)
-    this.ngOnInit();
-    },(error)=>{
+    let cues = '';
+    this.preguntasorden.forEach((pregunta) => {
+          cues += pregunta + ',';
+    });
+    if ( cues === '') {
       this.spinner.hide();
-      $(".alert-funciones").addClass("show").html(' <strong>Error! </strong>No se puede conectar con el servidor.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
-        setTimeout(()=>{
-          $(".alert-funciones").removeClass("show");
-        },4000)
-    })
-    this.closemodel(this.datoscuest)
+      $('.alert-funciones').addClass('show').html(' <strong>Error! </strong>EL cuestionario no puede estar vacio.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+        setTimeout(() => {
+          $('.alert-funciones').removeClass('show');
+        }, 4000);
+        return;
+    }
+    this.cuestionario.cuestionario = cues;
+    this.http.update(this.cuestionario)
+    .subscribe((resp) => {
+      $('.alert-funciones').removeClass('alert-danger').addClass('alert-success').addClass('show').html(' <strong>Exito! </strong>Cuestionario Actualizado...<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+      setTimeout(() => {
+        $('.alert-funciones').removeClass('show');
+      }, 4000);
+    this.ngOnInit();
+    }, (error) => {
+      this.spinner.hide();
+      $('.alert-funciones').addClass('show').html(' <strong>Error! </strong>No se puede conectar con el servidor.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+        setTimeout(() => {
+          $('.alert-funciones').removeClass('show');
+        }, 4000);
+    });
+    this.closemodel(this.datoscuest);
   }
-  closemodel(content){
+  closemodel(content) {
     this.modalService.dismissAll(content);
   }
   private getDismissReason(reason: any): string {
@@ -251,31 +281,31 @@ deleteclientid:string="";
       return  `with: ${reason}`;
     }
   }
-  close(){
-     this.staticAlertClosed=false;
+  close() {
+     this.staticAlertClosed = false;
   }
-  alertdele(id){
-    if(this.funcionesusuario[6]==="0"){
-      this.errorralert.show() 
+  alertdele(id) {
+    if (this.funcionesusuario[6] === '0') {
+      this.errorralert.show();
       return;
     }
     this.spinner.show();
-    let datos={IDCuestionario:id}
+    const datos = {IDCuestionario: id};
     this.http.numregistros(datos)
-    .subscribe((data)=>{
-      console.log(data["ok"]);
-      this.errorrfcSwal.text="Se eliminaran todos los resultados relacionados con este cuestionario, realizados y recibidos, total de Registros: "+data["ok"]+".";
+    .subscribe((data) => {
+      console.log(data['ok']);
+      this.errorrfcSwal.text = 'Se eliminaran todos los resultados relacionados con este cuestionario, realizados y recibidos, total de Registros: ' + data['ok'] + '.';
       this.spinner.hide();
-      this.deleteclientid=id
+      this.deleteclientid = id;
        this.errorrfcSwal.show();
-    })
+    });
   }
-  borrarcuestionario(){
+  borrarcuestionario() {
     this.spinner.show();
-    var datos={IDCuestionario:this.deleteclientid}
+    const datos = {IDCuestionario: this.deleteclientid};
     this.http.borrar(datos)
-    .subscribe((data)=>{
+    .subscribe((data) => {
       this.ngOnInit();
-    })
+    });
   }
 }

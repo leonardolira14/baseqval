@@ -1,0 +1,87 @@
+import { NgModule } from '@angular/core';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+
+import {
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonToggleModule,
+    MatExpansionModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatTooltipModule,
+    MatDividerModule,
+    MatListModule,
+    MatRadioModule,
+    MatStepperModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+} from '@angular/material';
+@NgModule({
+    imports: [
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        DragDropModule,
+        MatButtonToggleModule,
+        MatExpansionModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTableModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatTooltipModule,
+        MatDividerModule,
+        MatListModule,
+        MatRadioModule,
+        MatStepperModule,
+        MatSliderModule,
+        MatDatepickerModule,
+        MatNativeDateModule
+    ],
+    providers: [
+        MatDatepickerModule,
+      ],
+    exports: [
+        MatButtonModule,
+        MatCheckboxModule,
+        MatDialogModule,
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        DragDropModule,
+        MatButtonToggleModule,
+        MatExpansionModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTableModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatTooltipModule,
+        MatDividerModule,
+        MatListModule,
+        MatRadioModule,
+        MatStepperModule,
+        MatSliderModule,
+        MatDatepickerModule,
+        MatNativeDateModule
+    ]
+
+})
+export class MaterialModule{}

@@ -1,0 +1,717 @@
+<mat-horizontal-stepper class="p-0" [linear]="isLinear" #stepper>
+    <mat-step class="p-0">
+      <ng-template matStepLabel>Resumen</ng-template>
+      <div class="container-fluid text-monse">
+        <div class="row">
+          <div class="col-3">
+            <div class="row">
+              
+              <div class="col-12 card rounded-0 p-t-20 ">
+                <div class="row">
+                  <div class="col-12 p-t-20 p-b-20">
+                    <h5 class="text-primary">{{model_general?.datos_cuestionario?.Nombre}}</h5>
+                  </div>
+                  <mat-list role="list" class="w-100">
+                      <mat-divider ></mat-divider>
+                      <mat-list-item role="listitem"> <small>Creado el: {{model_general?.datos_cuestionario?.Fecha}}</small></mat-list-item>
+                      <mat-divider></mat-divider>
+                      <mat-list-item role="listitem"> <small>No de Preguntas: {{model_general?.numero_preguntas}}</small></mat-list-item>
+                      <mat-divider></mat-divider>
+                      <mat-list-item role="listitem"> <small>Perfil Emisor: {{model_general?.datos_Emisor?.Nombre}}</small></mat-list-item>
+                      <mat-divider></mat-divider>
+                      <mat-list-item role="listitem"> <small>Perfil Receptor: {{model_general?.datos_Receptor?.Nombre}}</small></mat-list-item>
+                      <mat-divider></mat-divider>
+                      <mat-list-item class="cursor_pointer" *ngIf="model_cuestionario.IDCuestionario!==undefined" (click)="stepper.selectedIndex = 1" role="listitem"> <small><i class="fas fa-edit"></i> Editar Encuesta</small></mat-list-item>
+                      <mat-divider></mat-divider>
+                      <mat-list-item class="cursor_pointer" *ngIf="model_cuestionario.IDCuestionario!==undefined" (click)="stepper.selectedIndex = 2" role="listitem"> <small><i class="fas fa-link"></i> Vista Previa</small></mat-list-item>
+                  </mat-list>
+                </div>
+              </div>
+            </div>
+          </div> 
+          <div class="col-9">
+            <div class="row d-flex justify-content-center">
+              <div class="col-4 ">
+                <div class="card rounded-0 w-100 p-t-20 p-b-20">
+                    <h6 class="text-uppercase d-block text-center">Nùmero de Respuestas</h6>
+                    <span class="text-secondary d-block text-center"><h3>{{model_general?.numero_respuestas}}</h3></span>
+                </div>
+              </div>
+              <div class="col-4">
+                  <div class="card rounded-0 w-100 p-t-20 p-b-20">
+                      <h6 class="text-uppercase d-block text-center">ESTADO DE LA ENCUESTA</h6>
+                      <span class="text-secondary d-block text-center"><h4>{{(model_general?.datos_cuestionario?.Status ==="1")?'Activa':'Desactivada'}}</h4></span>
+                  </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 m-t-20">
+                <h5>Volumen de respuestas</h5>
+              </div>
+              <div class="col-12 m-t-30">
+                  <div class="d-block grafica">
+                      <canvas baseChart
+                              [datasets]="lineChartData"
+                              [labels]="lineChartLabels"
+                              [options]="lineChartOptions"
+                              [colors]="lineChartColors"
+                              [legend]="lineChartLegend"
+                              [chartType]="lineChartType"
+                              ></canvas>
+                    </div>
+                  <small class="text-muted m-t-30">Grafica  Resumen del cuestionario veces que fue realizado por día.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+         
+      </div>
+    </mat-step>  
+    <mat-step class="p-0">
+        <ng-template matStepLabel>Diseña tu encuesta</ng-template>
+        <div class="container-fluid p-0">
+            
+          <div class="row p-0">
+            <div class="col-1 p-0">
+                <ul class="list-group">
+                    <li class="list-group-item text-gris3 text-center" (click)="visible_opcion('c')"  matTooltip="Banco de Preguntas"><i class="fas fa-archive"></i></li>
+                    <li class="list-group-item text-gris3 text-center"  (click)="visible_opcion('p')" matTooltip="Tipos de Preguntas"><i class="fas fa-question"></i></li>
+                  </ul>
+            </div>
+            <div class="col-3 " *ngIf="visible_pregunta">
+              <div class="row">
+                <div class="col-12 p-t-10 p-b-10 text-center bg-white text-gris3 text-monse text-uppercase"><strong>BAnco de preguntas</strong></div>
+                <mat-divider class="w-100"></mat-divider>
+              </div>
+              <div class="row overflow-auto contcategorias">
+
+                <div  (click)="select_pregunta('SI/NO')"  class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                      Respuesta SI y NO  
+                      <span placement="right" container="body" ngbTooltip="Pregunta de Opciòn Mùltiple con respuestas SI y No" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>            
+                </div>
+                <div  (click)="select_pregunta('SI/NO/NA')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                      Respuesta SI, NO, NA (No Aplica)
+                      <span placement="right" container="body" container="body" ngbTooltip="Pregunta de Opciòn Mùltiple con respuestas SI, NO, NA" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>             
+                </div>
+                <div  (click)="select_pregunta('SI/NO/NS')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                    Respuesta SI, NO, NS (No Sabe)
+                    <span placement="right" container="body" ngbTooltip="Pregunta de Opciòn Mùltiple con respuestas SI, NO, NS" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>             
+                </div>
+                <div  (click)="select_pregunta('MLC')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                   Check List (Mùlti-Respuesta)
+                   <span placement="right" container="body" ngbTooltip="Pregunta en forma de casillas de verificaciòn para tener mas de una respuesta" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>             
+                </div>
+                <div  (click)="select_pregunta('ML')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                     Opciòn Mùltiple 
+                     <span placement="right" container="body" ngbTooltip="Pregunta para agregar mas de una opciòn de respuesta" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>          
+                </div>
+                <div  (click)="select_pregunta('START')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                    Valoraciòn  con estrellas
+                    <span placement="right" container="body" ngbTooltip="Pregunta Valorar con rango con estrellas" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>         
+                </div>
+                <div  (click)="select_pregunta('DESLIZA')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                    Control Deslizante 
+                    <span  placement="right" container="body" ngbTooltip="Pregunta con un control deslizante para un rango mimino y maximo" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>        
+                </div>
+                <div  (click)="select_pregunta('CARGA')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                    Carga de Archivo 
+                    <span  placement="right" container="body" ngbTooltip="Pregunta con un control deslizante para un rango mimino y maximo" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>        
+                </div>
+                <div  (click)="select_pregunta('F/H')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                  Fecha y Hora 
+                  <span placement="right" container="body"  ngbTooltip="Pregunta con un control que captura la fecha y hora" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>        
+                </div>
+                <div  (click)="select_pregunta('FECHA')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                  Fecha
+                  <span placement="right" container="body"  ngbTooltip="Pregunta con un control que captura la fecha" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>        
+                </div>
+                <div   (click)="select_pregunta('HORA')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                  Hora 
+                  <span placement="right" container="body" ngbTooltip="Pregunta con un control que captura la  hora" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>        
+                </div>
+                <div (click)="select_pregunta('NUMERO')"  class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                  Nùmero 
+                  <span placement="right" container="body" ngbTooltip="Pregunta con un control recibe solo nùmeros" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>        
+                </div>
+                <div  (click)="select_pregunta('AB')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                  Caja de Texto 
+                  <span placement="right" container="body" ngbTooltip="Pregunta con un control recibe texto" class="text-muted icono_ayuda"><i class="fas fa-question-circle"></i></span>        
+                </div>
+                
+              </div>
+            </div>
+            <div class="col-3 " *ngIf="visible_catego">
+              <div class="row">
+                <div class="col-12 p-t-10 p-b-10 text-center bg-white text-gris3 text-monse text-uppercase"><strong>BAnco de preguntas</strong></div>
+                <mat-divider class="w-100"></mat-divider>
+                <div class="col-12  p-b-15 p-t-15">
+                    <mat-form-field class="w-100">
+                        <input [(ngModel)]="palabra_catego" (keyup)="buscar_categoria()" matInput placeholder="Buscar Categoría" value="">
+                      </mat-form-field>
+                </div> 
+              </div>
+              <div class="row overflow-auto contcategorias">
+                <div (click)="preguntas_por_categorias(categoria.IDCategoria,categoria.Nombre)" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " *ngFor="let categoria of allcategoriastb">
+                  {{categoria.Nombre}}
+                  
+                </div>
+                <div (click)="preguntas_por_categorias('0','Sin Categoria')" class="card card-categoria col-12 p-b-10 p-t-10 text-gris3 " >
+                 Sin Categoria                  
+                </div>
+              </div>
+            </div>
+            <div class="col-8 bg-gris1 p-b-20 p-t-20 border-left border-right">
+              <div class="row cont_de_pregunta">
+                <div class="col-12 class_nombre_c">
+                  <div class="row">
+                    <div class="col-12">
+                      <small class="text-muted">Título de la encuesta</small>
+                    </div>
+                    <div class="col-10 titulo m-t-20">
+                      {{model_cuestionario?.Nombre}}
+                    </div>
+                    <div class="col-2 text-right m-t-20">
+                      <button (click)="editar_nombre()" class="btn btn-dark-2">Editar</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                      <div class="col-10 m-t-20 m-b-20">
+                          <small class="text-muted">Emisor y Receptor</small>
+                      </div> 
+                      <div class="col-2 m-t-20 m-b-20">
+                          <i class="fas fa-question-circle"></i>
+                      </div>
+                      <div class="col-6">
+                          <mat-form-field class="w-100">
+                              <mat-label>Perfil Emisor</mat-label>
+                              <mat-select [(ngModel)]="model_cuestionario.PEmisor">
+                                <mat-option value="0">Abierta</mat-option>
+                                <mat-optgroup label="Perfiles Internos">
+                                    <mat-option  *ngFor="let perfil of perfilesInternos" [value]="perfil.IDGrupo+'-I'" >{{perfil.Nombre}}</mat-option>
+                                </mat-optgroup>
+                                <mat-optgroup label="Perfiles Externos">
+                                    <mat-option  *ngFor="let perfil of perfilesExternos" [value]="perfil.IDGrupo+'-E'" >{{perfil.Nombre}}</mat-option>
+                                </mat-optgroup>
+                                
+                                
+                              </mat-select>
+                            </mat-form-field>
+                      </div>
+                      <div class="col-6">
+                          <mat-form-field class="w-100">
+                              <mat-label>Perfil Receptor</mat-label>
+                              <mat-select  [(ngModel)]="model_cuestionario.PReceptor">
+                                <mat-option value="0">Abierta</mat-option>
+                                <mat-optgroup label="Perfiles Internos">
+                                    <mat-option  *ngFor="let perfil of perfilesInternos" [value]="perfil.IDGrupo+'-I'" >{{perfil.Nombre}}</mat-option>
+                                </mat-optgroup>
+                                <mat-optgroup label="Perfiles Externos">
+                                    <mat-option  *ngFor="let perfil of perfilesExternos" [value]="perfil.IDGrupo+'-E'" >{{perfil.Nombre}}</mat-option>
+                                </mat-optgroup>
+                                
+                                
+                              </mat-select>
+                            </mat-form-field>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-12 cont_pregunta" *ngFor="let pregunta of listapregunta; let i = index;">
+                  <div class="cuadro_opciones">
+                      <div class="container-fluid">
+                        <div class="col-12 text-right">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button (click)="editar_pregunta(i)" type="button" class="btn btn-primary mr-3">Editar</button>
+                                
+                                <button (click)="eliminar_pregunta(i)" type="button" class="btn btn-outline-danger mr-3">Eliminar</button>
+                              </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 m-b-20">
+                        {{pregunta.Pregunta}}
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='SI/NO' || pregunta.Forma==='SI/NO/NS' || pregunta.Forma==='SI/NO/NA'">
+                      <mat-radio-group class="w-100" aria-label="Select an option">
+                          <mat-radio-button class="w-100 text-monse" value="SI">SI</mat-radio-button>
+                          <mat-radio-button class="w-100 text-monse" value="NO">NO</mat-radio-button>
+                          <mat-radio-button class="w-100 text-monse" *ngIf="pregunta.Forma==='SI/NO/NA'" value="NA">NA</mat-radio-button>
+                          <mat-radio-button class="w-100 text-monse" *ngIf="pregunta.Forma==='SI/NO/NS'" value="NS">NS</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='ML'">
+                        <mat-radio-group class="w-100" aria-label="Select an option">
+                            <mat-radio-button *ngFor="let respuesta of pregunta.Respuestas" class="w-100 text-monse" value="{{respuesta}}">{{respuesta}}</mat-radio-button>
+                        </mat-radio-group>
+                        
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='MLC'">
+                        <mat-checkbox class="w-100 d-block text-monse" *ngFor="let respuesta of pregunta.Respuestas " >{{respuesta}}</mat-checkbox>
+                       
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='AB' || pregunta.Forma==='NUMERO'">
+                      <mat-form-field class="W-100">
+                        <input matInput placeholder="{{pregunta.Forma}}">
+                      </mat-form-field>                 
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='CARGA'">
+                        <span class="text-monse text-muted d-block w-100 m-b-20"> <small>{{pregunta.Respuestas}}</small></span>
+                          <button class="btn btn-primary m-l-40">Seleccionar archivo.</button>
+                        <small class="text-monse text-muted d-block w-100 text-right m-t-20">El límite de tamaño de archivo es 16 MB</small>            
+                      </div>
+                      <div class="col-12" *ngIf="pregunta.Forma==='START'">
+                        <span style="width: 20px; height: 20px;" class="text-primary" *ngFor="let  item of num_array(pregunta.Respuestas); ">
+                            <i class="fas fa-star"></i>
+                        </span> 
+                        </div>
+                        <div class="col-12" *ngIf="pregunta.Forma==='DESLIZA'">
+                            <mat-slider [max]="pregunta.Respuestas[1]"
+                            [min]="pregunta.Respuestas[0]" class="w-100"></mat-slider>   
+                        </div>
+                        <div class="col-12" *ngIf="pregunta.Forma==='FECHA' || pregunta.Forma==='HORA' || pregunta.Forma==='F/H'">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker" placeholder="{{( pregunta.Forma==='HORA')?'Selecciona Hora':(pregunta.Forma==='FECHA')?'Selecciona Fecha':'Selecciona Fecha y Hora'}}">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>   
+                        </div>
+                  </div>
+                 
+                </div>
+                <div class="col-12 text-center m-t-40">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-danger mr-3" (click)="cancelar_todo()">Cancelar</button>
+                        <button type="button" class="btn btn-outline-primary mr-3 d-none" (click)="guardar_borrador()">Guardar como borrador</button>
+                        <button type="button" class="btn btn-outline-primary mr-3" (click)="cmodaledguardarplantilla = !cmodaledguardarplantilla">Guardar Plantilla de Preguntas</button>
+                        <button type="button" class="btn btn-succes" (click)="siguiente()">Siguiente</button>
+                      </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </mat-step>
+    <mat-step >
+          <ng-template matStepLabel>Vista Previa</ng-template>
+          <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" (click)="stepper.selectedIndex = 1" class="btn btn-succes">Modificar Encuesta</button>
+                </div>
+              <div class="col-6 text-right">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button (click)="vista('pc')" placement="top" ngbTooltip="Vista previa computadora" type="button" [ngClass]="(vista_pc )?'btn-succes':'btn-secondary'" class="btn   mr-3"><i class="fas fa-desktop"></i></button>
+                  <button (click)="vista('tablet')" placement="top" ngbTooltip="Vista previa tableta" type="button" [ngClass]="(vista_tablet)?'btn-succes':'btn-secondary'" class="btn  mr-3"><i class="fas fa-tablet-alt"></i></button>
+                  <button (click)="vista('cel')" placement="top" ngbTooltip="Vista previa móvil" type="button" [ngClass]="(vista_cel)?'btn-succes':'btn-secondary'" class="btn mr-3"><i class="fas fa-mobile-alt"></i></button>
+                  <button placement="top" ngbTooltip="Vista previa móvil" type="button" class="btn btn-succes" (click)="guardar_encuesta()">Guardar Encuesta</button>
+                </div>
+              </div>
+              <div class="{{tipo_vista}} m-auto card m-t-20 p-t-20 p-b-20">
+                <div class="row">
+                  <div class="col-12 m-t-20 text-center">
+                    <h2 class="text-primary text-monse">{{model_cuestionario.Nombre}}</h2>
+                  </div>
+                  <div class="col-12 m-t-20 cont_pregunta" *ngFor="let pregunta of listapregunta; index as i;">
+                  <div class="row">
+                    <div class="col-12 m-b-20">
+                        {{pregunta.Pregunta}}
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='SI/NO' || pregunta.Forma==='SI/NO/NS' || pregunta.Forma==='SI/NO/NA'">
+                      <mat-radio-group class="w-100" aria-label="Select an option">
+                          <mat-radio-button class="w-100 text-monse" value="SI">SI</mat-radio-button>
+                          <mat-radio-button class="w-100 text-monse" value="NO">NO</mat-radio-button>
+                          <mat-radio-button class="w-100 text-monse" *ngIf="pregunta.Forma==='SI/NO/NA'" value="NA">NA</mat-radio-button>
+                          <mat-radio-button class="w-100 text-monse" *ngIf="pregunta.Forma==='SI/NO/NS'" value="NS">NS</mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='ML'">
+                        <mat-radio-group class="w-100" aria-label="Select an option">
+                            <mat-radio-button *ngFor="let respuesta of pregunta.Respuestas" class="w-100 text-monse" value="{{respuesta}}">{{respuesta}}</mat-radio-button>
+                        </mat-radio-group>
+                        
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='MLC'">
+                        <mat-checkbox class="w-100 d-block text-monse" *ngFor="let respuesta of pregunta.Respuestas" >{{respuesta}}</mat-checkbox>
+                       
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='AB' || pregunta.Forma==='NUMERO'">
+                      <mat-form-field class="W-100">
+                        <input matInput placeholder="{{pregunta.Forma}}">
+                      </mat-form-field>                 
+                    </div>
+                    <div class="col-12" *ngIf="pregunta.Forma==='CARGA'">
+                        <span class="text-monse text-muted d-block w-100 m-b-20"> <small>{{pregunta.Respuestas}}</small></span>
+                          <button class="btn btn-primary m-l-40">Seleccionar archivo.</button>
+                        <small class="text-monse text-muted d-block w-100 text-right m-t-20">El límite de tamaño de archivo es 16 MB</small>            
+                      </div>
+                      <div class="col-12" *ngIf="pregunta.Forma==='START'">
+                        <span style="width: 20px; height: 20px;" class="text-primary" *ngFor="let  item of num_array(pregunta.Respuestas); ">
+                            <i class="fas fa-star"></i>
+                        </span> 
+                        </div>
+                        <div class="col-12" *ngIf="pregunta.Forma==='DESLIZA'">
+                            <mat-slider [max]="pregunta.Respuestas[1]"
+                            [min]="pregunta.Respuestas[0]" class="w-100"></mat-slider>   
+                        </div>
+                        <div class="col-12" *ngIf="pregunta.Forma==='FECHA' || pregunta.Forma==='HORA' || pregunta.Forma==='F/H'">
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker" placeholder="{{( pregunta.Forma==='HORA')?'Selecciona Hora':(pregunta.Forma==='FECHA')?'Selecciona Fecha':'Selecciona Fecha y Hora'}}">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>   
+                        </div>
+                  </div>
+                 
+                  </div>
+                  <div class="col-6 text-center m-auto m-t-20">
+                    <div class="btn btn-succes">Calificar</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </mat-step>
+
+</mat-horizontal-stepper>
+
+<div #modalpreguntas  class="container-fluid fondomodal" *ngIf="cmodalpreg">
+  <div class="container card">
+      <div class="row ">
+        <div class="col-8 border-right p-b-20 p-t-20">
+           <div class="row">
+             <div class="col-12">
+               <h5 class="text-monse">Banco de Preguntas</h5>
+             </div>
+             <div class="col-12 input-group m-t-20 m-b-20">
+              <div class="input-group-prepend">
+                  <div ngbDropdown class="d-inline-block">
+                      <button class="btn btn-outline-primary"   ngbDropdownToggle>{{selectcatego}}</button>
+                      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button *ngFor="let categoria of allcategoriastb" (click)="cambio_categoria(categoria.IDCategoria)" ngbDropdownItem>{{categoria.Nombre}}</button>
+                        <button  (click)="cambio_categoria(0)" ngbDropdownItem>Sin Categoria</button>
+                      </div>
+                  </div>
+              </div>
+              <input type="text" (keyup)="buscar_palabra()" [(ngModel)]="palabra" class="form-control b-r-blanco" placeholder="Buscar en {{selectcatego}}" >
+              <div class="input-group-append ">
+                  <span class="input-group-text text-gris3 bg-white b-l-blanco"><i class="fas fa-search"></i></span>
+              </div>
+             </div>
+             <div class="col-12 bg-gris2 cont-banco"
+                    
+                 >
+                 
+                   <ul cdkDropList
+                   #preguntasBanco1="cdkDropList"
+                  [cdkDropListConnectedTo]='[listaPregunta]'
+                  [cdkDropListData] = 'listpreg1'
+                  (cdkDropListDropped)="droper($event)" class="w-50  float-left ul_pr">
+                        <li cdkDrag  class="list-style " *ngFor='let item of listpreg1'>
+                            <mat-card class="card-pregunta" >
+                                <mat-card-header>
+                                    <mat-card-title>{{ item.Pregunta }}</mat-card-title>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <mat-accordion *ngIf='item.Forma === "SI/NO" || item.Forma === "SI/NO/NS" || item.Forma === "SI/NO/NA" || item.Forma === "ML" || item.Forma === "MLC" '>
+                                        <mat-expansion-panel class="sin_box">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    <small class="text-primary">Ver Respuestas</small>     
+                                                </mat-panel-title>
+                                            </mat-expansion-panel-header>
+                                            <ul *ngIf='item.Forma === "SI/NO" || item.Forma === "SI/NO/NS" || item.Forma === "SI/NO/NA" || item.Forma === "ML" || item.Forma === "MLC" '>
+                                              <li *ngFor="let respuesta of item.Respuestas">{{respuesta}}</li>
+                                            </ul>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                    <div *cdkDragPreview  class="prev">
+                                        {{ item.Pregunta }}
+                                     </div>                                      
+                                </mat-card-content>
+                            </mat-card>
+                        </li>
+                    </ul>  
+                    <ul cdkDropList
+                    #preguntasBanco2="cdkDropList"
+                   [cdkDropListConnectedTo]='[listaPregunta]'
+                   [cdkDropListData] = 'listpreg2'
+                   (cdkDropListDropped)="droper($event)" class="w-50 float-left ul_pr">
+                      <li cdkDrag class="list-style" *ngFor='let item of listpreg2'>
+                          <mat-card class="card-pregunta" >
+                              <mat-card-header>
+                                <mat-card-title>{{ item.Pregunta }}</mat-card-title>
+                              </mat-card-header>
+                              <div *cdkDragPreview  class="prev">
+                                  {{ item.Pregunta }}
+                               </div>
+                              <mat-card-content>
+                                <mat-accordion *ngIf='item.Forma === "SI/NO" || item.Forma === "SI/NO/NS" || item.Forma === "SI/NO/NA" || item.Forma === "ML" || item.Forma === "MLC" '>
+                                    <mat-expansion-panel class="sin_box">
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                <small class="text-primary">Ver Respuestas</small>     
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>                                
+                                        <ul *ngIf='item.Forma === "SI/NO" || item.Forma === "SI/NO/NS" || item.Forma === "SI/NO/NA" || item.Forma === "ML" || item.Forma === "MLC" '>
+                                          <li *ngFor="let respuesta of item.Respuestas">{{respuesta}}</li>
+                                        </ul>
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+                                                                      
+                            </mat-card-content>
+                          </mat-card>
+                      </li>
+                  </ul>  
+                 
+                                                  
+              </div>
+          </div>
+        </div>
+        <div class="col-4 p-b-20 p-t-20">
+         <div class="row">
+          <div class="col-12">
+            <h5 class="text-monse">Listado de Preguntas</h5>
+          </div>
+          <div class="col-12">
+            <div class="bg-gris2 cont-banco2 p-l-10 p-r-10"
+             cdkDropList
+             #listaPregunta='cdkDropList'
+             [cdkDropListConnectedTo]='[preguntasBanco2,preguntasBanco1]'
+             [cdkDropListData] = 'listapregunta'
+             (cdkDropListDropped)="droper($event)"
+             >
+               <mat-card  class="card-pregunta" cdkDrag class="m-b-20 m-t-10 card-pregunta" *ngFor='let item of listapregunta; index as i'>
+                  <mat-card-header>
+                      <mat-card-title> {{ item.Pregunta }}</mat-card-title>
+                              <button (click)="delete_lista1(i)" type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                   </mat-card-header>
+                   <div *cdkDragPreview  class="prev">
+                      {{ item.Pregunta }}
+                   </div>
+                   
+               </mat-card>
+             </div>
+          </div>
+          <div class="col-12 text-center m-t-30">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-outline-danger mr-3" (click)="cerrar_preguntas()">Cerrar</button>
+              <button type="button" class="btn btn-succes" (click)="add_cuestiopnario_lista()">Agregar Listado</button>
+            </div>
+          </div>
+         </div>
+        </div>
+      </div>
+  </div>
+</div>
+<ng-template #modalnombrecuestionary let-modal>
+  <div class="modal-header">
+    <h5>Nombre de Encuesta</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+            <span class="text-monse">Ingresa Nombre de la encuesta</span>
+        </div>
+        <div class="col-12">
+            <mat-form-field class="w-100">
+                <input matInput [(ngModel)]="model_cuestionario.Nombre"  class="w-100" >
+            </mat-form-field>
+        </div>
+      </div>
+    </div>
+   
+   
+  </div>
+  <div class="modal-footer">
+      <div class="btn-group" role="group" aria-label="Basic example">
+          
+          <button type="button" class="btn btn-succes"  (click)="modal.dismiss('Cross click')">Aceptar</button>
+        </div>
+  </div>
+</ng-template>
+<div  class="container-fluid fondomodal" *ngIf="cmodaledpreg">
+  <div class="container ">
+    <div class="row">
+      <div class="col-9 card m-auto">
+          <div class="row text-monse p-b-20 p-t-20">
+              <div class="col-12">
+                <h5>Datos de Pregunta</h5>
+              </div>
+              <mat-divider class="w-100"></mat-divider>
+              <div class="col-12 m-t-20">
+                  <mat-form-field class="w-100">
+                      <input [(ngModel)]="model_datos_pregunta.Pregunta" class="w-100" placeholder="Pregunta" matInput>
+                  </mat-form-field>
+              </div>
+              <div class="col-12 m-t-20">
+                  <mat-form-field class="w-100">
+                      <mat-label>Tipo de Pregunta</mat-label>
+                      <mat-select (selectionChange)="limpiar_changer($event)" [(ngModel)]="model_datos_pregunta.Forma">
+                        <mat-option value="SI/NO">SI/NO</mat-option>
+                        <mat-option value="SI/NO/NA">SI/NO/NA</mat-option>
+                        <mat-option value="SI/NO/NS">SI/NO/NS</mat-option>
+                        <mat-option value="AB">ABIERTA</mat-option>
+                        <mat-option value="NUMERO">NÙMERO</mat-option>
+                        <mat-option value="F/H">FECHA Y HORA</mat-option>
+                        <mat-option value="FECHA">FECHA</mat-option>
+                        <mat-option value="HORA">HORA</mat-option>
+                        <mat-option value="START">VALORACIÒN CON ESTRELLAS</mat-option>
+                        <mat-option value="DESLIZA">CONTROL DESLIZANTE</mat-option>
+                        <mat-option value="CARGA">CARGA DE ARCHIVO</mat-option>
+                        <mat-option value="MLC">OPCIÒN MULTIPLE (CHECK-LIST)</mat-option>
+                        <mat-option value="ML">OPCIÒN MULTIPLE (UNA SOLA RESPUESTA)</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              </div>
+              <div class="col-12 m-t-20" *ngIf="model_datos_pregunta.Forma ==='SI/NO' || model_datos_pregunta.Forma ==='SI/NO/NA' || model_datos_pregunta.Forma ==='SI/NO/NS' || model_datos_pregunta.Forma ==='ML' || model_datos_pregunta.Forma ==='MLC'">
+                  <mat-form-field class="w-100">
+                      <mat-label>Respuesta Positva</mat-label>
+                      <mat-select [(ngModel)]="model_datos_pregunta.Respuesta">
+                        <mat-option value="SR">Sin Respuesta</mat-option>
+                        <mat-option value="{{resp}}" *ngFor="let resp of model_datos_pregunta.Respuestas">{{resp}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              </div>
+              <div class="col-12 m-t-20" *ngIf="  model_datos_pregunta.Forma ==='ML' || model_datos_pregunta.Forma ==='MLC'">
+                <mat-form-field class="w-100">
+                    <mat-label>Posibles Respuestas</mat-label>
+                        <input matInput (keyup)="guarda_posible($event)" [(ngModel)]="posible_tag" >
+                  </mat-form-field>
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-12 m-b-20 m-t-20" >
+                          <button *ngFor="let item of list_tags; index as i;" type="button" class="btn btn-primary mr-3 m-t-10">
+                              {{item}} <span class="text-white cursor_pointer" (click)="eliminar_tag(i)" > X</span>
+                          </button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-12 m-t-20" *ngIf="  model_datos_pregunta.Forma ==='START'">
+                <mat-form-field class="w-100">
+                    <mat-label>MAXIMO DE ESTRELLAS (nùmero maximo 10)</mat-label>
+                        <input matInput   maxlength="2"  [(ngModel)]="model_datos_pregunta.Respuestas" >
+                </mat-form-field>
+              </div>
+              <div class="col-12 m-t-20" *ngIf="model_datos_pregunta.Forma ==='DESLIZA'">
+                <div class="row">
+                  <div class="col-12 m-b-20">
+                    <span class="text-monse"><small>Elige un rango mínimo y un máximo para el control, recuerda que el número mínimo debe de ser mayor al número máximo.</small></span>
+                  </div>
+                  <div class="col-6">
+                    <mat-form-field class="w-100">
+                          <mat-label>MÍNIMO</mat-label>
+                              <input matInput [(ngModel)]="minino_desliza" >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-6">
+                      <mat-form-field class="w-100">
+                          <mat-label>MÁXIMO </mat-label>
+                              <input matInput  [(ngModel)]="maximo_desliza" >
+                      </mat-form-field>
+                  </div>
+                </div>
+                  
+                
+              </div>
+              <div class="col-12 m-t-20" *ngIf="model_datos_pregunta.Forma ==='CARGA'">
+                  <div class="row">
+                    <div class="col-12">
+                        <mat-form-field class="w-100">
+                            <mat-label>Instrucciones para el encuestado</mat-label>
+                                <input matInput #valorstar    [(ngModel)]="model_datos_pregunta.Respuestas" >
+                        </mat-form-field>
+                        <small class="text-muted">El límite de tamaño de archivo es 16 MB</small>
+                    </div>
+                  </div>
+                </div>
+                
+              
+              <div class="col-4 m-t-20">
+                  <mat-form-field class="w-100">
+                      <mat-label>Frecuencia</mat-label>
+                      <mat-select [(ngModel)]="model_datos_pregunta.Frecuencia">
+                        <mat-option value="1V">Cada Visita</mat-option>
+                        <mat-option value="1M">Cada Mes (30 dìas)</mat-option>
+                        <mat-option value="2M">Cada Dos Meses (60 dìas)</mat-option>
+                        <mat-option value="3M">Cada Tres Meses (90 dìas)</mat-option>
+                        <mat-option value="6M">Semestral (6 meses)</mat-option>
+                        <mat-option value="P15">Primeros 15 dias de cada Mes (1-15)</mat-option>
+                        <mat-option value="S15">Segundos 15 dias de cada Mes (16-30)</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              </div>
+              <div class="col-4 m-t-20">
+                  <mat-form-field class="w-100">
+                      <input class="w-100" [(ngModel)]="model_datos_pregunta.Peso" placeholder="Puntaje" matInput>
+                  </mat-form-field>
+              </div>
+              <div class="col-4 m-t-20">
+                  <mat-form-field class="w-100">
+                      <mat-label>Esta Pregunta es obligatoria.</mat-label>
+                      <mat-select [(ngModel)]="model_datos_pregunta.Obligatoria">
+                        <mat-option value="SI">SI</mat-option>
+                        <mat-option value="NO">NO</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              </div>
+             
+              <div class="col-12 p-t-20  text-right">
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-outline-primary mr-3" (click)="limpiar_pregunta()">Limpiar</button>
+                      <button type="button" class="btn btn-outline-danger mr-3" (click)="cancelar_pregunta_edit()">Cancelar</button>
+                      <button type="button" class="btn btn-succes" (click)="(index_edit=== '' )?add_pregunta():guardar_edicion()">Guardar</button>
+                    </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    
+    
+  </div>
+</div>
+<div class="container-fluid fondomodal" *ngIf="cmodaledguardarplantilla" >
+    <div class="container ">
+        <div class="row">
+          <div class="col-6 card m-auto">
+            <div class="row text-monse p-b-20 p-t-20">
+              <div class="col-12">
+                <h5 class="text-monse">Agregar Categoría de Preguntas</h5>
+              </div>
+              <mat-divider class="w-100"></mat-divider>
+              <div class="col-12 m-t-20">
+                <span>Ingresa un nombre para esta categoría de preguntas.</span>
+              </div>
+              <div class="col-12 m-t-20">
+                  <mat-form-field class="w-100">
+                      <input #namecatego matInput placeholder="Nombre de la categoría" value="">
+                    </mat-form-field>
+                </div>
+                <mat-divider class="w-100"></mat-divider>
+                <div class="col-12 m-t-20 text-right">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-danger mr-3" (click)="cmodaledguardarplantilla =!cmodaledguardarplantilla">Cancelar</button>
+                        <button type="button" class="btn btn-succes" (click)="guardar_plantilla()">Guardar</button>
+                        
+                      </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</div>
+<div *ngIf="spiner" class="spinner">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>

@@ -1,1 +1,37 @@
 @import '../../../styles';
+
+.card-avatar{
+    position: relative;
+
+   & .avatar{
+        width: 100px;
+        height: 100px;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    } 
+    & .text-nombre{
+        font-size: 1rem;
+        font-family: map-get($fonts,monse);
+        color:map-get($colors ,gris4);
+    }
+    & .text-usuario{
+        font-size: 0.8rem;
+        font-family: map-get($fonts,monse);
+        color:map-get($colors ,girsmenu);
+    }
+}
+.card-datos{
+    & .avatar{
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        object-fit: cover;
+    } 
+}
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+  }

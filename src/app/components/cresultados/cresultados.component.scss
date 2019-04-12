@@ -29,3 +29,15 @@
           height: auto;
       }
   }
+  .table-hover{
+    & tbody{
+      & td{
+        font-size: 0.8rem;
+        font-family: map-get($fonts, monse );
+        &.wpxx-lg{
+          width: 300px !important;
+        }
+      }
+      
+    }
+  }

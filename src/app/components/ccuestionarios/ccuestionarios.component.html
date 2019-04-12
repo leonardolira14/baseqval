@@ -29,8 +29,8 @@
             <th scope="col">Nombre</th>
             <th scope="col">P.Emisor</th>
             <th scope="col">P.Receptor</th>
-            <th scope="col">Accion</th>
-            <th scope="col">Estado</th>
+            <th scope="col" class="wpx-180 text-center">Accion</th>
+            <th scope="col" class="wpx-180 text-center">Estado</th>
           </thead>
           <tbody>
             <tr *ngFor="let resp of cuestionariolist | paginate: {itemsPerPage: 20, currentPage: pageActual} ; index as i">
@@ -38,9 +38,9 @@
               <td>{{resp.Nombre}}</td>
               <td>{{resp.Emisor}}</td>
               <td>{{resp.Receptor}}</td>
-              <td>
+              <td class="wpx-180">
                   <div class="container">
-                      <div class="row">
+                      <div class="row row d-flex justify-content-center">
                         <div class="col">
                           <div ngbDropdown class="d-inline-block">
                             <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
@@ -55,7 +55,7 @@
                     </div>
                     </div>
               </td>
-              <td>
+              <td class="wpx-180 text-center">
                 <button (click)="delete(resp.IDCuestionario ,resp.Estado === '1' ? '0':'1')" class=" text-white btn {{resp.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{resp.Estado === '1' ? 'ban':'check-circle' }}"></i>{{resp.Estado === '1' ? ' Desactivar':' Activar'}}</button></td>
             </tr>
           </tbody>
@@ -112,7 +112,7 @@
                         <ul class="ltpreg">
                           <li formArrayName="orders"  *ngFor="let order of form.controls.orders.controls; let i = index">
                               <div class="custom-control custom-checkbox">
-                                  <input [formControlName]="i" (change)="chengepreg($event)" name="{{i}}" type="checkbox" class="custom-control-input" [checked]="orders[i].checado" id="{{i}}">
+                                  <input [formControlName]="i" (change)="chengepreg($event)" name="{{i}}" type="checkbox" value="{{orders[i].Nomenclatura}}" class="custom-control-input" [checked]="orders[i].checado" id="{{i}}">
                                   <label class="custom-control-label" for="{{i}}">{{orders[i].Pregunta}}</label>
                                 </div>
                           </li>

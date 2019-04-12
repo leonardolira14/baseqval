@@ -1,0 +1,28 @@
+@import '../../../styles.scss';
+::ng-deep .mat-sort-header-container{
+    display:flex;
+    justify-content:center;
+  }
+  .mat-menu-item{
+      font-family: map-get($fonts,monse );
+  }
+  .q{
+    position: absolute;
+    right: 8px;
+    top: 50% !important;
+    transform: translateY(-50%);
+  }
+  .tooltip-class{
+     &  .tooltip-inner {
+        background-color: darkgreen;
+        font-size: 125%;
+    }
+    & .tooltip-class{
+        border-top-color: darkgreen;
+    }
+}
+.mat-list{
+    height: 250px;
+    max-height: 250px;
+    overflow: auto;
+}

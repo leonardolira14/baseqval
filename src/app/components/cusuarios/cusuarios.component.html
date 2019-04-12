@@ -1,138 +1,136 @@
-<div class="container grupos m-t-30">
-    <div class="row">
-        <div class="col-4">
-            <h4>Usuarios</h4>
-        </div>
-        <div class="col-6">
-                <div class="input-group">
-                        <input type="text" class="form-control" [(ngModel)]="palabra" (keyup)="buscarusuario()" placeholder="Buscar" >
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-                             </div>
-                </div>
-        </div>   
-        <div class="col-2 text-rigth">
-            <div class="row d-flex justify-content-end">
-                <div class="col-12 m-b-30 text-center">
-                        
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-secondary" (click)="open(datsus,'')" >Agregar</button>
-                        
-                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-                <table class="table table-hover">
-                        <thead class="bg-primary">
-                          
-                          <th scope="col">Nombre</th>
-                          <th scope="col">Apellidos</th>
-                          <th scope="col">Usuario</th>
-                          <th scope="col">Accion</th>
-                          <th scope="col">Estado</th>
-                        </thead>
-                        <tbody *ngFor="let usuario of listausuarios | paginate: {itemsPerPage: 20, currentPage: pageActual}; index as i">
-                                
-                                <td scope="col">{{usuario.nombre}}</td>
-                                <td scope="col">{{usuario.apellido}}</td>
-                                <td scope="col">{{usuario.Usuario}}</td>
-                                <td scope="col">
-                                        <div class="container">
-                                                <div class="row">
-                                                  <div class="col">
-                                                    <div ngbDropdown class="d-inline-block">
-                                                      <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
-                                                      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                                        <button (click)="qr(modalqr,usuario.Usuario)" class="dropdown-item"><i class="fas fa-qrcode"></i> Código QR</button>
-                                                       
-                                                        <button (click)="addfunciones(usuario.Id,datfunus)" class="dropdown-item"><i class="fas fa-pencil-ruler"></i> Agregar funciones</button> 
-
-                                                        <button (click)="open(datsus,usuario.Id)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
-                                                        
-                                                        <button (click)="alertdele(usuario.Id)" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar </button>
-
-                                                        <button (click)="delete(usuario.Id,usuario.Estado === '1' ? '0':'1')" class="dropdown-item"><i class="fas fa-{{usuario.Estado === '1' ? 'ban':'check-circle' }}"></i>{{usuario.Estado === '1' ? ' Desactivar':' Activar' }}</button>
-
-                                                      </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              </div>
-                                </td>
-                                <td>
-                                    <button (click)="delete(usuario.Id,usuario.Estado === '1' ? '0':'1')" class=" text-white btn {{usuario.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{usuario.Estado === '1' ? 'ban':'check-circle' }}"></i>{{usuario.Estado === '1' ? ' Desactivar':' Activar'}}</button>
-                                </td>
-                        </tbody>
-                </table>
-                <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
-        </div>
+<div class="container">
+  <div class="row m-t-20">
+    <mat-form-field class="col-10">
+        <input [(ngModel)]="palabra" (keyup)="buscarusuario()" matInput placeholder="Nombre de Usuario" value="">
+     </mat-form-field>
+    <div class="col-2 text-center">
+      <button class="bg-primary text-white" (click)="open('')" mat-mini-fab><i class="material-icons">add</i></button>
     </div>
+    <div class="col-3  m-b-20" *ngFor="let usuario of listausuarios | paginate: {itemsPerPage: 20, currentPage: pageActual}; index as i">
+      <mat-card class="w-100 card-avatar">  
+        <div class="row">
+          <div class="col-12 text-right">
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                  <button (click)="qr(modalqr,usuario.Usuario)" mat-menu-item>
+                      <mat-icon>view_column</mat-icon>
+                      <span>Còdigo QR</span>
+                    </button>
+                  <button (click)="open(usuario.ID)"  mat-menu-item>
+                    <mat-icon>edit</mat-icon>
+                    <span>Editar</span>
+                  </button>
+                  <button  (click)="addfunciones(usuario.ID,datfunus)" mat-menu-item>
+                    <mat-icon>portrait</mat-icon>
+                    <span>Agregar Funciones</span>
+                  </button>
+                  <button (click)="open_transfiere(usuario.ID)"   mat-menu-item>
+                      <mat-icon>cached</mat-icon>
+                      <span>Transferir Calificaciones</span>
+                    </button>
+                  <button (click)="delete(usuario.ID,usuario.Estado === '1' ? '0':'1')" mat-menu-item>
+                    <mat-icon>{{usuario.Estado === '1' ? 'warning':'done' }}</mat-icon>
+                    <span>{{usuario.Estado === '1' ? 'Desactivar':'Activar' }}</span>
+                  </button>
+                  <button (click)="alertdele(usuario.ID)" mat-menu-item>
+                      <mat-icon>warning</mat-icon>
+                      <span>Eliminar</span>
+                    </button>
+                </mat-menu>
+          </div>
+        </div>
+          <mat-card-header>
+              <img src="{{(usuario.Imagen==null || usuario.Imagen=='')?'assets/img/avatar1.png':ruta_server+'assets/img/usuarios/avatar/'+usuario.Imagen}}"  mat-card-avatar  class="avatar">
+              
+          </mat-card-header>
+          <div class="row">
+              <div class="col-12 m-t-30 text-center">
+                <span class="text-nombre text-monse text-uppercase"><strong><h6>{{usuario.Nombre}} {{usuario.Apellidos}}</h6></strong></span>
+              </div>
+              <div class="col-12 text-center">
+                  <span class="text-usuario"><strong>{{usuario.Usuario}}</strong></span>
+              </div>
+              <div class="col-12 text-center">
+                  <span class="text-usuario text-muted"><strong>{{dame_grupo(usuario.IDConfig)}}</strong></span>
+              </div>
+              <div class="col-6 text-center m-t-20 m-auto">
+                  <img class="img-fluid" src="https://chart.googleapis.com/chart?cht=qr&chs=400x400&choe=ISO-8859-1&chl={{usuario.Usuario}}" alt="">
+              </div>
+              
+              <div class="col-12 text-center m-t-40">
+                <button (click)="open(usuario.ID)" class="btn btn-outline-primary">Modificar Datos</button>
+              </div>
+          </div>
+        </mat-card>        
+    </div>
+    <div class="col-12 text-center m-t-40">
+        <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
+  </div>
 </div>
-<ng-template #datsus let-modal>
-        <form #fromregister="ngForm" (ngSubmit)="enviarform()">
-        <div class="fixed-top alert alert-danger alert-dismissible fade alert-datosgen w-50 mx-auto" role="alert">
-          <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">{{(user.Id!=="" ? 'Modificar Usuario': 'Registrar Usuario')}}</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <div class="container">
-                <div class="row">
-                 <div class="col-6">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Nombre(s)</label>
-                        <input type="text" [(ngModel)]="user.Nombre" [ngModelOptions]="{standalone: true}" name="Nombre"  class="form-control">
-                    </div>
-                 </div>
-                 <div class="col-6">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Apellidos</label>
-                        <input type="text" [(ngModel)]="user.Apellidos" [ngModelOptions]="{standalone: true}" name="Apellidos" class="form-control">
-                    </div>
-                 </div>
-                 <div class="col-6">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Correo Electrónico</label>
-                            <input type="text" [(ngModel)]="user.Correo" name="Correo" [ngModelOptions]="{standalone: true}"  class="form-control">
-                        </div>
-                     </div>
-                     <div class="col-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Usuario</label>
-                                <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="user.Usuario" name="Usuario"  class="form-control">
-                            </div>
-                    </div>
-                    <div class="col-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Puesto</label>
-                                <input type="text" [(ngModel)]="user.Puesto" name="Puesto" [ngModelOptions]="{standalone: true}" class="form-control">
-                            </div>
-                    </div>
-                    <div class="col-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Grupo</label>
-                                <select [(ngModel)]="user.Configuracion" [ngModelOptions]="{standalone: true}" class="form-control">
-                                    <option *ngFor="let grupo of grupos" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</option>
-                                </select>
-                            </div>
-                    </div>
-                </div>
+
+<div class="container-fluid fondomodal" *ngIf="datsus">
+  <div class="container">
+    <div class="row">
+      <mat-card class="col-8 m-auto card-datos">  
+        <div class="row">
+          <div class="col-12 m-b-20">
+              <span class="titulo-card">Perfil de Usuario</span>
+          </div>
+          <div class="col-4 justify-content-center align-content-center">
+            <div class="row">
+              <div class="col-12 text-center">
+                  <img src="{{logo_avatar}}"  mat-card-avatar  class="avatar">
+              </div>
+              <div class="col-12 text-center m-t-20">
+                  <button type="button" (click)="img_avatar.click()" class="btn btn-outline-succes">Cambiar Avatar</button>
+                  <input type="file" (change)="change_img_avatar(img_avatar.files)" accept="image/gif, image/jpeg, image/png" #img_avatar class="d-none">
+              </div>
+
             </div>
+              
+          </div>
+          <div class="col-8">
+              <div class="row">
+                <mat-form-field class="col-6">
+                  <input matInput auto placeholder="Nombre(s)" [(ngModel)]="user.Nombre" [ngModelOptions]="{standalone: true}" name="Nombre"  value="">
+                </mat-form-field>
+                <mat-form-field class="col-6">
+                    <input matInput placeholder="Apellidos" [(ngModel)]="user.Apellidos" [ngModelOptions]="{standalone: true}" name="Apellidos"  value="">
+                </mat-form-field>
+                <mat-form-field class="col-6">
+                    <input matInput placeholder="Correo Electrónico" [(ngModel)]="user.Correo" name="Correo" [ngModelOptions]="{standalone: true}" name="Apellidos"  value="">
+                </mat-form-field>
+                <mat-form-field class="col-6">
+                    <input matInput placeholder="Usuario" disabled [ngModelOptions]="{standalone: true}" [(ngModel)]="user.Correo" name="Usuario"  value="">
+                </mat-form-field>
+                <mat-form-field class="col-6">
+                    <input matInput placeholder="Puesto" [(ngModel)]="user.Puesto" name="Puesto" [ngModelOptions]="{standalone: true}"  value="">
+                </mat-form-field>
+                <mat-form-field class="col-6">
+                    <mat-label>Grupo</mat-label>
+                    <mat-select  [(ngModel)]="user.Configuracion" [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let grupo of grupos" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+              </div>
+              <div class="col-12 m-t-20 text-right">
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                      <button (click)="datsus=false" type="button" class="btn btn-outline-danger mr-3">Cerrar</button>
+                      <button (click)="enviarform()" type="button" class="btn btn-succes">Guardar</button>
+                    </div>
+              </div>
+          </div>
         </div>
-        <div class="modal-footer">
-          <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
-            <input type="submit" class="btn btn-outline-primary" value="Guardar">
-        </div>
-        </form>
-      </ng-template>
+      </mat-card>
+    </div>
+  </div> 
+</div>
+
+
 <ng-template #datfunus let-modal>
     <form [formGroup]="form">
         <div class="fixed-top alert alert-danger alert-dismissible fade alert-funciones w-50 mx-auto" role="alert">
@@ -168,11 +166,11 @@
         </div>
     </form>
 </ng-template>
-<ngx-spinner class="spiner" bdColor="rgba(51,51,51,0.8)" fullScreen="true"
-size="medium"
-color="#fff"
-type="ball-clip-rotate-multiple">
-<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
+<div *ngIf="spiner" class="spinner">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
 <ngb-alert *ngIf="staticAlertClosed" type="danger" style="position: fixed;z-index: 1000;top: 0;width: 100%" (close)="close(alert)">{{ alertterror }}</ngb-alert>
 
 <ng-template #modalqr let-modal>
@@ -211,3 +209,26 @@ type="ball-clip-rotate-multiple">
   confirmButtonText="Entendido"
    >
 </swal>
+
+<div class="container-fluid fondomodal" *ngIf="model_transfiere">
+    <div class="row">
+      <div class="card col-6 m-auto">
+          <div class="row">
+            <div class="col-12 m-t-30 text-monse text-justify">
+                <label >Selecciona un usuario de la siguiente lista para transferirle las calificaciones realizadas y recibidas.</label>
+                <mat-list role="list" >
+                    <mat-radio-group class="example-radio-group" [(ngModel)]="ID_Transfiere_a" aria-label="Select an option">
+                      <mat-list-item   *ngFor="let usuario of listausuarios" role="listitem"><mat-radio-button color="primary"  value="{{usuario.ID}}">{{usuario.Nombre+" "+usuario.Apellidos}}</mat-radio-button></mat-list-item>
+                    </mat-radio-group>
+                  </mat-list>                 
+            </div>
+            <div class="col-12 text-right m-t-30 m-b-30">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" (click)="model_transfiere=false" class="btn btn-outline-danger mr-3">Cerrar</button>
+                    <button type="button" class="btn btn-primary" (click)="transfiere_calificaciones()">Guardar</button>
+                  </div>
+            </div>
+          </div>
+      </div>
+    </div>
+</div>

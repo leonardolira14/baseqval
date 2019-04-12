@@ -9,10 +9,11 @@ import { ConectService } from './services/conect.service';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { GeneralComponent } from './pages/general/general.component';
-import{ GeneraliComponent} from './components/general/general.component'
-import {NgbModule,NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
+import { GeneraliComponent} from './components/general/general.component';
+import {NgbModule, NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './componets/footer/footer.component';
 import { RecpassComponent } from './pages/recpass/recpass.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -38,9 +39,17 @@ import { AddreporteComponent } from './pages/addreporte/addreporte.component';
 import { PrintreporteComponent } from './pages/printreporte/printreporte.component';
 import { ListreporteComponent } from './pages/listreporte/listreporte.component';
 import { CaddreporteComponent } from './components/caddreporte/caddreporte.component';
-import { DragAndDropModule } from 'angular-draggable-droppable';
+import { MaterialModule } from './material.module';
 
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+import { CresumenComponent } from './encuestas/cresumen/cresumen.component';
+import { CpanelComponent } from './encuestas/cpanel/cpanel.component';
+import { ChacerComponent } from './encuestas/chacer/chacer.component';
+import { CvistapreviaComponent } from './encuestas/cvistaprevia/cvistaprevia.component';
+import { PanelComponent } from './pages/encuestas/panel/panel.component';
+import { ResumenComponent } from './pages/encuestas/resumen/resumen.component';
+import { HacerComponent } from './pages/encuestas/hacer/hacer.component';
+import { VistapreviaComponent } from './pages/encuestas/vistaprevia/vistaprevia.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +78,15 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     AddreporteComponent,
     PrintreporteComponent,
     ListreporteComponent,
-    CaddreporteComponent
+    CaddreporteComponent,
+    CresumenComponent,
+    CpanelComponent,
+    ChacerComponent,
+    CvistapreviaComponent,
+    PanelComponent,
+    ResumenComponent,
+    HacerComponent,
+    VistapreviaComponent
     
   ],
   imports: [
@@ -80,9 +97,12 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     HttpModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NoopAnimationsModule,
+    AppRoutingModule,
     NgbModule,NgbPaginationModule, NgbAlertModule
     ,NgxSpinnerModule,ReactiveFormsModule,NgxPaginationModule,
-    ChartsModule,DragAndDropModule,
+    ChartsModule,
+    MaterialModule,
     SweetAlert2Module.forRoot({
             buttonsStyling: false,
             customClass: 'modal-content',
@@ -93,6 +113,7 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     
   ],
   providers: [ConectService,CookieService ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [],
 })
 export class AppModule { }

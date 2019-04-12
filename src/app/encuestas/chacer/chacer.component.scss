@@ -1,0 +1,167 @@
+@import '../../../styles.scss';
+.mat-horizontal-content-container{
+    padding: 0rem !important;
+}
+.list-group{
+    & .list-group-item{
+        border-radius: 0px !important;
+        padding: .8rem .3rem;
+        &:hover{
+           color:map-get($colors,blanco) !important;
+          background: map-get($colors,succes) ;
+          cursor: pointer; 
+        }
+    }
+}
+.cont-banco{
+    height: 400px;
+    overflow: auto;
+}
+.cont-banco2{
+    height: 370px;
+    overflow: auto;
+}
+.ul_pr{
+    padding-inline-start: 0px;
+    & .list-style{
+        padding: 8px 8px 4px 2px;
+        overflow: hidden;
+        list-style: none;
+        & .respuestas{
+            & li{
+                color:map-get($colors , alight-gra );
+                font-size: .5rem;
+            }
+        }    
+        
+    }
+}
+.card-pregunta{
+    border-radius: 0px !important;
+    & .mat-card-title{
+        font-size:0.9rem;
+        font-family: map-get($fonts, monse )
+    }
+    cursor: move;
+    &:focus{
+        background: map-get($colors,primary );
+        color:#fff;
+    }
+    & .mat-accordion{
+        & .sn{
+            box-shadow: 0 0px 0px 0px rgba(255,255,255,1), 0 0px 0px 0 rgba(255,255,255,1), 0 0px 0px 0 rgba(255,255,255,1) !important;
+            border-radius: 0px !important;
+        }
+    }
+}
+.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+.sin_box{
+    box-shadow: 0 0px 0px 0px rgba(0,0,0,.2), 0 0px 0px 0 rgba(0,0,0,.14), 0 0px 0px 0 rgba(0,0,0,.12) !important;
+}
+.close{
+    position: absolute;
+    right: 8px;
+    top: 0px;
+}
+.prev{
+    padding: 20px;
+    z-index: 1001;
+    position: relative;
+    width: 329px;
+    height: 86px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:map-get($colors, primary );
+    color: #fff;
+    transition: transform 500ms cubic-bezier(0, 0, 0.2, 1);
+}
+.cont_de_pregunta{
+    padding: 20px 10px;
+    background: #fff;
+}
+.class_nombre_c{
+    & .titulo{
+        font-family: map-get($fonts,monse );
+        color:map-get($colors, primary );
+        font-size: 1.5rem;
+    }
+}
+.cont_pregunta{
+    position: relative;
+    color:map-get($colors, dark );
+    padding: 20px;
+    margin-top: 40px;
+    border:1px solid map-get($colors,blanco);
+    &:hover{
+        border:1px solid map-get($colors,succes);
+        & .cuadro_opciones{
+            display: block;
+        }
+    }
+    & .cuadro_opciones{
+        
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        & button{
+            font-size: 0.8rem;
+        }
+    }
+}
+.contcategorias{
+    max-height: 500px;
+    overflow: auto;
+    background:map-get($colors, nuevo );
+    margin-bottom: 12px;
+    border: 1px solid map-get($colors, nuevo );
+    border: 1px solid map-get($colors, nuevo );
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px greymap-get($gamagrises, gris3 );; 
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: map-get($colors, dark-2 ); 
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: map-get($colors, succes ); 
+      }
+    & .card-categoria{
+        color:map-get($gamagrises, gris4 );
+        border-radius: 0px !important;
+        border: 0px ;
+        outline: 1px solid transparent;
+        border-bottom: 1px solid #D0D2D3;
+        padding: 16px 16px 16px 24px;
+        cursor: pointer;
+    }
+}
+.icono_ayuda{
+    position: absolute;
+    right: 5px;
+}
+.star {
+    font-size: 1.5rem;
+    color: #b0c4de;
+  }
+  .filled {
+    color: #1e90ff;
+  }
+  .bad {
+    color: #deb0b0;
+  }
+  .filled.bad {
+    color: #ff1e1e;
+  }

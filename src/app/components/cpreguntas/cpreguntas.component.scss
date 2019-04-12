@@ -9,3 +9,48 @@ div.rptlis{
     background: map-get($colors ,primary);
     color:map-get($colors,blanco);
 }
+
+.cont-banco{
+    height: 500px;
+    overflow: auto;
+}
+.cont-banco2{
+    height: 470px;
+    overflow: auto;
+}
+.ul_pr{
+    padding-inline-start: 0px;
+    background: red;
+    & .list-style{
+        padding: 8px 8px 4px 2px;
+        overflow: hidden;
+        list-style: none;
+        & .respuestas{
+            & li{
+                color:map-get($colors , alight-gra );
+                font-size: .5rem;
+            }
+        }    
+        
+    }
+}
+
+.card-pregunta{
+    border-radius: 0px !important;
+    & .mat-card-title{
+        font-size:0.9rem;
+        font-family: map-get($fonts, monse )
+    }
+    cursor: move;
+    & .mat-accordion{
+        & .sn{
+            box-shadow: 0 0px 0px 0px rgba(255,255,255,1), 0 0px 0px 0 rgba(255,255,255,1), 0 0px 0px 0 rgba(255,255,255,1) !important;
+            border-radius: 0px !important;
+        }
+    }
+}
+
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }

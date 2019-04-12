@@ -1,212 +1,192 @@
-<div class="container grupos m-t-30">
+<div class="container m-t-30">
   <div class="row">
-      <div class="col-4">
-          <h4>Clientes Y Proveedores</h4>
-      </div>
-      <div class="col-6">
-              <div class="input-group">
-                      <input type="text" class="form-control" [(ngModel)]="palabra" (keyup)="buscarcliente()" placeholder="Buscar" >
-                          <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
-                           </div>
+    <div class="col-10">
+        <mat-form-field class="w-100">
+          <input matInput [(ngModel)]="palabra" (keyup)="buscarcliente()" placeholder="Razón Social" value="">
+        </mat-form-field>
+    </div>
+    <div class="col-2 text-center">
+        <button mat-mini-fab (click)="open()" color="primary"><i class="material-icons">add</i></button>
+    </div>
+    <div class="col-3  m-b-20" *ngFor="let clint of Listclientes | paginate: {itemsPerPage: 20, currentPage: pageActual} ; index as i">
+        <mat-card class="w-100 card-avatar">  
+            <div class="row">
+              <div class="col-12 text-right">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                      <button (click)="qr(modalqr,clint.Usuario)" mat-menu-item>
+                          <mat-icon>view_column</mat-icon>
+                          <span>Còdigo QR</span>
+                        </button>
+                      <button (click)="requestuser(clint.IDCliente)"  mat-menu-item>
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                      <button (click)="delete(clint.IDCliente ,clint.Estado === '1' ? '0':'1')" mat-menu-item>
+                        <mat-icon>{{clint.Estado === '1' ? 'warning':'done' }}</mat-icon>
+                        <span>{{clint.Estado === '1' ? 'Desactivar':'Activar' }}</span>
+                      </button>
+                      <button (click)="alertdele(clint.IDCliente )" mat-menu-item>
+                          <mat-icon>warning</mat-icon>
+                          <span>Eliminar</span>
+                        </button>
+                    </mat-menu>
               </div>
-      </div>   
-      <div class="col-2 text-rigth">
-          <div class="row d-flex justify-content-end">
-              <div class="col-12 m-b-30 text-center">
-                      
-                  <div class="btn-group" role="group" aria-label="Basic example">
-                      <button type="button" class="btn btn-secondary" (click)="open(modalclint,'')" >Agregar</button>
-                     
-                   </div>
+            </div>
+              <mat-card-header>
+                  <img src="{{(clint.Imagen==null || clint.Imagen=='')?'assets/img/avatar1.png':ruta_server+'assets/img/clientes/avatar/'+clint.Imagen}}"  mat-card-avatar  class="avatar">
+                  
+              </mat-card-header>
+              <div class="row">
+                  <div class="col-12 m-t-30 text-center">
+                    <span class="text-nombre ">{{clint.Nombre}}</span>
+                  </div>
+                  <div class="col-12 text-center">
+                      <span class="text-usuario"><strong>{{clint.NombreComercial}}</strong></span>
+                  </div>
+                  <div class="col-12 text-center">
+                      <span class="text-usuario text-muted"><strong>{{clint.RFC}}</strong></span>
+                  </div>
+                  <div class="col-6 text-center cont-qr">
+                      <img class="img-fluid" src="https://chart.googleapis.com/chart?cht=qr&chs=400x400&choe=ISO-8859-1&chl={{clint.Usuario}}" alt="">
+                  </div>
+                  
+                  <div class="col-12 text-center cont-button_modif">
+                    <button (click)="requestuser(clint.IDCliente)" class="btn btn-outline-primary">Modificar Datos</button>
+                  </div>
               </div>
-          </div>
-      </div>
-      <div class="col-12">
-        <table class="table table-hover">
-                <thead class="bg-primary">
-                 
-                  <th scope="col">Razón Social</th>
-                  <th scope="col">Nombre Comercial</th>
-                  <th scope="col">R.F.C.</th>
-                  <th scope="col">Accion</th>
-                  <th scope="col">Estado</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let clint of Listclientes | paginate: {itemsPerPage: 20, currentPage: pageActual} ; index as i">
-                    
-                    <td scope="col">{{clint.Nombre}}</td>
-                    <td scope="col">{{clint.NombreComercial}}</td>
-                    <td scope="col">{{clint.RFC}}</td>
-                    <td scope="col">
-                      <div class="container">
-                        <div class="row">
-                          <div class="col">
-                            <div ngbDropdown class="d-inline-block">
-                              <button class="btn btn-primary" ngbDropdownToggle>Acciones</button>
-                              <div ngbDropdownMenu aria-labelledby="dropdownBasic1"> 
-                                <button (click)="qr(modalqr,clint.Usuario)" class="dropdown-item"><i class="fas fa-qrcode"></i> Código QR</button>
-                                <button (click)="requestuser(modalclint,clint.IDCliente)" class="dropdown-item"><i class="fas fa-wrench"></i> Modificar</button>
-                                
-                                <button (click)="delete(clint.IDCliente ,clint.Estado === '1' ? '0':'1')" class="dropdown-item"><i class="fas fa-{{clint.Estado === '1' ? 'ban':'check-circle'}}"></i>{{clint.Estado === '1' ? ' Desactivar':' Activar' }}</button>
-
-                                <button (click)="alertdele(clint.IDCliente )" class="dropdown-item"><i class="fas fa-trash"></i> Eliminar</button>
-                                
-
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                    </td>
-                    <td>
-                      <button (click)="delete(clint.IDCliente,clint.Estado === '1' ? '0':'1')" class=" text-white btn {{clint.Estado === '1' ? 'btn-danger':'btn-success'}}"><i class="fas fa-{{clint.Estado === '1' ? 'ban':'check-circle'}}"></i> {{clint.Estado === '1' ? 'Desactivar':'Activar'}}</button>
-                  </td>
-                  </tr>
-                </tbody>
-        </table>  
-        <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>    
-</div>
+            </mat-card>
+    </div>
+    <div class="col-12 text-center m-t-40">
+        <pagination-controls class="my-pagination" (pageChange)="pageActual = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+    </div>
   </div>
 </div>
-<ng-template #modalclint let-modal>
-    <div class="fixed-top alert alert-danger alert-dismissible fade alert-funciones w-50 mx-auto" role="alert">
-        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-  <form #formaclient="ngForm" (submit)="enviarform()">
-    <div class="modal-header">
-          <h4 class="modal-title" id="modal-basic-title">{{(cliente.IDCliente!=="" ? 'Modificar Cliente/Proveedor': 'Registrar Cliente/Proveedor')}}</h4>
-          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-    <div class="modal-body">
-      <div class="container">
+
+<div class="container-fluid fondomodal" *ngIf="datsclie">
+    <div class="container">
         <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Razón Social</label>
-                    <input type="text" [(ngModel)]="cliente.Nombre" [ngModelOptions]="{standalone: true}" name="Nombre"  class="form-control">
-                </div>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Nombre Comercial</label>
-                    <input type="text" [(ngModel)]="cliente.NombreComercial" [ngModelOptions]="{standalone: true}" name="comercial"  class="form-control">
-                </div>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">R.F.C.</label>
-                    <input type="text" [(ngModel)]="cliente.RFC" [ngModelOptions]="{standalone: true}" name="RFC"  class="form-control">
-                </div>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Tipo Persona</label>
-                    <input type="text" [(ngModel)]="cliente.TPersona" [ngModelOptions]="{standalone: true}" name="TPersona"  class="form-control">
-                </div>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Estatus</label>
-                    <select  [(ngModel)]="cliente.Estado" [ngModelOptions]="{standalone: true}" name="Estado"  class="form-control">
-                      <option [value]="1">Activo</option>
-                      <option [value]="0">Desactivado</option>
-                    </select>
-                    
-                </div>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Activar Contraseña al calificar</label>
-                    <select  [(ngModel)]="cliente.Actipass" [ngModelOptions]="{standalone: true}" name="Actipass"  class="form-control">
-                      <option [value]="1">Si</option>
-                      <option [value]="0">No</option>
-                    </select>
-                    
-                </div>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Grupo</label>
-                    <select  [(ngModel)]="cliente.IDConfig" [ngModelOptions]="{standalone: true}" name="IDConfig"  class="form-control">
-                      <option *ngFor="let grupo of grupos"  [value]="grupo.IDGrupo">{{grupo.Nombre}}</option>
-                    </select>
-                    
-                </div>
-             </div>
-             <div class="col-12 m-t-20 m-b-30"> 
-                <h5><strong>Teléfono y Dirección</strong></h5>
-              </div>
-              
-              <div class="col-12">
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">Calle y Número</label>
-                      <input type="text" [(ngModel)]="cliente.Direccion" [ngModelOptions]="{standalone: true}" name="Direccion"  class="form-control">
+          <mat-card class="col-12 m-auto card-datos"> 
+              <div class="row">
+                  <div class="col-12 m-b-20">
+                      <span class="titulo-card">Perfil de Cliente/Proveedor</span>
                   </div>
-               </div>
-               <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Teléfono Empresa</label>
-                    <input type="text" [(ngModel)]="cliente.Tel" [ngModelOptions]="{standalone: true}" name="Tel"  class="form-control">
+                  <div class="col-4 justify-content-center align-content-center">
+                      <div class="row">
+                        <div class="col-12 text-center">
+                            <img src="{{logo_avatar}}"  mat-card-avatar  class="avatar">
+                        </div>
+                        <div class="col-12 text-center m-t-20">
+                            <button type="button" (click)="img_avatar.click()" class="btn btn-outline-succes">Cambiar Avatar</button>
+                            <input type="file" (change)="change_img_avatar(img_avatar.files)" accept="image/gif, image/jpeg, image/png" #img_avatar class="d-none">
+                        </div>
+          
+                      </div>
+                        
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <mat-form-field class="col-12">
+                                <input matInput auto placeholder="Razòn Social" [(ngModel)]="cliente.Nombre" [ngModelOptions]="{standalone: true}" name="Nombre"  value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <input matInput auto placeholder="Nombre Comercial" [(ngModel)]="cliente.NombreComercial" [ngModelOptions]="{standalone: true}" name="Nombre"  value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <input matInput auto placeholder="R.F.C.(Registro Federal del Contribuyente)" [(ngModel)]="cliente.RFC" [ngModelOptions]="{standalone: true}" name="RFC"  value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <mat-label>Tipo Persona</mat-label>
+                                <mat-select [(ngModel)]="cliente.TPersona" [ngModelOptions]="{standalone: true}" name="TPersona">
+                                  <mat-option value="PFA">
+                                    Persona Fisica con Actividad Empresarial
+                                  </mat-option>
+                                  <mat-option value="PM">
+                                      Persona Moral
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <mat-label>Status</mat-label>
+                                <mat-select [(ngModel)]="cliente.Estado" [ngModelOptions]="{standalone: true}" name="Estado" >
+                                  <mat-option value="1">
+                                      Activo
+                                  </mat-option>
+                                  <mat-option value="0">
+                                      Desactivado
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <mat-label>Grupo al que pertenece</mat-label>
+                                <mat-select  [(ngModel)]="cliente.IDConfig" [ngModelOptions]="{standalone: true}" name="IDConfig" >
+                                  <mat-option *ngFor="let grupo of grupos"  [value]="grupo.IDGrupo">
+                                      {{grupo.Nombre}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="row">
+                            <mat-divider [inset]="true" class="col-12"></mat-divider>
+                            <div class="col-12 m-t-20 m-b-10"> 
+                                <h6 class="text-muted text-monse"><strong>Teléfono y Dirección</strong></h6>
+                            </div>
+                            <mat-form-field class="col-12">
+                                <input matInput auto placeholder="Calle y Número" [(ngModel)]="cliente.Direccion" [ngModelOptions]="{standalone: true}" name="Direccion"  value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <input matInput auto placeholder="Teléfono Empresa" [(ngModel)]="cliente.Tel" [ngModelOptions]="{standalone: true}" name="Tel"  value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <input matInput auto placeholder="Municipio/Alcaldia" [(ngModel)]="cliente.Municipio" [ngModelOptions]="{standalone: true}" name="Municipio"  value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <mat-label>Estado</mat-label>
+                                <mat-select  [(ngModel)]="cliente.EEstado" [ngModelOptions]="{standalone: true}" name="EEstado" name="IDConfig" >
+                                  <mat-option  *ngFor="let estado of estados"  [value]="estado.estadonombre">
+                                      {{estado.estadonombre}}
+                                  </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="row">
+                            <mat-divider [inset]="true" class="col-12"></mat-divider>
+                            <div class="col-12 m-t-20 m-b-10"> 
+                                <h6 class="text-muted text-monse"><strong>Datos de Contacto</strong></h6>
+                            </div>
+                            <mat-form-field class="col-6">
+                                <input matInput auto placeholder="Nombre" [(ngModel)]="cliente.Apellidos" [ngModelOptions]="{standalone: true}" name="Apellidos"   value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <input matInput auto placeholder="Correo Electrónico" [(ngModel)]="cliente.Correo" [ngModelOptions]="{standalone: true}" name="Correo" name="Tel"  value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <input matInput auto placeholder="Teléfono Contacto/Celular" [(ngModel)]="cliente.Telcontact" [ngModelOptions]="{standalone: true}" name="Tel"  value="">
+                            </mat-form-field>
+                            <mat-form-field class="col-6">
+                                <input matInput auto placeholder="Puesto" [(ngModel)]="cliente.Puesto" [ngModelOptions]="{standalone: true}" name="Puesto"   value="">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-12 m-t-20 text-right">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button (click)="datsclie=false" type="button" class="btn btn-outline-danger mr-3">Cerrar</button>
+                            <button (click)="enviarform()" type="button" class="btn btn-succes">Guardar</button>
+                          </div>
+                    </div>
                 </div>
-             </div>
-               <div class="col-6">
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">Municipio</label>
-                      <input type="text" [(ngModel)]="cliente.Municipio" [ngModelOptions]="{standalone: true}" name="Municipio"  class="form-control">
-                  </div>
-               </div>
-               <div class="col-6">
-                  <div class="form-group">
-                      <label for="exampleInputEmail1">Estado</label>
-                      <select [(ngModel)]="cliente.EEstado" [ngModelOptions]="{standalone: true}" name="EEstado"  class="form-control">
-                            <option *ngFor="let estado of estados"  [value]="estado.estadonombre">{{estado.estadonombre}}</option>
-                      </select>
-                      
-                  </div>
-               </div>
-             <div class="col-12 m-t-20 m-b-30"> 
-               <h5><strong>Datos de Contacto</strong></h5>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Nombre</label>
-                    <input type="text" [(ngModel)]="cliente.Apellidos" [ngModelOptions]="{standalone: true}" name="Apellidos"  class="form-control">
-                </div>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Correo Electrónico</label>
-                    <input type="text" [(ngModel)]="cliente.Correo" [ngModelOptions]="{standalone: true}" name="Correo"  class="form-control">
-                </div>
-             </div>
-             
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Teléfono Contacto/Celular</label>
-                    <input type="text" [(ngModel)]="cliente.Telcontact" [ngModelOptions]="{standalone: true}" name="Tel"  class="form-control">
-                </div>
-             </div>
-             <div class="col-6">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Puesto</label>
-                    <input type="text" [(ngModel)]="cliente.Puesto" [ngModelOptions]="{standalone: true}" name="Puesto"  class="form-control">
-                </div>
-             </div>
+          </mat-card>
         </div>
-      </div>
     </div>
-    <div class="modal-footer">
-      <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
-        <button type="submit" class="btn btn-outline-primary">Guardar</button>
-    </div>
-  </form>
-</ng-template>
+</div>
+
+
 <ng-template #modalqr let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Código QR</h4>
@@ -224,11 +204,11 @@
         </div>
     </div>
 </ng-template>
-<ngx-spinner class="spiner" bdColor="rgba(51,51,51,0.8)"
-size="medium"
-color="#fff"
-type="ball-clip-rotate-multiple">
-<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>
+<div *ngIf="spiner" class="spinner">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
 <ngb-alert *ngIf="staticAlertClosed" type="danger" style="position: fixed;z-index: 1000;top: 0;width: 100%" (close)="close(alert)">{{ alertterror }}</ngb-alert>
 
 <swal

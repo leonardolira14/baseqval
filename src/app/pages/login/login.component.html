@@ -20,11 +20,12 @@
               <div class="img-circ">
                   <i class="fas fa-user-tie"></i>
               </div>
+            
               <div class="input-group">
                   <div class="input-group-prepend">
                     <div class="input-group-text"><i class="fas fa-user"></i></div>
                   </div>
-                  <input type="text" class="form-control" autocomplete="off" (keypress)="envilogin($event)" name="user" [(ngModel)]="user"  placeholder="Correo Electrónico">
+                  <input type="text" class="form-control" autofocus autocomplete="off" (keypress)="envilogin($event)" name="user" [(ngModel)]="user"  placeholder="Correo Electrónico">
                 </div>
                 <div class="input-group m-t-20">
                     <div class="input-group-prepend">
