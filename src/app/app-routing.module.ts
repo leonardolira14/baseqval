@@ -13,8 +13,12 @@ import { CgraficasComponent } from './components/cgraficas/cgraficas.component';
 import { AddreporteComponent } from './pages/addreporte/addreporte.component';
 import { PanelComponent } from './pages/encuestas/panel/panel.component';
 import { HacerComponent } from './pages/encuestas/hacer/hacer.component';
+import { HomeComponent } from './pages/home/home.component';
+import { PregistroComponent } from './pages/pregistro/pregistro.component';
 const appRoutes: Routes = [
-  {path: '', component: LoginComponent},
+  {path: '', component: HomeComponent},
+  {path: 'registro', component: PregistroComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'general', component: GeneralComponent},
   {path: 'recpass', component: RecpassComponent},
   {path: 'grupos', component: GruposComponent},

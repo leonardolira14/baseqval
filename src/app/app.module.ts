@@ -4,7 +4,7 @@ import { AppRoutingModule  } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { LoginComponent } from './pages/login/login.component';
-import { FormsModule,ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { ConectService } from './services/conect.service';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
@@ -50,7 +50,11 @@ import { PanelComponent } from './pages/encuestas/panel/panel.component';
 import { ResumenComponent } from './pages/encuestas/resumen/resumen.component';
 import { HacerComponent } from './pages/encuestas/hacer/hacer.component';
 import { VistapreviaComponent } from './pages/encuestas/vistaprevia/vistaprevia.component';
-
+import { HomeComponent } from './pages/home/home.component';
+import {MenuaComponent} from './componets/menua/menua.component';
+import { PreciosComponent  } from './components/precios/precios.component';
+import { RegistroComponent } from './components/registro/registro.component';
+import { PregistroComponent } from './pages/pregistro/pregistro.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,8 +90,12 @@ import { VistapreviaComponent } from './pages/encuestas/vistaprevia/vistaprevia.
     PanelComponent,
     ResumenComponent,
     HacerComponent,
-    VistapreviaComponent
-    
+    VistapreviaComponent,
+    HomeComponent,
+    MenuaComponent,
+    PreciosComponent,
+    RegistroComponent,
+    PregistroComponent
   ],
   imports: [
     CommonModule,
@@ -99,8 +107,8 @@ import { VistapreviaComponent } from './pages/encuestas/vistaprevia/vistaprevia.
     BrowserAnimationsModule,
     NoopAnimationsModule,
     AppRoutingModule,
-    NgbModule,NgbPaginationModule, NgbAlertModule
-    ,NgxSpinnerModule,ReactiveFormsModule,NgxPaginationModule,
+    NgbModule, NgbPaginationModule, NgbAlertModule
+    , NgxSpinnerModule, ReactiveFormsModule, NgxPaginationModule,
     ChartsModule,
     MaterialModule,
     SweetAlert2Module.forRoot({
@@ -109,11 +117,11 @@ import { VistapreviaComponent } from './pages/encuestas/vistaprevia/vistaprevia.
             confirmButtonClass: 'btn btn-primary mr-3',
             cancelButtonClass: 'btn btn-danger'
         })
-    
-    
+
+
   ],
-  providers: [ConectService,CookieService ],
-  bootstrap: [AppComponent],
+  providers: [ConectService, CookieService ],
+  bootstrap: [AppComponent ],
   exports: [],
 })
 export class AppModule { }

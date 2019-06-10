@@ -89,14 +89,14 @@ export class ChacerComponent implements OnInit {
     array.forEach((item, index) => {
       if (index % 2 === 1) {
          // tslint:disable-next-line:max-line-length
-         
+
          this.listpreg1.push({Obligatoria: item.Obligatoria, Peso: item.Peso, Nomenclatura: item.Nomenclatura, IDEmpresa: item.IDEmpresa, IDCategoria: item.IDCategoria, Frecuencia: item.Frecuencia, IDPregunta: item.IDPregunta, Pregunta: item.Pregunta, Forma: item.Forma, Respuesta: item.Respuesta, Respuestas: this.callComponentMethodHere(item.Forma, item.Respuestas)});
       }
     });
    array.forEach((item, index) => {
     if (index % 2 !== 1) {
         // tslint:disable-next-line:max-line-length
-       
+
         this.listpreg2.push({Obligatoria: item.Obligatoria, Peso: item.Peso, Nomenclatura: item.Nomenclatura, IDEmpresa: item.IDEmpresa, IDCategoria: item.IDCategoria, Frecuencia: item.Frecuencia, IDPregunta: item.IDPregunta, Pregunta: item.Pregunta, Forma: item.Forma, Respuesta: item.Respuesta, Respuestas: this.callComponentMethodHere(item.Forma, item.Respuestas)});
       }
     });
@@ -236,25 +236,25 @@ export class ChacerComponent implements OnInit {
     if (this.model_datos_pregunta['Forma'] === 'SI/NO/NS' || this.model_datos_pregunta['Forma'] === 'SI/NO/NA' || this.model_datos_pregunta['Forma'] === 'SI/NO' || this.model_datos_pregunta['Forma'] === 'ML' ||  this.model_datos_pregunta['Forma'] === 'MLC') {
       this.list_tags = this.model_datos_pregunta['Respuestas'];
     }
-    if(this.model_datos_pregunta['Forma'] === 'DESLIZA'){
-      this.maximo_desliza=this.model_datos_pregunta['Respuestas'][1];
-      this.minino_desliza=this.model_datos_pregunta['Respuestas'][0];
+    if (this.model_datos_pregunta['Forma'] === 'DESLIZA') {
+      this.maximo_desliza = this.model_datos_pregunta['Respuestas'][1];
+      this.minino_desliza = this.model_datos_pregunta['Respuestas'][0];
     }
-  	console.log(this.model_datos_pregunta)
+  	console.log(this.model_datos_pregunta);
     localStorage.setItem('datos_pregunta_respaldo', JSON.stringify(this.model_datos_pregunta));
     this.cmodaledpreg = true;
   }
 
   guardar_edicion() {
-    
+
     if ((this.model_datos_pregunta['Forma'] ===  'ML') || (this.model_datos_pregunta['Forma'] === 'MLC')) {
       this.model_datos_pregunta['Respuestas'] = this.list_tags;
     }
     if ((this.model_datos_pregunta['Forma'] ===  'START')) {
       this.model_datos_pregunta['Respuestas'] = parseInt(this.model_datos_pregunta['Respuestas']);
     }
-    if(this.model_datos_pregunta['Forma'] ===  'DESLIZA'){
-        this.model_datos_pregunta['Respuestas']=[this.minino_desliza,this.maximo_desliza];
+    if (this.model_datos_pregunta['Forma'] ===  'DESLIZA') {
+        this.model_datos_pregunta['Respuestas'] = [this.minino_desliza, this.maximo_desliza];
     }
     this.listapregunta[this.index_edit] = this.model_datos_pregunta;
     this.posible_tag = '';
@@ -315,8 +315,9 @@ export class ChacerComponent implements OnInit {
     }
   }
   select_pregunta(tipo) {
-    this.maximo_desliza=0;
-    this.minino_desliza=0;
+    this.list_tags = [];
+    this.maximo_desliza = 0;
+    this.minino_desliza = 0;
     this.model_datos_pregunta = {};
     this.model_datos_pregunta['Forma'] = tipo;
     if ( tipo === 'SI/NO') {
@@ -406,8 +407,8 @@ export class ChacerComponent implements OnInit {
         swal('Error!', 'Ingresa un valor mìnimo y màximo para el control', 'error');
       } else {
         this.model_datos_pregunta['Respuestas'] = [this.minino_desliza, this.maximo_desliza];
-        this.minino_desliza=0;
-        this.maximo_desliza=0;
+        this.minino_desliza = 0;
+        this.maximo_desliza = 0;
         this.listapregunta.push(this.model_datos_pregunta);
         this.model_datos_pregunta = {};
         this.cmodaledpreg = false;
@@ -552,5 +553,5 @@ export class ChacerComponent implements OnInit {
           return item.Nombre.toLocaleLowerCase().includes(this.palabra_catego.toLocaleLowerCase());
        });
     }
-  
+
 }

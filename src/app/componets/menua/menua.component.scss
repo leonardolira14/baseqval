@@ -1,0 +1,20 @@
+@import '../../../styles';
+.navbar{
+    & .navbar-collapse{
+        & .navbar-nav{
+            & .nav-item{
+                & .nav-link{
+                    color:#fff;
+                    background: map-get($colors,primary);
+                    color:map-get( $colors, blanco);
+                    cursor:pointer;
+                    font-family: map-get($fonts,roboto);
+                    font-size: 0.8rem;
+                }
+                & .btn-primary{
+                    background: map-get($colors,primary);
+                }
+            }
+        }
+    }
+}

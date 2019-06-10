@@ -152,23 +152,25 @@ export class LogogeComponent implements OnInit {
         );
       this.Banner = this.empresa.getBanner();
       this.logo_banner = 'assets/img/bg_second.jpg';
-        if ((this.Banner.trim() !== '') || (this.Banner !== null)) {
+        if (this.Banner !== '') {
           this.logo_banner = this.rut + 'assets/img/bannerempresa/' + this.Banner;
         }
       this.Logoempresa = this.empresa.getLogo();
       this.logo_logo  = 'assets/img/elgestor.png';
-        if ((this.Logoempresa !== '') || (this.Logoempresa !== null)) {
+        if (this.Logoempresa !==  '') {
           this.logo_logo  = environment.urlserverp + 'assets/img/logoempresa/' + this.Logoempresa;
          }
+      
       this.nombreus = this.usuario.getNombre();
       this.apellidos = this.usuario.getApellido();
       this.grupo_usuario = this.usuario.getConfig();
       this.LogoUsuario = this.usuario.getAvatar();
      
       this.logo_avatar  = 'assets/img/elgestor.png';
-        if ((this.LogoUsuario !== '') || (this.LogoUsuario !== null)) {
+        if ((this.LogoUsuario !== '') && (this.LogoUsuario !== null) ) {
           this.logo_avatar = environment.urlserverp + 'assets/img/usuarios/avatar/' + this.LogoUsuario;
          }
+         console.log(this.LogoUsuario,this.logo_avatar);
       this.puesto = this.usuario.getPuesto();
       this.correo = this.usuario.getCorreo();
       this.razon_social = this.empresa.getRazon();
@@ -187,6 +189,7 @@ export class LogogeComponent implements OnInit {
       this.http.panel(this.empresa.getID())
 
       .subscribe((resp) => {
+        console.log(resp);
         this.nousaurios = resp['NoUsuarios']['NumUsuarios'];
         this.noclientes = resp['NoCliente']['numclientes'];
         this.nocuestionario = resp['NoCuestionario']['numcuestionarios'];
@@ -196,8 +199,12 @@ export class LogogeComponent implements OnInit {
         this.FacAnual = resp['Facturacion'];
         this.NoEmpleados = resp['NoEmpleados'];
         this.TipoEmpresa = resp['tipos_empresa'];
-        this.ultimas_encuestas = resp['encuestas'];
-        this.grupos = resp['GruposInternos'];
+        if ( resp['encuestas'] !== false) {
+          this.ultimas_encuestas = resp['encuestas'];
+        }
+        if ( resp['GruposInternos'] !== false) {
+          this.grupos = resp['GruposInternos'];
+        }
         this.IDGrupo_usuario = this.get_grupo(this.usuario.getConfig());
         this.spiner = false;
       }, (error) => {

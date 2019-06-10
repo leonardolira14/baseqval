@@ -24,7 +24,7 @@ import {
     MatStepperModule,
     MatSliderModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
 } from '@angular/material';
 @NgModule({
     imports: [
@@ -51,7 +51,8 @@ import {
         MatStepperModule,
         MatSliderModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatMenuModule
     ],
     providers: [
         MatDatepickerModule,
@@ -80,7 +81,8 @@ import {
         MatStepperModule,
         MatSliderModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatMenuModule
     ]
 
 })

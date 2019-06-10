@@ -1,0 +1,16 @@
+@import '../../../styles';
+.lista_porque{
+    & .col-6{
+        padding: 0px !important;
+    }
+    & .ul-lista{
+        font-size: map-get($colors,monse );
+        font-size: 1.3rem;
+        padding: 1rem;
+        & li{
+            list-style: none;
+            text-align: justify;
+            margin-top: 10px;
+        }
+    }
+}

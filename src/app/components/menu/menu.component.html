@@ -27,7 +27,9 @@
       
       <!--====== <li class="nav-item">
         <a class="nav-link" (click)='goto("resultados")'><i class="fas fa-poll"></i> Resultados</a>
-      </li>
+ <li class="nav-item">
+          <div class="nav-link"  (click)="salir()">Salir</div>
+        </li>      </li>
        <li class="nav-item">
         <a class="nav-link" (click)='goto("encuestas")'>Precios Y Planes</a>
       </li>
@@ -44,11 +46,15 @@
     </ul>
     <ul class=" navbar-nav justify-content-end">
         <li class="nav-item">
+            <div class="nav-link"  (click)="alert_change_pass = true">Cambiar Contraseña</div>
+          </li>
+        <li class="nav-item">
           <a class="nav-link" href="https://admyo.com" target="_blank">Admyo</a>
         </li>
         <li class="nav-item">
           <div class="nav-link"  (click)="salir()">Salir</div>
         </li>
+       
     </ul>
     <div class="my-2 my-lg-0">
       <div class=" btn btn-primry text-white">
@@ -58,3 +64,34 @@
     
   </div>
 </nav>
+<div class="container-fluid fondomodal" *ngIf="alert_change_pass">
+  <div class="container">
+      <div class="row">
+          <div class="col-6 card m-auto">
+            <div class="row">
+              <div class="col-12 m-b-20 m-t-20">
+                <span class="text-monse"><h5>Cambio de Contraseña</h5></span>
+              </div>
+              <mat-form-field class="col-12">
+                  <input matInput [(ngModel)]="modelcontra.anterior" placeholder="contraseña Anterior" value="">
+              </mat-form-field>
+              <mat-form-field class="col-12">
+                  <input matInput [(ngModel)]="modelcontra.nueva" placeholder="Nueva Contraseña" value="">
+              </mat-form-field>
+              <mat-form-field class="col-12">
+                  <input matInput [(ngModel)]="modelcontra.repetir"  placeholder="Repetir Contraseña" value="">
+              </mat-form-field>
+              <div class="col-12 text-right p-b-20">
+                  <div class="btn-group" role="group" aria-label="Basic example">
+                      <button type="button" class="btn btn-outline-danger mr-3" (click)="alert_change_pass = ! alert_change_pass">Cancelar</button>
+                      <button type="button" class="btn btn-succes"(click)="cambiar_pas()" >Guardar</button>
+                  </div>
+              </div>
+              <div class="col-12">
+                <small classs="text-muted">Nota: La contraseña debe ser mayor a 6 caracteres, debe contener una letra mayúscula, una minúscula, un carácter especial</small>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>

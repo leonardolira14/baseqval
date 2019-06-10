@@ -48,6 +48,9 @@
                             <h5>Usuarios</h5>
                         </div>
                         <p class="card-text">{{nousaurios}}</p>
+                        <p>
+                            <button class="btn btn-succes" (click)="goto('usuarios')">Ver Mas</button>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -56,6 +59,9 @@
                     <div class="card-body text-center">
                         <div class="card-title"><h5>Encuestas</h5></div>
                         <p class="card-text">{{nocuestionario}}</p>
+                        <p>
+                            <button class="btn btn-succes" (click)="goto('encuestas')">Ver Mas</button>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -64,6 +70,9 @@
                     <div class="card-body text-center">
                         <div class="card-title"><h5>Clientes/Proveedores</h5></div>
                         <p class="card-text">{{noclientes}}</p>
+                        <p>
+                            <button class="btn btn-succes" (click)="goto('clientes')">Ver Mas</button>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -100,7 +109,7 @@
                                 </div>
                             </div>
                         </div>
-                    <div *ngIf="!ultimas_encuestas">
+                    <div *ngIf="ultimas_encuestas.length === 0">
                         <div class="col-12 card p-t-20 p-b-20  m-b-20 ">
                             <div class="row d-flex justify-content-center">
                                 <div class="col-12 text-monse text-center">
