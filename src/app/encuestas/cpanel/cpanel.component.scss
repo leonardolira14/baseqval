@@ -26,3 +26,35 @@
     max-height: 250px;
     overflow: auto;
 }
+.card-avatar{
+    position: relative;
+    height: 350px;
+   & .avatar{
+        width: 100px;
+        height: 100px;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    } 
+    & .text-nombre{
+        font-size: .9em;
+        font-family: map-get($fonts,monse);
+        color:map-get($colors ,primary);
+        font-weight: 700;
+    }
+    & .text-titulo-secundario,.text-subtitulo-secundario{
+        font-size: 0.8rem;
+        font-family: map-get($fonts,monse);
+        
+    }
+    & .cont-button_modif{
+        position: absolute;
+        bottom: 1rem;
+    }
+    & .cont-qr{
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+        bottom: 4rem;
+    }
+}

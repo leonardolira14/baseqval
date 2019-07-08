@@ -24,6 +24,8 @@ export class ChacerComponent implements OnInit {
    vista_tablet = false;
    vista_pc = true;
   public selectcatego = 'Todas las Categorias';
+  cantidad_indicador: any;
+  select_indicador_tipo = 'Selecciona';
   datosusuario = [];
   isLinear = false;
   firstFormGroup: FormGroup;
@@ -51,7 +53,7 @@ export class ChacerComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   model_datos_pregunta = {};
   index_edit = '';
-
+  indicador = false;
   minino_desliza = 0;
   maximo_desliza  = 0;
   public spiner = true;
@@ -226,8 +228,10 @@ export class ChacerComponent implements OnInit {
     return  array;
   }
   editar_pregunta(id) {
+
     this.limpiar_pregunta();
     const copia = this.listapregunta.slice(id);
+    console.log(copia);
     this.index_edit = id;
     id = '';
     this.list_tags = [];
@@ -240,7 +244,12 @@ export class ChacerComponent implements OnInit {
       this.maximo_desliza = this.model_datos_pregunta['Respuestas'][1];
       this.minino_desliza = this.model_datos_pregunta['Respuestas'][0];
     }
-  	console.log(this.model_datos_pregunta);
+
+    this.indicador = this.model_datos_pregunta['indicador'];
+    if (this.indicador) {
+      this.select_indicador_tipo = this.model_datos_pregunta['detalleindicador'][0]['condicion'];
+      this.cantidad_indicador = this.model_datos_pregunta['detalleindicador'][0]['cantidad'];
+    }
     localStorage.setItem('datos_pregunta_respaldo', JSON.stringify(this.model_datos_pregunta));
     this.cmodaledpreg = true;
   }
@@ -251,7 +260,7 @@ export class ChacerComponent implements OnInit {
       this.model_datos_pregunta['Respuestas'] = this.list_tags;
     }
     if ((this.model_datos_pregunta['Forma'] ===  'START')) {
-      this.model_datos_pregunta['Respuestas'] = parseInt(this.model_datos_pregunta['Respuestas']);
+      this.model_datos_pregunta['Respuestas'] = Number(this.model_datos_pregunta['Respuestas']);
     }
     if (this.model_datos_pregunta['Forma'] ===  'DESLIZA') {
         this.model_datos_pregunta['Respuestas'] = [this.minino_desliza, this.maximo_desliza];
@@ -267,6 +276,9 @@ export class ChacerComponent implements OnInit {
     this.index_edit = '';
     this.minino_desliza = 0;
     this.maximo_desliza  = 0;
+    this.indicador = false;
+    this.select_indicador_tipo = 'Selecciona';
+    this.cantidad_indicador = '';
     localStorage.removeItem('datos_pregunta_respaldo');
     swal('Exito!', 'Datos Actualizados', 'success');
   }
@@ -293,11 +305,13 @@ export class ChacerComponent implements OnInit {
       swal('Error!', 'Ingresa al menos una pregunta a la encuesta', 'error');
     } else {
       this.stepper.selectedIndex = 2;
+      console.log(this.model_cuestionario);
     }
   }
   guarda_posible(e) {
     if (e.key === 'Enter') {
       this.list_tags.push(this.posible_tag);
+      this.model_datos_pregunta['Respuestas'] = this.list_tags;
       this.posible_tag = '';
     }
 
@@ -343,21 +357,19 @@ export class ChacerComponent implements OnInit {
       return ;
     // tslint:disable-next-line:max-line-length
     }
-    if (this.model_datos_pregunta['Forma'] === 'AB' || this.model_datos_pregunta['Forma'] === 'NUMERO' || this.model_datos_pregunta['Forma'] === 'FECHA' || this.model_datos_pregunta['Forma'] === 'HORA' ||  this.model_datos_pregunta['Forma'] === 'F/H' ) {
-        this.listapregunta.push(this.model_datos_pregunta);
-        this.model_datos_pregunta = {};
-        this.cmodaledpreg = false;
-      return ;
+    if (this.model_datos_pregunta['Forma'] === 'AB' ||  this.model_datos_pregunta['Forma'] === 'FECHA' || this.model_datos_pregunta['Forma'] === 'HORA' ||  this.model_datos_pregunta['Forma'] === 'F/H') {
+      this.adicionar_pregunta();
+    }
+
+    if ( this.model_datos_pregunta['Forma'] === 'NUMERO' ) {
+        this.adicionar_pregunta();
     }
     if (this.model_datos_pregunta['Forma'] === 'START') {
       // tslint:disable-next-line:radix
       if ((this.model_datos_pregunta['Respuestas'] === undefined) || ( parseInt(this.model_datos_pregunta['Respuestas']) > 10 )) {
         swal('Error!', 'Ingresa un valor para el numero de estrellas que se mostraran. (debe ser como máximo 10)', 'error');
       } else {
-        console.log(this.model_datos_pregunta);
-        this.listapregunta.push(this.model_datos_pregunta);
-        this.model_datos_pregunta = {};
-        this.cmodaledpreg = false;
+        this.adicionar_pregunta();
       }
       return ;
     }
@@ -366,11 +378,19 @@ export class ChacerComponent implements OnInit {
         swal('Error!', 'Ingresa una respuesta valida', 'error');
 
       } else if (this.model_datos_pregunta['Respuesta'] === undefined || ( this.model_datos_pregunta['Respuesta'] === '') ) {
-        swal('Error!', 'Ingresa una respuesta positiva o selecciona "Sin Respuesta"', 'error');
-      } else {
-        this.listapregunta.push(this.model_datos_pregunta);
-        this.model_datos_pregunta = {};
-        this.cmodaledpreg = false;
+
+        if (this.indicador === true ) {
+             swal('Error!', 'Ingresa una respuesta positiva, para poder cumplir las reglas de un indicador', 'error');
+        } else {
+          swal('Error!', 'Ingresa una respuesta positiva o selecciona "Sin Respuesta"', 'error');
+        }
+      }  else {
+        if (this.model_datos_pregunta['Respuesta'] === 'SR' && this.indicador === true) {
+          swal('Error!', 'Ingresa una respuesta positiva, para poder cumplir las reglas de un indicador', 'error');
+        } else {
+          this.adicionar_pregunta();
+        }
+
       }
       return ;
     }
@@ -382,9 +402,7 @@ export class ChacerComponent implements OnInit {
       } else if (this.model_datos_pregunta['Respuesta'] === undefined || ( this.model_datos_pregunta['Respuestas'] === '') ) {
         swal('Error!', 'Ingresa una respuesta positiva o selecciona "Sin Respuesta"', 'error');
       } else {
-        this.listapregunta.push(this.model_datos_pregunta);
-        this.model_datos_pregunta = {};
-        this.cmodaledpreg = false;
+        this.adicionar_pregunta();
       }
       return ;
     }
@@ -393,14 +411,11 @@ export class ChacerComponent implements OnInit {
       if ((this.model_datos_pregunta['Respuestas'] === undefined) || ( this.model_datos_pregunta['Respuestas'] === '') || ( this.model_datos_pregunta['Respuestas'].length === 0)) {
         swal('Error!', 'Ingresa al menos una respuesta', 'error');
       }  else {
-        this.listapregunta.push(this.model_datos_pregunta);
-        this.model_datos_pregunta = {};
-        this.cmodaledpreg = false;
+        this.adicionar_pregunta();
       }
       return ;
-     }
+    }
      if (this.model_datos_pregunta['Forma'] === 'DESLIZA' ) {
-      // tslint:disable-next-line:max-line-length
       if ( this.minino_desliza === this.maximo_desliza) {
         swal('Error!', 'Ingresa un valor mìnimo y màximo para el control', 'error');
       } else if ( (this.minino_desliza > this.maximo_desliza) || (this.maximo_desliza < this.minino_desliza)) {
@@ -409,23 +424,76 @@ export class ChacerComponent implements OnInit {
         this.model_datos_pregunta['Respuestas'] = [this.minino_desliza, this.maximo_desliza];
         this.minino_desliza = 0;
         this.maximo_desliza = 0;
-        this.listapregunta.push(this.model_datos_pregunta);
-        this.model_datos_pregunta = {};
-        this.cmodaledpreg = false;
+        this.adicionar_pregunta();
       }
       return ;
-      }
-      if (this.model_datos_pregunta['Forma'] === 'CARGA' ) {
+    }
+    if (this.model_datos_pregunta['Forma'] === 'CARGA' ) {
         if ((this.model_datos_pregunta['Respuestas'] === undefined) || ( this.model_datos_pregunta['Respuestas'] === '' ) ) {
           swal('Error!', 'Ingresa las intrucciones para carga del archivo.', 'error');
         } else {
-          this.listapregunta.push(this.model_datos_pregunta);
-          this.model_datos_pregunta = {};
-          this.cmodaledpreg = false;
+          this.adicionar_pregunta();
         }
         return ;
-      }
     }
+    }
+    adicionar_pregunta() {
+      if (this.indicador) {
+        if (Number(this.model_datos_pregunta['Peso']) === 0) {
+          swal('Error!', 'Para crear un indicador el peso de la pregunta debe ser mayor a 0.', 'error');
+          return;
+        }
+        this.model_datos_pregunta['indicador'] = true;
+        if (this.model_datos_pregunta['Forma'] === 'SI/NO/NS' || this.model_datos_pregunta['Forma'] === 'SI/NO/NA' || this.model_datos_pregunta['Forma'] === 'SI/NO' || this.model_datos_pregunta['Forma'] === 'ML' ||  this.model_datos_pregunta['Forma'] === 'MLC') {
+          switch (this.model_datos_pregunta['Respuesta']) {
+            case undefined:
+                swal('Error!', 'Ingresa una respuesta correcta.', 'error');
+                return;
+            case 'SR':
+                swal('Error!', 'Ingresa una respuesta correcta.', 'error');
+                return;
+          }
+          this.model_datos_pregunta['detalleindicador'] = [this.model_datos_pregunta['Respuesta']];
+        } else if (this.model_datos_pregunta['Forma'] === 'NUMERO' || this.model_datos_pregunta['Forma'] === 'FECHA' || this.model_datos_pregunta['Forma'] === 'HORA' || this.model_datos_pregunta['Forma'] === 'F/H' || this.model_datos_pregunta['Forma'] === 'START' || this.model_datos_pregunta['Forma'] === 'DESLIZA') {
+          if (this.select_indicador_tipo === 'Selecciona') {
+            swal('Error!', 'Selecciona una condicion para el indicador.', 'error');
+            return;
+          }
+          switch (this.cantidad_indicador) {
+            case undefined:
+                swal('Error!', 'Ingresa una cantidad como condición para cumplir el indicador.', 'error');
+                return;
+            case '':
+                swal('Error!', 'Ingresa una cantidad como condición para cumplir el indicador.', 'error');
+                return;
+            case '0':
+              if (this.model_datos_pregunta['Forma'] === 'FECHA' || this.model_datos_pregunta['Forma'] === 'HORA' || this.model_datos_pregunta['Forma'] === 'F/H') {
+                swal('Error!', 'Para este tipo de pregunta la cantidad del indicador no es valido', 'error');
+                return;
+              }
+              if (this.model_datos_pregunta['Forma'] === 'START' && Number(this.cantidad_indicador) <= 0) {
+                swal('Error!', 'Para este tipo de pregunta no se permiten los numeros negativos en la cantidad para el indicador', 'error');
+                return;
+              }
+          }
+          this.model_datos_pregunta['detalleindicador'] = [{'condicion': this.select_indicador_tipo, 'cantidad': this.cantidad_indicador}];
+        } else {
+          this.model_datos_pregunta['detalleindicador'] = [];
+        }
+
+      } else {
+        this.model_datos_pregunta['indicador'] = false;
+        this.model_datos_pregunta['detalleindicador'] = [];
+      }
+        this.listapregunta.push(this.model_datos_pregunta);
+        this.model_datos_pregunta = {};
+        this.cmodaledpreg = false;
+        this.indicador = false;
+        this.select_indicador_tipo = 'Selecciona';
+        this.cantidad_indicador = '';
+        console.log(this.indicador);
+    }
+
     limpiar_pregunta() {
       this.minino_desliza = 0;
       this.maximo_desliza  = 0;
@@ -451,6 +519,9 @@ export class ChacerComponent implements OnInit {
       this.minino_desliza = 0;
       this.maximo_desliza  = 0;
       this.cmodaledpreg = false;
+      this.indicador = false;
+      this.select_indicador_tipo = 'Selecciona';
+      this.cantidad_indicador = '';
     }
     limpiar_changer(e) {
       if ( e.value === 'SI/NO') {

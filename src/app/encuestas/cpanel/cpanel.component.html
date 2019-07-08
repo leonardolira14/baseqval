@@ -1,138 +1,123 @@
-<div class="container-fluid bg-gris1 p-t-40 p-b-40">
-  <div class="container">
-      <div class="row">
-          <div class="col-12 m-t-40">
-            <div>
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-6">
-                    <mat-form-field class="w-100">
-                      <input matInput (keyup)="applyFilter($event.target.value)" class="text-dark-2"  placeholder="Buscar nombre de encuesta">
-                    </mat-form-field>
-                  </div>
-                  <div class="col-6">
-                      <mat-form-field class="w-100">
-                          <mat-label>Grupo de Encuestas</mat-label>
-                          <mat-select [(value)]="selected" (selectionChange)="ordergroup()">
-                            <mat-option value="td">Todas</mat-option>
-                            <mat-option value="sn">Sin Grupo</mat-option>
-                            <mat-option *ngFor="let grupo of grupos" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                    </div>
-                    <div class="col-12">
-                        <div class="mat-elevation-z8 ">
-                            <table mat-table class="w-100" [dataSource]="dataSource" matSort >
-                          
-                              <!-- ID Column -->
-                              <ng-container matColumnDef="titulo">
-                                <th mat-header-cell *matHeaderCellDef  class="bg-dark-2 "> <span class="d-flex justify-content-center text-uppercase text-monse">Título</span> </th>
-                                <td mat-cell *matCellDef="let row"> {{row.Nombre}} </td>
-                              </ng-container>
-                          
-                              <!-- Progress Column -->
-                              <ng-container matColumnDef="fechaultima">
-                                <th mat-header-cell *matHeaderCellDef  class="bg-dark-2 justify-content"><span class="text-uppercase text-monse d-flex justify-content-center">Perfil Emisor</span> </th>
-                                <td mat-cell *matCellDef="let row" class="text-center"> {{row.Emisor}} </td>
-                              </ng-container>
-                          
-                              <!-- Name Column -->
-                              <ng-container matColumnDef="norespuestas">
-                                <th mat-header-cell *matHeaderCellDef  class="bg-dark-2"><span class="text-uppercase text-monse d-flex justify-content-center">Perfil Receptor </span></th>
-                                <td mat-cell *matCellDef="let row" class="text-center"> {{row.Receptor}} </td>
-                              </ng-container>
-                          
-                              <!-- Color Column -->
-                              <ng-container matColumnDef="resultados">
-                                <th mat-header-cell *matHeaderCellDef  class="bg-dark-2"><span class="text-uppercase text-monse">Resultados</span> </th>
-                                <td mat-cell *matCellDef="let row" class="text-center">
-                                    <button (click)="goto('resultados/'+row.IDCuestionario)" placement="bottom" ngbTooltip="Analiza los resultados obtenidos"   mat-icon-button class="text-primary">
-                                        <i class="fas fa-chart-area"></i>
-                                    </button>
-                                </td>
-                              </ng-container>
-
-                              <ng-container matColumnDef="compartir">
-                                  <th mat-header-cell *matHeaderCellDef  class="bg-dark-2"><span class="text-uppercase text-monse">Compartir</span> </th>
-                                  <td mat-cell *matCellDef="let row" class="text-center">
-                                      <button (click)="most_url(row.IDCuestionario)" placement="bottom" ngbTooltip="Comparte tu encuesta"  mat-icon-button class="text-primary">
-                                          <i class="fas fa-share-alt"></i>
-                                      </button>
-                                  </td>
-                              </ng-container>
-
-                              <ng-container matColumnDef="acciones">
-                                  <th mat-header-cell *matHeaderCellDef  class="bg-dark-2"><span class="text-uppercase text-monse">Acciones</span> </th>
-                                  <td mat-cell *matCellDef="let row" class="text-center">
-                                      <button mat-icon-button [matMenuTriggerFor]="menu" class="text-primary">
-                                          <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                        <mat-menu #menu="matMenu">
-                                            <button (click)="desactivar(row.IDCuestionario,row.Estado === '1' ? '0':'1')" mat-menu-item>
-                                              <i class="fas fa-{{row.Estado==1? 'exclamation-circle':'check'}}"></i>
-                                              <span class="ml-3 mr-3">{{row.Estado==1? 'Desactivar':'Activar'}}</span>
-                                              <div class="q"><i matTooltip="Activar o Desactivar esta encuesta" class="fas fa-question-circle"></i></div>
-                                            </button>
-                                            <button (click)="editar_encuesta(row.IDCuestionario)"  mat-menu-item>
-                                              <i class="fas fa-edit"></i>
-                                              <span class="ml-3 mr-3">Editar</span>
-                                              <div class="q"><i matTooltip="Editar los datos de esta encuesta" class="fas fa-question-circle"></i></div>
-                                            </button>
-                                            <button (click)="muestranotificaciones(row.IDCuestionario)" mat-menu-item>
-                                                <i class="fas fa-mobile-alt"></i>
-                                                <span class="ml-3 mr-3">Activar notificaciones</span>
-                                                <div class="q"><i matTooltip="Activar notificaciones cuando se conteste esta encuesta" class="fas fa-question-circle"></i></div>
-                                            </button>
-                                            <button (click)="open_modalgrupos(row.IDCuestionario)" mat-menu-item>
-                                                <i class="fas fa-archive"></i>
-                                                <span class="ml-3 mr-3">Archivar</span>
-                                                <div class="q"><i matTooltip="Agregar a un grupo" class="fas fa-question-circle"></i></div>
-                                            </button>
-                                            <button (click)="most_url(row.IDCuestionario)" mat-menu-item>
-                                              <i class="fas fa-link"></i>
-                                              <span class="ml-3 mr-3">Mostrar URL</span>
-                                              <div class="q"><i  matTooltip="Mostrar la dirección url de esta encuesta para compartir" class="fas fa-question-circle"></i></div>
-                                            </button>
-                                            <button (click)="alertdeleteresp(row.IDCuestionario)" mat-menu-item>
-                                                <i class="fas fa-ban"></i>
-                                                <span class="ml-3 mr-3">Eliminar Respuestas</span>
-                                                <div class="q"><i  matTooltip="Elimina permanentemente todas las respuestas que recibió esta encuesta. Las preguntas, el formato y la lógica no sufrirán cambios." class="fas fa-question-circle"></i></div>
-                                            </button>
-                                            <button mat-menu-item (click)="alertdele(row.IDCuestionario)" >
-                                                <i class="fas fa-ban"></i>
-                                                <span class="ml-3 mr-3">Eliminar Encuesta</span>
-                                                <div class="q"><i matTooltip="Eliminar todo los datos relacionados con esta encuesta" class="fas fa-question-circle"></i></div>
-                                            </button>
-                                            
-                                          </mat-menu>
-
-                                  </td>
-                              </ng-container>
-                          
-                              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                              <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-                              </tr>
-                            </table>
-                          
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-                          </div>
-                    </div>
-                    <div class="col-6 m-t-20 m-b-20">
-                      <button (click)="nuew()" class="btn btn-succes text-white text-uppercase">Crear encuesta</button>
-                    </div>
-                    <div class="col-6 m-t-20 m-b-20 text-right">
-                        <button (click)="admin_grupos()" class="btn btn-outline-succes text-uppercase">Administrar Grupos</button>
-                      </div>
-                </div>
-              </div>
-            </div>
-          </div>
+<div class="container-fluid p-t-40 p-b-40">
+    <div class="row">
+        <div class="col-4">
+            <mat-form-field class="w-100">
+              <input matInput (keyup)="applyFilter($event.target.value)" class="text-dark-2"  placeholder="Buscar nombre de encuesta">
+            </mat-form-field>
         </div>
+        <div class="col-3">
+            <mat-form-field class="w-100">
+              <mat-label>Familias de Cuestionarios</mat-label>
+              <mat-select [(value)]="selected" (selectionChange)="ordergroup()">
+                    <mat-option value="td">Todas</mat-option>
+                    <mat-option value="sn">Sin Grupo</mat-option>
+                    <mat-option *ngFor="let grupo of grupos" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</mat-option>
+               </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-3">
+            <mat-form-field class="w-100">
+                <mat-label>Grupos</mat-label>
+                <mat-select [(value)]="selected" (selectionChange)="ordergroup()">
+                      <mat-option value="td">Todas</mat-option>
+                      <mat-option value="sn">Sin Grupo</mat-option>
+                 </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-2 text-right">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button (click)="nuew()" class="btn btn-secondary text-white text-uppercase mr-3" matTooltip="Crear Cuestionario"><i class="fas fa-plus"></i></button>
+                <button (click)="admin_grupos()" class="btn btn-outline-secondary text-uppercase " matTooltip="Administrar Familias"><i class="fas fa-archive"></i></button>
+                
+              </div>
+        </div>
+    </div>
+  <div class="container m-t-30">
+    
+    <div class="row">
+        <div class="col-3" *ngFor="let  encuesta of tdencuestas ">
+            <div  class="card w-100 card-avatar">
+                <div class="card-header bg-white">
+                  <div class="row">
+                      <div class="col-10 text-center">
+                          <span class="text-nombre ">{{encuesta.Nombre}}</span>
+                      </div>
+                       <div class="col-1 text-center">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button (click)="desactivar(encuesta.IDCuestionario,encuesta.Estado === '1' ? '0':'1')"  mat-menu-item>
+                                <mat-icon><i matTooltip="Activar o Desactivar esta encuesta" class="fas fa-question-circle"></i></mat-icon>
+                                <span>{{encuesta.Estado==1? 'Desactivar':'Activar'}}</span>
+                              </button>
+                            <button (click)="editar_encuesta(encuesta.IDCuestionario)"   mat-menu-item>
+                              <mat-icon><i matTooltip="Editar los datos de esta encuesta" class="fas fa-question-circle"></i></mat-icon>
+                              <span>Editar</span>
+                            </button>
+                            <button (click)="open_modalgrupos(encuesta.IDCuestionario)"  mat-menu-item>
+                                <mat-icon><i matTooltip="Agregar a un grupo" class="fas fa-question-circle"></i></mat-icon>
+                                <span>Asignar familia</span>
+                              </button>
+                            <button (click)="goto('resultados/'+encuesta.IDCuestionario)"  mat-menu-item>
+                                  <mat-icon><i matTooltip="Ver resultados de encuesta" class="fas fa-question-circle"></i></mat-icon>
+                                  <span>Resultados</span>
+                              </button>
+                           <!--- <button (click)="muestranotificaciones(encuesta.IDCuestionario)"  mat-menu-item>
+                              <mat-icon><i matTooltip="Agregar a un grupo" class="fas fa-question-circle"></i></mat-icon>
+                              <span>Activar Notificaciones</span>
+                            </button>--->
+                            <button  (click)="most_url(encuesta.IDCuestionario)" mat-menu-item>
+                                <mat-icon><i  matTooltip="Mostrar la dirección url de esta encuesta para compartir" class="fas fa-question-circle"></i></mat-icon>
+                                <span>Mostrar URL </span>
+                              </button>
+                            <button (click)="alertdeleteresp(encuesta.IDCuestionario)" mat-menu-item>
+                                <mat-icon><i  matTooltip="Elimina permanentemente todas las respuestas que recibió esta encuesta. Las preguntas, el formato y la lógica no sufrirán cambios." class="fas fa-question-circle"></i></mat-icon>
+                                <span>Eliminar Respuestas </span>
+                              </button>
+                            <button  (click)="alertdele(encuesta.IDCuestionario)" mat-menu-item>
+                                <mat-icon><i matTooltip="Eliminar todo los datos relacionados con esta encuesta" class="fas fa-question-circle"></i></mat-icon>
+                                <span>Eliminar Cuestionario</span>
+                              </button>
+                          </mat-menu>
+                    </div>
+                  </div>
+                    
+                   
+                  </div>
+                <div  class="card-body row">
+                  
+                  <div class="col-12 m-t-20 text-center">
+                    <span class="text-titulo-secundario ">Grupo Emisor</span>
+                  </div>
+                  <div class="col-12 text-center">
+                      <span class="text-subtitulo-secundario text-muted">{{encuesta.Emisor}}</span>
+                  </div>
+                  <div class="col-12 m-t-20 text-center">
+                      <span class="text-titulo-secundario ">Grupo Receptor</span>
+                    </div>
+                    <div class="col-12 text-center">
+                        <span class="text-subtitulo-secundario text-muted">{{encuesta.Receptor}}</span>
+                    </div>
+                  </div>
+                <div class="card-footer">
+                    <div class="btn-group d-flex" role="group" aria-label="Basic example">
+                        <button type="button" (click)="editar_encuesta(encuesta.IDCuestionario)"  class="btn btn-primary mr-3">Editar</button>
+                        <button type="button"  (click)="alertdele(encuesta.IDCuestionario)" class="btn btn-outline-danger ">Eliminar</button>
+                      </div>
+                    </div>
+              </div>
+        </div>
+    </div>
   </div>
 </div>
+
+
+
+
 <ng-template #creargrupo let-modal>
   <div class="modal-header">
-      <h5 class="modal-title" id="modal-basic-title">Administrar Grupos de Encuestas</h5>
+      <h5 class="modal-title" id="modal-basic-title">Administrar Familias de Cuestionarios</h5>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -164,8 +149,9 @@
           </div>
           <div class="col-6 text-right">
               <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-succes mr-3" (click)="addgrup()">Guardar</button>
-                  <button type="button" class="btn btn-danger" (click)="newgrupe = !newgrupe">Cacelar</button>
+                  <button type="button" class="btn btn-outline-danger mr-3" (click)="newgrupe = !newgrupe">Cancelar</button>
+                  <button type="button" class="btn btn-succes " (click)="addgrup()">Guardar</button>
+                  
               </div>
           </div>
         </div>
@@ -175,8 +161,9 @@
   </div>
   <div class="modal-footer">
       <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-succes mr-3" (click)="new_grupo()">Nuevo Grupo</button>
-          <button type="button" class="btn btn-danger" (click)="modal.dismiss('Cross click')">Cerrar</button>
+          <button type="button" class="btn btn-outline-danger mr-3" (click)="modal.dismiss('Cross click')">Cerrar</button>
+          <button type="button" class="btn btn-outline-secondary " (click)="new_grupo()">Crear Familias de Cuestionarios</button>
+         
       </div>
   </div>
 </ng-template>

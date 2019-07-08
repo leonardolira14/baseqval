@@ -24,7 +24,7 @@ export interface CuestionarioData {
   styleUrls: ['./cpanel.component.scss']
 })
 
-export class CpanelComponent implements OnInit, AfterViewInit {
+export class CpanelComponent implements OnInit {
   displayedColumns: string[] = ['titulo', 'fechaultima', 'norespuestas' , 'resultados', 'compartir', 'acciones'];
   dataSource: MatTableDataSource<CuestionarioData>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -51,14 +51,14 @@ export class CpanelComponent implements OnInit, AfterViewInit {
   public deleteclientid = '';
   public spiner = true;
   selected = 'td';
-
+  public lista_encuestas: any;
   constructor(private route: Router, private modalService: NgbModal, private http: CuestionariosService) {
     this.datosempresa = JSON.parse(localStorage.empresa);
 
    }
    nuew() {
      this.route.navigateByUrl('/encuestas/select/N');
-     //this.open_modal(this.modalnueva);
+     // this.open_modal(this.modalnueva);
    }
    goto(ir) {
     this.closemodel(this.modalnueva);
@@ -80,6 +80,8 @@ export class CpanelComponent implements OnInit, AfterViewInit {
         data['usuarios'].forEach(element => {
           this.usuarios.push({id: element.Id, nombre: element.nombre, apellido: element.apellido, checked: false});
         });
+        this.lista_encuestas = this.tdencuestas;
+        console.log(this.tdencuestas);
         this.dataSource = new MatTableDataSource(this.tdencuestas);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort ;
@@ -88,19 +90,21 @@ export class CpanelComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (filterValue === '') {
+      this.tdencuestas = this.lista_encuestas;
+    } else {
+      this.tdencuestas = this.lista_encuestas.filter(resp => {
+        return resp.Nombre.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase());
+
+      });
     }
+
   }
   admin_grupos() {
     this.open_modal(this.creargrupo);
   }
   new_grupo() {
     this.newgrupe = true;
-  }
-
-  ngAfterViewInit() {
   }
   addgrup() {
     this.spiner = true;
