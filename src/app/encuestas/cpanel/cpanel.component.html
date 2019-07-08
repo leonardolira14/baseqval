@@ -2,10 +2,10 @@
     <div class="row">
         <div class="col-4">
             <mat-form-field class="w-100">
-              <input matInput (keyup)="applyFilter($event.target.value)" class="text-dark-2"  placeholder="Buscar nombre de encuesta">
+              <input matInput (keyup)="applyFilter($event.target.value)" class="text-dark-2"  placeholder="Buscar nombre de cuestionario">
             </mat-form-field>
         </div>
-        <div class="col-3">
+        <div class="col-2">
             <mat-form-field class="w-100">
               <mat-label>Familias de Cuestionarios</mat-label>
               <mat-select [(value)]="selected" (selectionChange)="ordergroup()">
@@ -15,15 +15,42 @@
                </mat-select>
             </mat-form-field>
         </div>
-        <div class="col-3">
+        <div class="col-2">
             <mat-form-field class="w-100">
-                <mat-label>Grupos</mat-label>
-                <mat-select [(value)]="selected" (selectionChange)="ordergroup()">
-                      <mat-option value="td">Todas</mat-option>
-                      <mat-option value="sn">Sin Grupo</mat-option>
+                <mat-label>Grupo Emisor</mat-label>
+                <mat-select [(value)]="selected_emisor" (selectionChange)="ordergroup_emisor()">
+                      <mat-option value="td">Todos</mat-option>
+                      <mat-optgroup  label="Internos">
+                        <mat-option *ngFor="let group of listgruposInternos" [value]="group.Nombre">
+                          {{group.Nombre}}
+                        </mat-option>
+                      </mat-optgroup>
+                      <mat-optgroup  label="Externo">
+                        <mat-option *ngFor="let group of listgruposExternos" [value]="group.Nombre">
+                          {{group.Nombre}}
+                        </mat-option>
+                      </mat-optgroup>
                  </mat-select>
             </mat-form-field>
         </div>
+        <div class="col-2">
+          <mat-form-field class="w-100">
+              <mat-label>Grupo Receptor</mat-label>
+              <mat-select [(value)]="selected_receptor" (selectionChange)="ordergroup_receptor()">
+                    <mat-option value="td">Todos</mat-option>
+                    <mat-optgroup  label="Internos">
+                      <mat-option *ngFor="let group of listgruposInternos" [value]="group.Nombre">
+                        {{group.Nombre}}
+                      </mat-option>
+                    </mat-optgroup>
+                    <mat-optgroup  label="Externo">
+                      <mat-option *ngFor="let group of listgruposExternos" [value]="group.Nombre">
+                        {{group.Nombre}}
+                      </mat-option>
+                    </mat-optgroup>
+               </mat-select>
+          </mat-form-field>
+      </div>
         <div class="col-2 text-right">
             <div class="btn-group" role="group" aria-label="Basic example">
                 <button (click)="nuew()" class="btn btn-secondary text-white text-uppercase mr-3" matTooltip="Crear Cuestionario"><i class="fas fa-plus"></i></button>
@@ -100,10 +127,10 @@
                         <span class="text-subtitulo-secundario text-muted">{{encuesta.Receptor}}</span>
                     </div>
                   </div>
-                <div class="card-footer">
+                <div class="card-footer bg-white">
                     <div class="btn-group d-flex" role="group" aria-label="Basic example">
-                        <button type="button" (click)="editar_encuesta(encuesta.IDCuestionario)"  class="btn btn-primary mr-3">Editar</button>
-                        <button type="button"  (click)="alertdele(encuesta.IDCuestionario)" class="btn btn-outline-danger ">Eliminar</button>
+                        <button type="button" (click)="editar_encuesta(encuesta.IDCuestionario)"  class="btn btn-outline-primary mr-3">Editar</button>
+                        <button type="button"  (click)="goto('resultados/'+encuesta.IDCuestionario)" class="btn btn-outline-primary ">Resultados</button>
                       </div>
                     </div>
               </div>
@@ -132,10 +159,10 @@
             {{grupo.Nombre}}
           </div>
           <div class="col-2">
-              <button (click)="editgrup(grupo.IDGrupo)" mat-mini-fab class="bg-primary"><i class="fas fa-edit"></i></button>
+              <button (click)="editgrup(grupo.IDGrupo)" mat-mini-fab class="bg-primary"><i class="fas fa-edit text-white"></i></button>
           </div>
           <div class="col-2">
-              <button mat-mini-fab (click)="deletgrup(grupo.IDGrupo)" class="bg-primary"><i class="fas fa-trash"></i></button>
+              <button mat-mini-fab (click)="deletgrup(grupo.IDGrupo)" class="bg-primary"><i class="fas fa-trash text-white"></i></button>
           </div>
         </div>
         <mat-divider class="w-100 m-t-15"></mat-divider>
@@ -162,7 +189,7 @@
   <div class="modal-footer">
       <div class="btn-group" role="group" aria-label="Basic example">
           <button type="button" class="btn btn-outline-danger mr-3" (click)="modal.dismiss('Cross click')">Cerrar</button>
-          <button type="button" class="btn btn-outline-secondary " (click)="new_grupo()">Crear Familias de Cuestionarios</button>
+          <button type="button" class="btn btn-secondary " (click)="new_grupo()">Crear Familias de Cuestionarios</button>
          
       </div>
   </div>
@@ -198,19 +225,19 @@
 </ng-template>
 <ng-template #ngrupos let-modal>
 <div class="modal-header">
-  <h5 > Grupos de Encuestas</h5>
+  <h5 > Grupos de Cuestionarios</h5>
   <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
 </div>
 <div class="modal-body">
-<span class="d-block text-center text-monse">Selecciona el grupo al que quieres que pertenesca esta escuesta.</span>
+<span class="d-block text-center text-monse">Selecciona la familia a la que quieres que pertenesca este cuestionario.</span>
 <div class="container">
   <div class="row">
     <div class="col-12">
         <mat-list role="list">
             <mat-radio-group [(ngModel)]="modelgrupoper.IDGrupo" aria-label="Select an option">
-              <mat-list-item  role="listitem"><mat-radio-button color="primary" value="0">Sin Grupo</mat-radio-button></mat-list-item>
+              <mat-list-item  role="listitem"><mat-radio-button color="primary" value="0">Sin Familia</mat-radio-button></mat-list-item>
               <mat-list-item *ngFor="let grupo of grupos" role="listitem"><mat-radio-button color="primary" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</mat-radio-button></mat-list-item>
             </mat-radio-group>
           </mat-list> 
@@ -220,7 +247,7 @@
 </div>
 <div class="modal-footer">
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-outline-danger mr-3">Cerrar</button>
+        <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-outline-danger mr-3">Cerrar</button>
         <button type="button" class="btn btn-succes" (click)="addgrupoaencuesta()">Guardar</button>
         
       </div>

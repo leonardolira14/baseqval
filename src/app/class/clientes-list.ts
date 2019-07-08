@@ -16,4 +16,26 @@ export class ClientesList {
         public getList() {
             return this.clienteslis;
         }
+        public buscar_grupo(grupo) {
+            const listic = [];
+            if (grupo === 'td') {
+                return this.clienteslis;
+            } else if (grupo === 'sn') {
+                this.clienteslis.forEach(cliente => {
+                    if (cliente.IDConfig === '0') {
+                        listic.push(cliente);
+                    }
+                 });
+                 return listic;
+            } else {
+
+               this.clienteslis.forEach(cliente => {
+                   if (cliente.IDConfig === grupo) {
+                    listic.push(cliente);
+                   }
+
+                });
+                return listic;
+            }
+        }
 }

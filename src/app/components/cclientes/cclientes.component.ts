@@ -60,6 +60,7 @@ public datos_empresa;
 public estados: any[] = [];
 public grupos: any[] = [];
 public deleteclientid = '';
+public selected: any;
   constructor(
     public http: ClientesService,
     private spinner: NgxSpinnerService,
@@ -91,7 +92,7 @@ public deleteclientid = '';
 
       }
      this.Listclientes = this.clientes.getList();
-      console.log();
+      console.log(this.Listclientes);
       this.spiner = false;
     }, (error) => {
       this.spiner = false;
@@ -144,6 +145,7 @@ public deleteclientid = '';
     this.cliente.Telcontact = '';
     this.datsclie = true;
 
+
   }
   // funcion para solicitar datos de un cliente
     requestuser(id) {
@@ -157,7 +159,7 @@ public deleteclientid = '';
         this.spiner = false;
         resp['ok'] !== false ? this.cliente = resp['ok'] : '';
         console.log(this.cliente.Imagen);
-        (this.cliente.Imagen==null || this.cliente.Imagen=='')?this.logo_avatar='assets/img/avatar1.png':this.logo_avatar=this.ruta_server+'assets/img/clientes/avatar/'+this.cliente.Imagen
+        (this.cliente.Imagen == null || this.cliente.Imagen === '') ? this.logo_avatar = 'assets/img/avatar1.png' : this.logo_avatar = this.ruta_server + 'assets/img/clientes/avatar/' + this.cliente.Imagen;
         this.datsclie = true;
         this.spiner = false;
       }, (error) => {
@@ -286,5 +288,18 @@ public deleteclientid = '';
     reader.onload = (_event) => {
       this.logo_avatar = reader.result;
     };
+  }
+  selec_grupo(idGrupo) {
+    let nombre_grupo = '';
+    this.grupos.forEach(grupo => {
+      if (grupo.IDGrupo === idGrupo) {
+        nombre_grupo = grupo.Nombre;
+        return ;
+      }
+    });
+    return nombre_grupo;
+  }
+  filtrogrupo() {
+    this.Listclientes = this.clientes.buscar_grupo(this.selected);
   }
 }

@@ -4,7 +4,7 @@
         <input [(ngModel)]="palabra" (keyup)="buscarusuario()" matInput placeholder="Nombre de Usuario" value="">
      </mat-form-field>
     <div class="col-2 text-center">
-      <button class="bg-primary text-white" (click)="open('')" mat-mini-fab><i class="material-icons">add</i></button>
+      <button class="bg-secondary text-white" (click)="open('')" mat-mini-fab><i class="material-icons">add</i></button>
     </div>
     <div class="col-3  m-b-20" *ngFor="let usuario of listausuarios | paginate: {itemsPerPage: 20, currentPage: pageActual}; index as i">
       <mat-card class="w-100 card-avatar">  
@@ -24,7 +24,7 @@
                   </button>
                   <button  (click)="addfunciones(usuario.ID,datfunus)" mat-menu-item>
                     <mat-icon>portrait</mat-icon>
-                    <span>Agregar Funciones</span>
+                    <span>Asignar Funciones</span>
                   </button>
                   <button (click)="open_transfiere(usuario.ID)"   mat-menu-item>
                       <mat-icon>cached</mat-icon>
@@ -56,11 +56,11 @@
                   <span class="text-usuario text-muted"><strong>{{dame_grupo(usuario.IDConfig)}}</strong></span>
               </div>
               <div class="col-6 text-center m-t-20 m-auto">
-                  <img class="img-fluid" src="https://chart.googleapis.com/chart?cht=qr&chs=400x400&choe=ISO-8859-1&chl={{usuario.Usuario}}" alt="">
+                  <img class="img-fluid" src="https://chart.googleapis.com/chart?cht=qr&chs=400x400&choe=ISO-8859-1&chl={{'I|'+usuario.Usuario}}" alt="">
               </div>
               
               <div class="col-12 text-center m-t-40">
-                <button (click)="open(usuario.ID)" class="btn btn-outline-primary">Modificar Datos</button>
+                <button (click)="open(usuario.ID)" class="btn btn-outline-primary">Editar</button>
               </div>
           </div>
         </mat-card>        
@@ -85,7 +85,7 @@
                   <img src="{{logo_avatar}}"  mat-card-avatar  class="avatar">
               </div>
               <div class="col-12 text-center m-t-20">
-                  <button type="button" (click)="img_avatar.click()" class="btn btn-outline-succes">Cambiar Avatar</button>
+                  <button type="button" (click)="img_avatar.click()" class="btn btn-outline-primary">Cambiar Avatar</button>
                   <input type="file" (change)="change_img_avatar(img_avatar.files)" accept="image/gif, image/jpeg, image/png" #img_avatar class="d-none">
               </div>
 

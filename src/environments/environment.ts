@@ -4,8 +4,9 @@
 
 export const environment = {
   production: true,
-  urlserver:"https://admyo.com/serverqval/",
-  urlserverp:"http://localhost/qval/web/serverqval/"
+  urlserver: 'https://admyo.com/serverqval/',
+  urlserverl: 'http://localhost/qval/web/serverqval/',
+  urlserverp: 'http://localhost/qval/qval_web/serverqval/'
 
 };
 

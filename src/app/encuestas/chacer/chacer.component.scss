@@ -11,6 +11,10 @@
           background: map-get($colors,succes) ;
           cursor: pointer; 
         }
+        &.Active{
+            color:map-get($colors,blanco) !important;
+            background: map-get($colors,verde) ;
+        }
     }
 }
 .cont-banco{

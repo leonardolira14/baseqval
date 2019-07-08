@@ -50,7 +50,11 @@ export class CpanelComponent implements OnInit {
   public modelgrupoper = {};
   public deleteclientid = '';
   public spiner = true;
+  public listgruposInternos: any;
+  public listgruposExternos: any;
   selected = 'td';
+  selected_emisor = 'td';
+  selected_receptor = 'td';
   public lista_encuestas: any;
   constructor(private route: Router, private modalService: NgbModal, private http: CuestionariosService) {
     this.datosempresa = JSON.parse(localStorage.empresa);
@@ -81,6 +85,8 @@ export class CpanelComponent implements OnInit {
           this.usuarios.push({id: element.Id, nombre: element.nombre, apellido: element.apellido, checked: false});
         });
         this.lista_encuestas = this.tdencuestas;
+        this.listgruposInternos = data['gruposInternos'];
+        this.listgruposExternos = data['gruposExternos'];
         console.log(this.tdencuestas);
         this.dataSource = new MatTableDataSource(this.tdencuestas);
         this.dataSource.paginator = this.paginator;
@@ -151,26 +157,19 @@ export class CpanelComponent implements OnInit {
   }
   // funcion para los cuestionarios que tiene un grupo
   ordergroup() {
-    let  list = [];
     if (this.selected === 'td') {
-      list = this.tdencuestas;
+      this.tdencuestas = this.lista_encuestas;
+    } else if (this.selected === 'sn') {
+      this.tdencuestas = this.lista_encuestas.filter(resp => {
+        return resp.Grupo.toLocaleLowerCase().includes('0');
 
-    } else if ( this.selected === 'sn' ) {
-      this.tdencuestas.forEach((item) => {
-        if (item.Grupo === '0') {
-          list.push(item);
-        }
       });
     } else {
-      this.tdencuestas.forEach((item) => {
-        if (item.Grupo === this.selected) {
-          list.push(item);
-        }
+      this.tdencuestas = this.lista_encuestas.filter(resp => {
+        return resp.Grupo.toLocaleLowerCase().includes(this.selected.toLocaleLowerCase());
+
       });
     }
-    this.dataSource = new MatTableDataSource(list);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   // funcion para desactivar un cuestionario
@@ -299,6 +298,25 @@ export class CpanelComponent implements OnInit {
   }
   editar_encuesta(id) {
     this.route.navigateByUrl('/encuestas/select/' + id);
+  }
+  ordergroup_emisor() {
+    if (this.selected_emisor === 'td') {
+      this.tdencuestas = this.lista_encuestas;
+    } else {
+      this.tdencuestas = this.lista_encuestas.filter(resp => {
+        return resp.Emisor.toLocaleLowerCase().includes(this.selected_emisor.toLocaleLowerCase());
+
+      });
+    }
+  }
+  ordergroup_receptor() {
+    if (this.selected_receptor === 'td') {
+      this.tdencuestas = this.lista_encuestas;
+    } else {
+      this.tdencuestas = this.lista_encuestas.filter(resp => {
+        return resp.Receptor.toLocaleLowerCase().includes(this.selected_receptor.toLocaleLowerCase());
+      });
+    }
   }
 
 }
