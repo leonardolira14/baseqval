@@ -14,3 +14,30 @@
         }
     }
 }
+.container-searchhome{
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	    align-items: center;
+	width: 100%;
+	height: 100vh;
+	background:transparent url('/assets/img/42-22971282-min.jpg') center center no-repeat;
+	background-size: cover; 
+	font-family: map-get($fonts,prosto);
+	& .fondoobs{
+		position: absolute;
+		background:rgba(map-get($gamagrises,gris1),0.4);
+		width: 100%;
+		height: 100%;
+
+    }
+    & h1{
+        font-size: 3.5rem;
+    }
+	
+}
+:host /deep/ .mat-list-item-content {
+    font-family: map-get($fonts,monse);
+    font-size:1rem;
+}

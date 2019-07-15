@@ -1,277 +1,196 @@
-<mat-horizontal-stepper #stepper>
-    <mat-step>
-        <ng-template matStepLabel>Planes</ng-template>
-        <div class="container-fluid bg-primary  cont-precios" id="precios">
-            <div class="row">
-              <div class="col-12 text-center m-b-40">
-                <h4 class="text-white text-uppercase text-prosto">Precios Qval</h4>
-              </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-              <div class="col-12 col-md-4 col-xl-4 col-lg-4  m-b-20">
-                <div class="card">
-                  <div class="card-body ">
-                    <div class="card-precio text-white p-t-20 p-b-20 bg-orange text-center">
-                      MENSUAL
-                    </div>
-                    <ul class="list-group">
-                      <li class="list-group-item">Número ilimitado de clientes y proveedores </li>
-                      <li class="list-group-item">Customización de accesos a usuarios                </li>
-                      <li class="list-group-item">App Móvil </li>
-                      <li class="list-group-item">Integración con admyo.com</li>
-                      <li class="list-group-item">Customización de cuestionarios, preguntas y respuestas                </li>
-                      <li class="list-group-item">Customización de apariencia de la aplicación
-                        </li>
-                      <li class="list-group-item">Costo $3000.00 10 PRIMERAS LICENCIAS OBLIGATORIAS. 100 MXN a partir de la 11ª  </li>
-                      <li class="list-group-item">Costo Mensual
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="card-footter text-center">
-                    <button (click)="select_plan('0')" class="btn btn-primary">Seleccionar</button>
-                  </div>
-                  
+<div  class="fixed-top w-100 alert alert-danger alert-dismissible fade  alerterror" role="alert">
+    {{textalert}}
+    
+  </div>
+  <div class="container menu-reg m-t-40 m-b-40">
+      <div class="ray"></div>
+    <div class="row d-flex justify-content-center">
+    
+      <div class="col-3 d-flex justify-content-start">
+        <a routerLink="/preciosadmyo"><div class="paso ">1</div></a>
+      </div>
+    
+      <div class="col-3 d-flex justify-content-center"><a routerLink="/datosregistro"><div class="paso active">2</div></a></div>
+      <div class="col-3 d-flex justify-content-end"><a routerLink="/pago"><div class="paso desactivate">3</div></a></div>
+    </div>
+  </div>
+  <form  #formregistro="ngForm" (submit)="enviarform()" class="container-fluid">
+    <div class="row">
+      <div class="col-8">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            Datos de la empresa
+          </div>
+          <div class="card-body row">
+            <div class="form-group col-12">
+                <label class="text-open-sans text-gris3" for="">* Razón Social/Nombre</label>
+                <input type="text" name="Razon_Social"   [(ngModel)]="registroi.Razon_Social" class="form-control" placeholder=""> 
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" >* Nombre Comercial</label>
+                <input type="text" name="Nombre_Comercial"  [(ngModel)]="registroi.Nombre_Comercial" class="form-control" placeholder=""> 
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">* R.F.C.(REGISTRO FEDERAL DE CONTRIBUYENTES)</label>
+                <input [(ngModel)]="registroi.RFC"  name="RFC" type="text" class="form-control" placeholder=""> 
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">* Tipo de Persona</label>
+                <div class="input-group">
+                
+                 <select name="Tipo_Persona"  [(ngModel)]="registroi.Tipo_Persona"  class="form-control">
+                  <option value="">Seleccciona</option>
+                  <option value="PF">Persona Fisica Actividad Empresarial</option>
+                  <option value="PM">Persona Moral</option>
+                   </select>
+                   <div class="input-group-prepend">
+                    <span triggers="mouseenter:mouseleave" ngbPopover="Una persona física es todo miembro de la especie humana con la posibilidad de adquirir derechos y contraer obligaciones. Mientras que las personas morales son un conjunto de personas físicas que se unen con un fin especifico, por ejemplo formar una sociedad o una empresa." container="body" class="ayuda input-group-text bg-blanco text-primary" id="basic-addon1">?</span>
                 </div>
               </div>
-              <div class="col-12 col-md-4 col-xl-4 col-lg-4">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="card-precio text-white text-uppercase p-t-20 p-b-20 bg-danger text-center">
-                      Anual
-                    </div>
-                    <ul class="list-group">
-                        <li class="list-group-item">Número ilimitado de clientes y proveedores </li>
-                        <li class="list-group-item">Customización de accesos a usuarios                </li>
-                        <li class="list-group-item">App Móvil </li>
-                        <li class="list-group-item">Integración con admyo.com</li>
-                        <li class="list-group-item">Customización de cuestionarios, preguntas y respuestas                </li>
-                        <li class="list-group-item">Customización de apariencia de la aplicación
-                          </li>
-                        <li class="list-group-item">Costo $30,000.00 10 PRIMERAS LICENCIAS OBLIGATORIAS. 1000 MXN a partir de la 11ª  </li>
-                        <li class="list-group-item">2 Meses de Regalo</li>
-                      </ul>
-                  <div class="card-footter text-center">
-                    <button (click)="select_plan('1')" class="btn btn-primary">Seleccionar</button>
-                  </div>
+               
+                
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">* Sector</label>
+                <div class="input-group">
+                
+                  <select name="Sector"  [(ngModel)]="registroi.Sector" (change)="subsector()"  class="form-control">
+                    <option value="">Seleccciona</option>
+                    <option [value]="sector.IDNivel1" *ngFor="let sector of sectores">{{sector.Giro}}</option>
+                  </select>
+                  <div class="input-group-prepend">
+                    <span triggers="mouseenter:mouseleave" ngbPopover="Giro Principal al que pertence su empresa" class="ayuda input-group-text bg-blanco text-primary" id="basic-addon1">?</span>
                 </div>
               </div>
-            
-            </div>
-          </div>
-          </div>
-    </mat-step>
-    <mat-step>  
-    <ng-template matStepLabel>Detalles de facturación</ng-template>
-    <div class="container">
-      <div class="row">
-        <div class="col-7 card text-monse">
-          <div class="card-header bg-primary text-white">Datos del Representante</div>
-          <div class="row card-body">
-            <mat-form-field class="col-6">
-                <input [(ngModel)]="datos_pago.nombre" name="nombre" matInput placeholder="Nombre *" value="">
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <input [(ngModel)]="datos_pago.apellidos" name="apellidos" matInput placeholder="Apellidos *" value="">
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <input [(ngModel)]="datos_pago.correo" name="correo" matInput placeholder="Correo Electrónico *" value="">
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <input [(ngModel)]="datos_pago.repetircorreo" name="repetir_correo" matInput placeholder="Repetir Correo Electrónico *" value="">
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <input [(ngModel)]="datos_pago.telefono" name="tel" matInput placeholder="Teléfono Fijo" value="">
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <input [(ngModel)]="datos_pago.movil" name="movil" matInput placeholder="Teléfono Móvil *" value="">
-            </mat-form-field>
-            <div class="col-12 m-t-20"><h5>Datos de la empresa</h5></div>
-            <mat-form-field class="col-12">
-                <input [(ngModel)]="datos_pago.razonsocial" name="razon_social" matInput placeholder="Razón Social *" value="">
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <input [(ngModel)]="datos_pago.nombrecomercial" name="nombre_comercial" matInput placeholder="Nombre Comercial" value="">
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <input [(ngModel)]="datos_pago.rfc" name="rfc" matInput placeholder="R.F.C." value="">
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <mat-label>No de Empleados</mat-label>
-                <mat-select name="noempleados" [(ngModel)]="datos_pago.noempleados" >
-                  <mat-option [value]="tipos.Empleados" *ngFor='let tipos of noempleados' >
-                   {{tipos.Empleados}}
-                  </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class="col-6">
-                <mat-label>Tipo de Empresa</mat-label>
-                <mat-select value name="tipoempresa" [(ngModel)]="datos_pago.TipoEmpresa">
-                    <mat-option [value]="tipos.TipoEmpresa"  *ngFor='let tipos of tipo_empresa' >
-                     {{tipos.TipoEmpresa}}
-                    </mat-option>
-                  </mat-select>
-            </mat-form-field>
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">SubSector</label>
+                <div class="input-group">
+                
+                  <select name="SubSector" (change)="rama()"  [(ngModel)]="registroi.SubSector" class="form-control">
+                    <option value="">Selecciona</option>
+                    <option [value]="sector.IDNivel2" *ngFor="let sector of subsectores">{{sector.Giro}}</option>
+                  </select>
+                  <div class="input-group-prepend">
+                    <span triggers="mouseenter:mouseleave" ngbPopover="SubGiro al que pertence su empresa" class="ayuda input-group-text bg-blanco text-primary" id="basic-addon1">?</span>
+                </div>
+              </div>
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">Rama</label>
+                <div class="input-group">
+                
+                  <select name="Rama"  [(ngModel)]="registroi.Rama"  class="form-control">
+                    <option value="">Selecciona</option>
+                    <option [value]="sector.IDGiro3" *ngFor="let sector of ramas">{{sector.Giro}}</option>
+                  </select>
+                  <div class="input-group-prepend">
+                    <span triggers="mouseenter:mouseleave" ngbPopover="Rama sobre la que valoran sus clientes/proveedores" class="ayuda input-group-text bg-blanco text-primary" id="basic-addon1">?</span>
+                </div>
+              </div>
+  
+             </div>
           </div>
         </div>
-        <div class="col-5">
-            <div class="card">
-              <div class="card-header bg-primary text-white">
-                Descripciòn de Venta
-              </div>
-              <div class="card-body">
-                <div class="container-fluid">
-                  <div class="row">
-                      <mat-form-field class="col-2">
-                          <input (keyup)="cambio_cant()" matInput placeholder="No Lic" [(ngModel)]="numero_de_lic">
-                      </mat-form-field>
-                    <div class="col-6">
-                      {{(datos_pago.plan==="0")?'Subscripción Mensual':'Subscripción Anual'}}
-                       
-                    </div>
-                    <div class="col-4 text-right">
-                      {{total_pago | currency}}
-                    </div>
-                   
+        <div class="card m-t-20 m-b-20">
+          <div class="card-header bg-primary text-white">
+            Datos del Usuario Principal
+          </div>
+          <div class="card-body row">
+            <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">* Nombre(S)</label>
+                <input  name="Nombre" type="text" [(ngModel)]="registroi.Nombre" class="form-control" placeholder=""> 
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">Apellidos</label>
+                <input  name="Apellido" type="text" [(ngModel)]="registroi.Apellidos" class="form-control" placeholder=""> 
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">* Correo Electrónico</label>
+                <input  name="Correo1" type="text" [(ngModel)]="registroi.Correo1" class="form-control" placeholder=""> 
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">* Confirmar Correo Electrónico</label>
+                <input  name="Correo2" type="text" [(ngModel)]="registroi.Correo2" class="form-control" placeholder=""> 
+             </div>
+              <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">* Contraseña</label>
+                <input  type="password" name="Clave1" [(ngModel)]="registroi.Clave1" class="form-control" placeholder=""> 
+             </div>
+             <div class="form-group col-6">
+                <label class="text-open-sans text-gris3" for="">* Confirmar Contraseña</label>
+                <input  type="password" name="Clave2" [(ngModel)]="registroi.Clave2" class="form-control" placeholder=""> 
+             </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            Productos en el Carrito	
+          </div>
+          <div class="card-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-8">
+                  {{producto}}
+                </div>
+                <div class="col-4 text-right">
+                  {{precioproducto | currency}}
+                </div>
+                <div class="col-8 m-t-10" *ngIf="licenciasqval">
+                  {{productoqval}}
+                  <p>
+                  <small class="text-muted">No de Licencias: {{numlicqval}}</small>
+                </div>
+                <div class="col-4 text-right m-t-10" *ngIf="licenciasqval">
+                  <span >{{precioproductoqval | currency}}</span>
+                </div>
+  
+                <div class="col-12 ray m-t-20">
                   
-      
-                    <div class="col-12 ray m-t-20">
-                      
-                    </div>
-                    <div class="col-8  text-right m-t-20">
-                      Total a Pagar
-                    </div>
-                    <div class="col-4 text-right m-t-20">
-                      <strong class="text-primary">{{total_pago | currency}}</strong>
-                    </div>
-                  </div>
+                </div>
+                <div class="col-8  text-right m-t-20">
+                  Total a Pagar
+                </div>
+                <div class="col-4 text-right m-t-20">
+                  <strong class="text-primary">{{total | currency}}</strong>
                 </div>
               </div>
             </div>
-            <div class="row m-t-40">
-              <div class="col-6 text-left">
-                <button (click)="next_0()" class="btn btn-danger">Cambiar Plan</button>
-              </div>
-              <div class="col-6 text-right">
-                <button (click)="next_1()" class="btn btn-secondary">Siguiente</button>
-              </div>
-              <div class="col-12 m-t-20">
-                <small class="text-muted">Nota: Todos los campos marcados con * son necesarios para el registro.</small>
-              </div>
-            </div>
-      
           </div>
+        </div>
+        <div class="row m-t-40">
+          <div class="col-6 text-left">
+            <div (click)="goto('preciosadmyo')" class="btn btn-danger">Cambiar Plan</div>
+          </div>
+          <div class="col-6 text-right">
+            <button type="submit"  class="btn btn-secondary">Siguiente</button>
+          </div>
+          <div class="col-12 m-t-20">
+            <small class="text-muted">Nota: Todos los campos marcados con * son necesarios para el registro.</small>
+          </div>
+        </div>
+  
       </div>
     </div>
-    </mat-step>
-    <mat-step>
-    <ng-template matStepLabel>Método de pago</ng-template>
-      <div class="container">
-        <div class="row ">
-          <div class="col-7 ">
-            <div class="row">
-              <div class="col-12 card">
-                  <div class="card-header bg-primary">
-                      Medios de pago del apartado
-                  </div>
-                  <div class="card-body">
-                      <div class="row">
-                          <mat-accordion class="col-12">
-                              <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                  <mat-panel-title>
-                                    Tarjeta de crédito o débito
-                                  </mat-panel-title>
-                                </mat-expansion-panel-header>
-                            <div class="row">
-                                <mat-form-field class="col-6">
-                                    <input [(ngModel)]="model_pago_tarjeta.nombre"   matInput placeholder="Nombre " value="">
-                                </mat-form-field>
-                                <mat-form-field class="col-6">
-                                    <input [(ngModel)]="model_pago_tarjeta.apellidos" matInput placeholder="Apellidos">
-                                </mat-form-field>
-                                <mat-form-field class="col-6">
-                                    <input [(ngModel)]="model_pago_tarjeta.correo" matInput placeholder="Correo Electronico">
-                                </mat-form-field>
-                                <mat-form-field class="col-6">
-                                    <input [(ngModel)]="model_pago_tarjeta.telefono" matInput placeholder="Telèfono">
-                                </mat-form-field>
-                                <div class="col-12 m-t-20">
-                                  Datos de la tarjeta
-                                </div>
-                                <mat-form-field class="col-6">
-                                    <input matInput [(ngModel)]="model_pago_tarjeta.numero" placeholder="Numero de Tarjeta(16 Digitos) " value="">
-                                </mat-form-field>
-                                <mat-form-field pattern="^[0-9]+$"  class="col-2">
-                                    <input [(ngModel)]="model_pago_tarjeta.cvv"  matTooltip="Últimos 3 números en el reverso de tu tarjeta" matInput placeholder="CVV">
-                                </mat-form-field>
-                                <mat-form-field class="col-2">
-                                    <input matInput [(ngModel)]="model_pago_tarjeta.mes" placeholder="Mes">
-                                </mat-form-field>
-                                <mat-form-field class="col-2">
-                                    <input matInput [(ngModel)]="model_pago_tarjeta.anio" placeholder="Año">
-                                </mat-form-field>
-                                <div class="col-12 text-right m-t-20">
-                                  <button class="btn btn-succes" (click)="pago_tarjeta()">Pagar</button>
-                                </div>
-                            </div>                      
-                                
-                              </mat-expansion-panel>
-                          </mat-accordion>
-                      </div>     
-                    </div>
-              </div>
-            </div>
-              
-              
-          </div>
-          <div class="col-5 ">
-            <div class="row">
-              <div class="col-12 card">
-                  <div class="card-header bg-primary text-white">
-                      Descripciòn de Venta
-                    </div>
-                    <div class="card-body">
-                      <div class="container-fluid">
-                        <div class="row">
-                            <mat-form-field class="col-2">
-                                <input (keyup)="cambio_cant()" matInput placeholder="No Lic" [(ngModel)]="numero_de_lic">
-                            </mat-form-field>
-                          <div class="col-6">
-                            {{(datos_pago.plan==="0")?'Subscripción Mensual':'Subscripción Anual'}}
-                             
-                          </div>
-                          <div class="col-4 text-right">
-                            {{total_pago | currency}}
-                          </div>
-                         
-                        
-            
-                          <div class="col-12 ray m-t-20">
-                            
-                          </div>
-                          <div class="col-8  text-right m-t-20">
-                            Total a Pagar
-                          </div>
-                          <div class="col-4 text-right m-t-20">
-                            <strong class="text-primary">{{total_pago | currency}}</strong>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-              </div>
-            </div>
-             
-          </div>
-         
-          
-           
-        </div>
-      </div>
-    </mat-step>
-    
-</mat-horizontal-stepper>
-<div *ngIf="spiner" class="spinner">
-    <div class="spinner-border text-primary" role="status">
+  </form>
+  <div *ngIf="spinner" class="spiner_load d-flex justify-content-center align-items-center">
+    <div class="spinner-border spinner-grow-lg text-white" role="status">
       <span class="sr-only">Loading...</span>
     </div>
-</div>
+    <br>
+  </div>
+  <swal
+    #errorrfcSwal
+    title="Error!"
+    text="El RFC que intenta registrar no es valido"
+    type="warning">
+  </swal>
+  <swal
+    #siccesSwal
+    title="Exito!"
+    text="Gracias por su registro, verifique su bandeja de entrada en dónde le llegaron instrucciones para activar su cuenta"
+    type="success">
+  </swal>
+  

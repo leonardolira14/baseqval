@@ -1,8 +1,24 @@
 <div class="container">
   <div class="row m-t-20">
-    <mat-form-field class="col-10">
+    <mat-form-field class="col-5">
         <input [(ngModel)]="palabra" (keyup)="buscarusuario()" matInput placeholder="Nombre de Usuario" value="">
      </mat-form-field>
+     <div class="col-5">
+        <mat-form-field class="w-100"> 
+                <mat-label>Grupos</mat-label>
+                <mat-select [(value)]="selected" (selectionChange)="filtrogrupo()" >
+                <mat-option  value="td">
+                        Todos
+                </mat-option>
+                <mat-option  value="sn">
+                    Sin Grupo
+                </mat-option>
+                <mat-option *ngFor="let grupo of grupos" [value]="grupo.IDGrupo">
+                    {{grupo.Nombre}}
+                </mat-option>
+                </mat-select>
+        </mat-form-field>
+    </div>
     <div class="col-2 text-center">
       <button class="bg-secondary text-white" (click)="open('')" mat-mini-fab><i class="material-icons">add</i></button>
     </div>
@@ -111,11 +127,13 @@
                 </mat-form-field>
                 <mat-form-field class="col-6">
                     <mat-label>Grupo</mat-label>
-                    <mat-select  [(ngModel)]="user.Configuracion" [ngModelOptions]="{standalone: true}">
+                    <mat-select  [(ngModel)]="user.IDConfig" [ngModelOptions]="{standalone: true}">
                         <mat-option *ngFor="let grupo of grupos" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                
+                <mat-form-field class="col-6">
+                    <input matInput placeholder="Numero de Celular" [(ngModel)]="user.Celular" name="Celular" [ngModelOptions]="{standalone: true}"  value="">
+                </mat-form-field>
               </div>
               <div class="col-12 m-t-20 text-right">
                   <div class="btn-group" role="group" aria-label="Basic example">

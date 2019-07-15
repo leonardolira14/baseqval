@@ -62,9 +62,10 @@ export class CusuariosComponent implements OnInit {
     Usuario: '',
     Puesto: '',
     Empresa: '',
-    Configuracion: '',
+    IDConfig: '',
     functions: '',
-    Imagen: ''
+    Imagen: '',
+    Celular: ''
   };
   orderForm: FormGroup;
   public  ListaUsuarios = new UsuariosList();
@@ -79,6 +80,7 @@ export class CusuariosComponent implements OnInit {
     { id: 6, label: 'Acciones dentro de Resultados', name: 'fresultados', checado: false  },
     { id: 7, label: 'Carga Exprés', name: 'fexpres' , checado: false }
   ];
+  public selected: any;
   constructor(
     private http: UsuariosService,
     private formBuilder: FormBuilder,
@@ -203,7 +205,8 @@ export class CusuariosComponent implements OnInit {
       return;
     }
     this.spiner = true;
-    this.http.deleteuser(id, state)
+    const datos = {id, state, correo_baja: this.datosusuario['Correo']};
+    this.http.deleteuser(datos)
     .subscribe((resp) => (this.ngOnInit()));
   }
   closemodel(content) {
@@ -226,9 +229,10 @@ export class CusuariosComponent implements OnInit {
      this.user.Puesto = datosus['Puesto'];
      this.user.Correo = datosus['Correo'];
      this.user.Usuario = datosus['Usuario'];
-     this.user.Configuracion = datosus['IDConfig'];
+     this.user.IDConfig = datosus['IDConfig'];
      this.user.functions = datosus['Funciones'];
      this.user.Imagen = datosus['Imagen'];
+     this.user.Celular = datosus['Celular'];
      if ((this.user.Imagen !== null) && (this.user.Imagen !== '')) {
       this.logo_avatar = this.ruta_server + 'assets/img/usuarios/avatar/' + datosus['Imagen'];
      } else {
@@ -241,9 +245,10 @@ export class CusuariosComponent implements OnInit {
       this.user.Puesto = '';
       this.user.Correo = '';
       this.user.Usuario = '';
-      this.user.Configuracion = '';
+      this.user.IDConfig = '';
       this.user.functions = '';
       this.user.Imagen = '';
+      this.user.Celular = '';
       this.logo_avatar = 'assets/img/avatar1.png';
     }
     this.datsus = true;
@@ -383,5 +388,8 @@ export class CusuariosComponent implements OnInit {
       });
       console.log(this.ID_Transfiere_a , this.ID_Transfiere );
     }
+  }
+  filtrogrupo() {
+    this.listausuarios = this.ListaUsuarios.buscar_grupo(this.selected);
   }
 }

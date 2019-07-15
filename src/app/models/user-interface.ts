@@ -6,7 +6,8 @@ export interface userInterface {
     Usuario?: string;
     Puesto?: string;
     Empresa?: string;
-    Configuracion?: string;
+    IDConfig?: string;
     functions?: any;
     Imagen?: any;
+    Celular?: any;
 }

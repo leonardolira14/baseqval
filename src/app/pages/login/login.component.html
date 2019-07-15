@@ -46,7 +46,11 @@
               <div class="btn btn-primary d-block m-t-20" (click)="login()">Enviar</div>
           </div>
           <div class="card-footer bg-white text-right ">
-              <span class="text-primary rec-pas" (click)="recpas()">Recuperar Contraseña</span>
+              <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" (click)="goto('registro')" class="btn btn-secondary mr-3">Suscribirse</button>
+                  <button type="button" (click)="recpas()" class="btn btn-primary">Recuperar Contraseña</button>
+                </div>
+             
           </div>
       </div>
     </div>

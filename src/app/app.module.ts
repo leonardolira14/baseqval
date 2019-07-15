@@ -53,8 +53,14 @@ import { VistapreviaComponent } from './pages/encuestas/vistaprevia/vistaprevia.
 import { HomeComponent } from './pages/home/home.component';
 import {MenuaComponent} from './componets/menua/menua.component';
 import { PreciosComponent  } from './components/precios/precios.component';
-import { RegistroComponent } from './components/registro/registro.component';
+import { RegistroComponent } from "./components/registro/registro.component";
 import { PregistroComponent } from './pages/pregistro/pregistro.component';
+import { ChangepassComponent } from './pages/changepass/changepass.component';
+import { ActivarcuentaComponent } from './pages/activarcuenta/activarcuenta.component';
+import { MenubComponent } from './components/menub/menub.component';
+import { Cregistro3Component } from './components/cregistro3/cregistro3.component';
+import { Registro3Component } from './pages/registro3/registro3.component';
+import { PpreciosComponent } from './pages/pprecios/pprecios.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -95,14 +101,19 @@ import { PregistroComponent } from './pages/pregistro/pregistro.component';
     MenuaComponent,
     PreciosComponent,
     RegistroComponent,
-    PregistroComponent
+    PregistroComponent,
+    ChangepassComponent,
+    ActivarcuentaComponent,
+    MenubComponent,
+    Cregistro3Component,
+    Registro3Component,
+    PpreciosComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpModule,
     HttpClientModule,
     BrowserAnimationsModule,
     NoopAnimationsModule,

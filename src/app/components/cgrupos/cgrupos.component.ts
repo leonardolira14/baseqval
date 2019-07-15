@@ -39,7 +39,8 @@ export class CgruposComponent implements OnInit {
   model: any = {};
   datosusuario: any = [];
   funcionesusuario: any = [];
-
+  palabra = '';
+  selected = '';
   // tslint:disable-next-line:max-line-length
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal, private location: Location, public router: Router, private http: ConectService, private spinner: NgxSpinnerService) {
 
@@ -205,5 +206,11 @@ closemodel(content) {
 
     });
   }
-  
+  buscar_grupo() {
+    this.todoslosgrupos = todosgrupos.busquedapalabra(this.palabra);
+  }
+  filtrogrupo() {
+    this.todoslosgrupos = todosgrupos.buscar_tipo(this.selected);
+  }
+
 }

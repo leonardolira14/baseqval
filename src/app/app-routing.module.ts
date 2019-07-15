@@ -15,9 +15,13 @@ import { PanelComponent } from './pages/encuestas/panel/panel.component';
 import { HacerComponent } from './pages/encuestas/hacer/hacer.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PregistroComponent } from './pages/pregistro/pregistro.component';
+import { ChangepassComponent } from './pages/changepass/changepass.component';
+import { ActivarcuentaComponent } from './pages/activarcuenta/activarcuenta.component';
+import { Registro3Component } from './pages/registro3/registro3.component';
+import { PpreciosComponent } from './pages/pprecios/pprecios.component';
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'registro', component: PregistroComponent},
+  {path: 'datosregistro', component: PregistroComponent},
   {path: 'login', component: LoginComponent},
   {path: 'general', component: GeneralComponent},
   {path: 'recpass', component: RecpassComponent},
@@ -32,6 +36,10 @@ const appRoutes: Routes = [
   {path: 'addreport', component: AddreporteComponent },
   {path: 'encuestas', component: PanelComponent },
   {path: 'encuestas/select/:encuesta', component: HacerComponent },
+  {path: 'changepassword/:token', component: ChangepassComponent},
+  {path: 'activarcuenta/:token', component: ActivarcuentaComponent},
+  {path: 'pago', component: Registro3Component },
+  {path: 'precios', component: PpreciosComponent }
 
 ];
 @NgModule({

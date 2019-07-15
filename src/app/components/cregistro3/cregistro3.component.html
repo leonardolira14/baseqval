@@ -1,0 +1,121 @@
+<div  class="fixed-top w-100 alert alert-danger alert-dismissible fade  alerterror" role="alert">
+    
+  </div>
+  <div class="container menu-reg m-t-40 m-b-40">
+      <div class="ray"></div>
+    <div class="row d-flex justify-content-center">
+    
+      <div class="col-3 d-flex justify-content-start">
+        <a routerLink="/preciosadmyo"><div class="paso ">1</div></a>
+      </div>
+    
+      <div class="col-3 d-flex justify-content-center"><a routerLink="/datosregistro"><div class="paso ">2</div></a></div>
+      <div class="col-3 d-flex justify-content-end"><a routerLink="/pago"><div class="paso active ">3</div></a></div>
+    </div>
+  </div>
+  <form #formpag="ngForm"  class="container">
+    <div class="row p-b-20">
+      <div class="col-12 m-b-30 m-t-30">
+        Se genera un pago para cada uno de los planes, para pagos mayores a $3000.00 pesos se realiza por medio de transferencia electrónica, para pagos menores a $3000.00 se realiza por medio de tarjeta de crédito o débito en el cual se activara el plan recurrente. 
+      </div>
+      <div class="col-12 col-md-6 col-xl-6 col-lg-6">
+        <div class="card">
+          <div class="card-header bg-primary">
+            Datos de Pago para plan Admyo
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 m-t-20 m-b-20">
+                <label class="text-open-sans text-gris3" >* Método de Pago: {{pago.Metodo}}</label>
+              </div>
+              <div class="col-12 m-t-20 m-b-20">
+                <label class="text-open-sans text-gris3" >Plan: {{producto}} {{precioproducto | currency}}</label>
+              </div>
+                          
+              <div class="form-group col-12 m-t-20">
+                    <label class="text-open-sans text-gris3" >* Nombre del Titular</label>
+                    <input type="text" [(ngModel)]="pago.Nombre" name="Nombre"  class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-12">
+                    <label class="text-open-sans text-gris3" >* Correo Electrónico</label>
+                    <input type="text" [(ngModel)]="pago.Correo" name="Correo"  class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-12">
+                    <label class="text-open-sans text-gris3" > Número de Teléfono</label>
+                    <input type="text" [(ngModel)]="pago.Movil" name="Movil" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-12" *ngIf="(pago.Metodo==='Tarjeta')" >
+                    <label class="text-open-sans text-gris3" > Número de Tarjeta Débito/Crédito (16 Digitos)</label>
+                    <input type="text"  [(ngModel)]="pago.Tarjeta" name="Tarjeta" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-4 " *ngIf="(pago.Metodo==='Tarjeta')" >
+                    <label class="text-open-sans text-gris3" > CVV</label>
+                    <input type="text" [(ngModel)]="pago.cvv" name="cvv" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-4 " *ngIf="(pago.Metodo==='Tarjeta')" >
+                    <label class="text-open-sans text-gris3" > Mes</label>
+                    <input type="text" [(ngModel)]="pago.Mes" name="mes" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-4" *ngIf="(pago.Metodo==='Tarjeta')">
+                    <label class="text-open-sans text-gris3" > Año</label>
+                    <input type="text"   [(ngModel)]="pago.Anio" name="anio" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-12 text-center">
+                  <button class="btn btn-secondary" (click)="pagar_admyo()"><i class="fas fa-cash-register"></i> Pagar Plan Admyo</button>
+              </div>
+               </div>
+            </div>
+          </div>
+      </div>
+      <div class="col-12 col-md-6 col-xl-6 col-lg-6" *ngIf='precioproductoqval>0'>
+        <div class="card">
+          <div class="card-header bg-primary">
+            Datos de Pago para plan Qval
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 m-t-20 m-b-20" >
+                <label class="text-open-sans text-gris3" >* Método de Pago: {{pago_qval.Metodo}}</label>
+              </div>
+              <div class="col-12 m-t-20 m-b-20">
+                <label class="text-open-sans text-gris3" >Plan Qval: {{productoqval}} {{precioproductoqval | currency}}</label>
+              </div>
+              
+              <div class="form-group col-12 m-t-20">
+                    <label class="text-open-sans text-gris3" >* Nombre del Titular</label>
+                    <input type="text" [(ngModel)]="pago_qval.Nombre" name="Nombre"  class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-12">
+                    <label class="text-open-sans text-gris3" >* Correo Electrónico</label>
+                    <input type="text" [(ngModel)]="pago_qval.Correo" name="Correo"  class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-12">
+                    <label class="text-open-sans text-gris3" > Número de Teléfono</label>
+                    <input type="text" [(ngModel)]="pago_qval.Movil" name="Movil" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-12"  *ngIf="(pago_qval.Metodo==='Tarjeta')">
+                    <label class="text-open-sans text-gris3"  > Número de Tarjeta Débito/Crédito (16 Digitos)</label>
+                    <input type="text"  [(ngModel)]="pago_qval.Tarjeta" name="Tarjeta" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-4 " *ngIf="(pago_qval.Metodo==='Tarjeta')">
+                    <label class="text-open-sans text-gris3"  > CVV</label>
+                    <input type="text" [(ngModel)]="pago_qval.cvv" name="cvv" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-4 " *ngIf="(pago_qval.Metodo==='Tarjeta')">
+                    <label class="text-open-sans text-gris3"  > Mes</label>
+                    <input type="text" [(ngModel)]="pago_qval.Mes" name="mes" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-4" *ngIf="(pago_qval.Metodo==='Tarjeta')">
+                    <label class="text-open-sans text-gris3" > Año</label>
+                    <input type="text"   [(ngModel)]="pago_qval.Anio" name="anio" class="form-control" placeholder=""> 
+              </div>
+              <div class="form-group col-12 text-center">
+                  <button class="btn btn-secondary" (click)="pagar_qval()"><i class="fas fa-cash-register"></i> Pagar Plan Qval</button>
+              </div>
+               </div>
+            </div>
+          </div>
+      </div>
+      </div>
+    </form>
+    

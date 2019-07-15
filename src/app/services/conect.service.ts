@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient,HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class ConectService {
   constructor(private http: HttpClient) {
 
    }
-   cambio_pass(datos){
+   cambio_pass(datos) {
     return this.http.post(environment.urlserverp + 'cambiopas', datos);
    }
    registro(datos) {
@@ -66,5 +66,13 @@ export class ConectService {
    // funcion para agregar un nevo servicio
    addgroup(datos) {
      return this.http.post(environment.urlserverp + 'addgroup', datos);
+   }
+   // recuperacion de contraseña con password
+   change_password(datos) {
+    return this.http.post(environment.urlserverp + 'changepassword', datos);
+   }
+   // function para activar una cuenta de un usuario
+   activacuenta(datos) {
+    return this.http.post(environment.urlserverp + 'activacuenta', datos);
    }
 }

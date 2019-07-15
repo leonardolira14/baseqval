@@ -1,0 +1,56 @@
+<div class="fixed-top alert alert-danger alert-dismissible fade alert-login w-50 mx-auto" role="alert">
+  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="fixed-top alert alert-success alert-dismissible fade alert-loginsuces w-50 mx-auto" role="alert">
+    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<div class="container-img">
+</div>
+<div class="container-fluid body-login ">
+  
+</div>
+<div class="container m-t-20 login-card" >
+  <div class="row d-flex justify-content-center">
+    <div class=" col-4">
+      <div class="card">
+        <div class="card-header text-center">
+              <strong>Cambio de Contraseña</strong>  
+          </div>
+          <div class="card-body">
+              <div class="img-circ">
+                  <i class="fas fa-key"></i>
+              </div>
+              <span class="text-center d-block">Nueva contraseña</span>
+              <div class="input-group m-b-30">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                  </div>
+                  <input type="text" class="form-control" autocomplete="off" name="nueva" [(ngModel)]="nueva"  placeholder="">
+              </div>
+              <span class="text-center d-block">Confirma la contraseña</span>
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fas fa-user"></i></div>
+                  </div>
+                  <input type="text" class="form-control" autocomplete="off" name="confirma" [(ngModel)]="confirma"  placeholder="">
+              </div>
+                                    
+              
+              <div class="btn btn-primary d-block m-t-20" (click)="update()">Enviar</div>
+          </div>
+      </div>
+    </div>
+  </div>  
+</div>  
+<app-footer></app-footer>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+type="ball-clip-rotate-multiple">
+<p style="font-size: 20px; color: white">Loading...</p></ngx-spinner>

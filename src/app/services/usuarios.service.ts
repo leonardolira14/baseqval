@@ -33,8 +33,8 @@ headers:HttpHeaders = new HttpHeaders({
     .pipe(map(data => data));
   }
   // funcion para modificar el status de un usuario
-  deleteuser(id: string, state: string) {
-    return this.http.delete<userInterface>(environment.urlserverp + 'deleteuser?userdelete=' + id + '&userstate=' + state)
+  deleteuser(datos) {
+    return this.http.post(environment.urlserverp + 'deleteuser', datos)
     .pipe(map(data => data));
   }
   // funcin para modificar las funciones

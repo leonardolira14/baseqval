@@ -33,6 +33,9 @@ export class LoginComponent implements OnInit {
     recpas() {
       this.router.navigateByUrl('/recpass');
     }
+    goto(ir){
+      this.router.navigateByUrl(ir);
+    }
 
   envilogin(event: any) {
     if (event['code'] === 'Enter') {

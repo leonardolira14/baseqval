@@ -10,9 +10,10 @@ export class Usuarios {
         public Usuario: string,
         public Correo: string,
         public Funciones: any,
-        public Config: string,
+        public IDConfig: string,
         public Estado: string,
         public Imagen: string,
+        public Celular: string
         ) {
         }
 

@@ -39,5 +39,28 @@ export class UsuariosList {
        });
     return funciones;
    }
+   public buscar_grupo(grupo) {
+       
+    const listic = [];
+    if (grupo === 'td') {
+        return this.lista;
+    } else if (grupo === 'sn') {
+        this.lista.forEach(cliente => {
+            if (cliente.IDConfig === '0') {
+                listic.push(cliente);
+            }
+         });
+         return listic;
+    } else {
+
+       this.lista.forEach(cliente => {
+           if (cliente.IDConfig === grupo) {
+            listic.push(cliente);
+           }
+
+        });
+        return listic;
+    }
+}
 
 }
