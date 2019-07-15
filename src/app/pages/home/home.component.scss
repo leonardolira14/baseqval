@@ -41,3 +41,13 @@
     font-family: map-get($fonts,monse);
     font-size:1rem;
 }
+.bg-banner{
+    background-image: url('/assets/img/bg_second.jpg');
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+
+}
