@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, FormControl} from '@angular/forms';
 import { PreguntasService } from '../../services/preguntas.service';
 import { CuestionariosService  } from '../../services/cuestionarios.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 import { Observable, of } from 'rxjs';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import {map, startWith} from 'rxjs/operators';
 @Component({
   selector: 'app-chacer',
   templateUrl: './chacer.component.html',
@@ -82,9 +83,13 @@ export class ChacerComponent implements OnInit {
   ];
   public lineChartLegend = true;
   public lineChartType = 'line';
+  public id_usuario_notificacion = '';
   public usuario_notificacion = '';
   public condicion_notificacion = 'sn';
   public indexaddnotificacion = 0;
+  stateCtrl = new FormControl();
+  filteredStates: Observable<any[]>;
+  states: any[] = [];
   constructor(
     private params: ActivatedRoute,
     private httpcuestionarios: CuestionariosService,
@@ -151,6 +156,12 @@ export class ChacerComponent implements OnInit {
       this.perfilesInternos = data['pinternos'];
       this.perfilesExternos = data['pexternos'];
       this.all_user = data['usuarios'];
+      this.states = this.all_user;
+      this.filteredStates = this.stateCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(state => state ? this._filterStates(state) : this.states.slice())
+      );
       this.allcategorias = data['ok'];
       this.allcategoriastb = data['ok'];
       this.spiner = false;
@@ -158,6 +169,10 @@ export class ChacerComponent implements OnInit {
       this.spiner = false;
       swal('Error', error, 'error');
     });
+  }
+  private _filterStates(value: string): any[] {
+    const filterValue = value.toLowerCase();
+   return  this.states.filter(state => state.Nombre.toLowerCase().indexOf(filterValue) === 0);
   }
   preguntas_por_categorias(idcategoria, nombre) {
     const datos = {IDCategoria: idcategoria};
@@ -659,24 +674,34 @@ export class ChacerComponent implements OnInit {
       this.cmodalnotificaciones = false;
       this.listnotif = [];
     }
-    displayFn(user?): string | undefined {
+    displayFn(user?) {
       console.log(user);
       let nombre = '';
       if (user !== undefined && user !== null || user !== '') {
-        nombre = this.dameusuario(user);
+      this.all_user.forEach(usuario => {
+          if (usuario.ID === user) {
+           nombre = usuario.Nombre + ' ' + usuario.Apellidos;
+           return false ;
+          }
+      });
       }
       return nombre;
     }
 
     addnotificacion() {
-      console.log(this.indexaddnotificacion);
-      const notificaciones = {usuario: this.usuario_notificacion, condicion: this.condicion_notificacion};
+      if(this.condicion_notificacion === 'sn'){
+        swal('Error', 'Selecciona una condición para continuar.', 'error');
+        return;
+      }
+      const notificaciones = {usuario: this.id_usuario_notificacion, nombre: this.usuario_notificacion, condicion: this.condicion_notificacion};
       this.listnotif.push(notificaciones);
       console.log(this.listapregunta[this.indexaddnotificacion]);
+      this.id_usuario_notificacion = '';
       this.usuario_notificacion = '';
       this.condicion_notificacion = 'sn';
     }
-    dameusuario(id?) {
+ 
+    dameusuariohtml(id?) {
       console.log(this.all_user);
       let nombre = '';
       this.all_user.forEach(usuario => {
@@ -685,10 +710,11 @@ export class ChacerComponent implements OnInit {
            return false ;
           }
       });
-      return nombre;
+      this.id_usuario_notificacion = id;
+      this.usuario_notificacion = nombre;
     }
-    eliminarnotificacion(index) {
-      console.log(index);
+    eliminarnotificaciond(index) {
+      this.listnotif.splice(index, 1);
     }
 
 }

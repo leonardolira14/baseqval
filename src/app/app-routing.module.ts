@@ -19,6 +19,7 @@ import { ChangepassComponent } from './pages/changepass/changepass.component';
 import { ActivarcuentaComponent } from './pages/activarcuenta/activarcuenta.component';
 import { Registro3Component } from './pages/registro3/registro3.component';
 import { PpreciosComponent } from './pages/pprecios/pprecios.component';
+import { PnotificacionesComponent } from './pages/pnotificaciones/pnotificaciones.component';
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'datosregistro', component: PregistroComponent},
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
   {path: 'changepassword/:token', component: ChangepassComponent},
   {path: 'activarcuenta/:token', component: ActivarcuentaComponent},
   {path: 'pago', component: Registro3Component },
-  {path: 'precios', component: PpreciosComponent }
+  {path: 'precios', component: PpreciosComponent },
+  {path: 'notificaciones', component: PnotificacionesComponent }
 
 ];
 @NgModule({

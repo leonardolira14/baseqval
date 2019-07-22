@@ -175,14 +175,11 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12">
+                <div class="col-8">
                   <div class="row">
-                      <div class="col-10 m-t-20 m-b-20">
+                      <div class="col-12 m-t-20 m-b-20">
                           <h5 class="text-primary" ><strong>Emisor y Receptor</strong></h5>
                       </div> 
-                      <div class="col-2 m-t-20 m-b-20">
-                          <i class="fas fa-question-circle"></i>
-                      </div>
                       <div class="col-6">
                           <mat-form-field class="w-100">
                               <mat-label>Grupo Emisor</mat-label>
@@ -215,6 +212,21 @@
                               </mat-select>
                             </mat-form-field>
                       </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="row">
+                    <div class="col-12 m-t-20 m-b-20">
+                      <h5 class="text-primary" ><strong>Contestar por</strong></h5>
+                    </div> 
+                    <mat-form-field class="col-12 ">
+                      <mat-label>App</mat-label>
+                      <mat-select >
+                        <mat-option>Selecciona</mat-option>
+                        <mat-option value="0">App Qvaluation</mat-option>
+                        <mat-option value="1">App Qvaluation pro</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
                 </div>
                 <div class="col-12 cont_pregunta" *ngFor="let pregunta of listapregunta; let i = index;">
@@ -843,10 +855,10 @@
                   <div class="card-body container-fluid">
                     <div class="row">
                         <mat-form-field class="col-6">
-                            <input type="text" placeholder="Nombre de Usuario" [(ngModel)]="usuario_notificacion" matInput  [matAutocomplete]="auto">
-                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                              <mat-option  *ngFor="let option of all_user" [value]="option.ID">
-                                  {{option.Nombre + ' ' +option.Apellidos}}
+                            <input type="text" placeholder="Nombre de Usuario" [(ngModel)]="usuario_notificacion" [formControl]="stateCtrl" matInput  [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete" >
+                              <mat-option  *ngFor="let state of filteredStates | async"  (click)="dameusuariohtml(state.ID)">
+                                  {{state.Nombre + ' ' +state.Apellidos}}
                               </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -870,10 +882,10 @@
                           <mat-list class="col-12">
                               <mat-list-item *ngFor="let notificacion of listnotif; let i = index">
                                   <i  mat-list-icon class="fas fa-user"></i>
-                                  <h4 mat-line>{{dameusuario(notificacion.usuario)}}</h4>
+                                  <h4 mat-line>{{notificacion.nombre}}</h4>
                                   <p mat-line>Condición: {{(notificacion.condicion==='0')?'Respuesta Negativa':'Pregunta Contestada'}}</p>
                                  
-                                  <button (click)="eliminarnotificacion(i)" mat-icon-button >
+                                  <button (click)="eliminarnotificaciond(i)" mat-icon-button >
                                       <mat-icon  class="text-danger">delete</mat-icon>
                                   </button>
                               </mat-list-item>
@@ -883,7 +895,7 @@
                   </div>
                   <div class="card-footer text-right">
                       <div class="btn-group" role="group">
-                          <button type="button" class="btn btn-danger">Cerrar</button>                          
+                          <button type="button" (click)="cerrar_modal_notificaciones()" class="btn btn-danger">Cerrar</button>                          
                         </div>
                     </div>
               </div>
