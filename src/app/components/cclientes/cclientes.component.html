@@ -25,11 +25,11 @@
         <button mat-mini-fab (click)="open()" class="bg-secondary text-white"><i class="material-icons">add</i></button>
     </div>
     <div class="col-3  m-b-20" *ngFor="let clint of Listclientes | paginate: {itemsPerPage: 20, currentPage: pageActual} ; index as i">
-        <mat-card class="w-100 card-avatar">  
-            <div class="row">
+        <mat-card [ngClass]="clint.Estado === '0' ? 'bg-gris1':'bg-blanco'" class=" w-100 card-avatar ">  
+            <div class="row ">
               <div class="col-12 text-right">
                   <button mat-icon-button [matMenuTriggerFor]="menu">
-                      <mat-icon>more_vert</mat-icon>
+                      <mat-icon color="primary">more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
                       <button (click)="qr(modalqr,clint.Usuario)" mat-menu-item>
@@ -41,11 +41,11 @@
                         <span>Editar</span>
                       </button>
                       <button (click)="delete(clint.IDCliente ,clint.Estado === '1' ? '0':'1')" mat-menu-item>
-                        <mat-icon>{{clint.Estado === '1' ? 'warning':'done' }}</mat-icon>
+                        <mat-icon>{{clint.Estado === '1' ? 'clear':'done' }}</mat-icon>
                         <span>{{clint.Estado === '1' ? 'Desactivar':'Activar' }}</span>
                       </button>
                       <button (click)="alertdele(clint.IDCliente )" mat-menu-item>
-                          <mat-icon>warning</mat-icon>
+                          <mat-icon>clear</mat-icon>
                           <span>Eliminar</span>
                         </button>
                     </mat-menu>
@@ -55,7 +55,7 @@
                   <img src="{{(clint.Imagen==null || clint.Imagen=='')?'assets/img/avatar1.png':ruta_server+'assets/img/clientes/avatar/'+clint.Imagen}}"  mat-card-avatar  class="avatar">
                   
               </mat-card-header>
-              <div class="row">
+              <div class="row text-blackk">
                   <div class="col-12 m-t-30 text-center">
                     <span class="text-nombre ">{{clint.Nombre}}</span>
                   </div>
@@ -159,7 +159,7 @@
                                 <input matInput auto placeholder="Calle y Número" [(ngModel)]="cliente.Direccion" [ngModelOptions]="{standalone: true}" name="Direccion"  value="">
                             </mat-form-field>
                             <mat-form-field class="col-6">
-                                <input matInput auto placeholder="Teléfono Empresa" [(ngModel)]="cliente.Tel" [ngModelOptions]="{standalone: true}" name="Tel"  value="">
+                                <input matInput auto placeholder="Teléfono Empresa" mask='(000) 000-0000' [(ngModel)]="cliente.Tel" [ngModelOptions]="{standalone: true}" name="Tel"  value="">
                             </mat-form-field>
                             <mat-form-field class="col-6">
                                 <input matInput auto placeholder="Municipio/Alcaldia" [(ngModel)]="cliente.Municipio" [ngModelOptions]="{standalone: true}" name="Municipio"  value="">
@@ -187,11 +187,14 @@
                                 <input matInput auto placeholder="Correo Electrónico" [(ngModel)]="cliente.Correo" [ngModelOptions]="{standalone: true}" name="Correo" name="Tel"  value="">
                             </mat-form-field>
                             <mat-form-field class="col-6">
-                                <input matInput auto placeholder="Teléfono Contacto/Celular" [(ngModel)]="cliente.Telcontact" [ngModelOptions]="{standalone: true}" name="Tel"  value="">
+                                <input matInput auto placeholder="Teléfono Contacto/Celular" mask='(000) 000-0000' [(ngModel)]="cliente.Telcontact" [ngModelOptions]="{standalone: true}" name="Tel"  value="">
                             </mat-form-field>
                             <mat-form-field class="col-6">
                                 <input matInput auto placeholder="Puesto" [(ngModel)]="cliente.Puesto" [ngModelOptions]="{standalone: true}" name="Puesto"   value="">
                             </mat-form-field>
+                            <div class="col-6">
+                                <mat-checkbox color="primary" [(ngModel)]="remoto">Contestar Cuestionario Remoto</mat-checkbox>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12 m-t-20 text-right">

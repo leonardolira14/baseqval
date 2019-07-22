@@ -17,9 +17,9 @@
                       <mat-divider></mat-divider>
                       <mat-list-item role="listitem"> <small>No de Preguntas: {{model_general?.numero_preguntas}}</small></mat-list-item>
                       <mat-divider></mat-divider>
-                      <mat-list-item role="listitem"> <small>Perfil Emisor: {{model_general?.datos_Emisor?.Nombre}}</small></mat-list-item>
+                      <mat-list-item role="listitem"> <small>Grupo Emisor: {{model_general?.datos_Emisor?.Nombre}}</small></mat-list-item>
                       <mat-divider></mat-divider>
-                      <mat-list-item role="listitem"> <small>Perfil Receptor: {{model_general?.datos_Receptor?.Nombre}}</small></mat-list-item>
+                      <mat-list-item role="listitem"> <small>Grupo Receptor: {{model_general?.datos_Receptor?.Nombre}}</small></mat-list-item>
                       <mat-divider></mat-divider>
                       <mat-list-item class="cursor_pointer" *ngIf="model_cuestionario.IDCuestionario!==undefined" (click)="stepper.selectedIndex = 1" role="listitem"> <small><i class="fas fa-edit"></i> Editar Encuesta</small></mat-list-item>
                       <mat-divider></mat-divider>
@@ -39,7 +39,7 @@
               </div>
               <div class="col-4">
                   <div class="card rounded-0 w-100 p-t-20 p-b-20">
-                      <h6 class="text-uppercase d-block text-center">ESTADO DE LA ENCUESTA</h6>
+                      <h6 class="text-uppercase d-block text-center">ESTADO DEL CUESTIONARIO</h6>
                       <span class="text-secondary d-block text-center"><h4>{{(model_general?.datos_cuestionario?.Status ==="1")?'Activa':'Desactivada'}}</h4></span>
                   </div>
               </div>
@@ -223,7 +223,7 @@
                         <div class="col-12 text-right">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <button (click)="editar_pregunta(i)" type="button" class="btn btn-primary mr-3">Editar</button>
-                                
+                                <button (click)="notificaciones_pregunta(i)" type="button" class="btn btn-primary mr-3">Notificaciones</button>
                                 <button (click)="eliminar_pregunta(i)" type="button" class="btn btn-outline-danger mr-3">Eliminar</button>
                               </div>
                         </div>
@@ -575,7 +575,7 @@
               
                 
               
-              <div class="col-4 m-t-20">
+              <div class="col-6 m-t-20">
                   <mat-form-field class="w-100">
                       <mat-label>Frecuencia</mat-label>
                       <mat-select [(ngModel)]="model_datos_pregunta.Frecuencia">
@@ -589,7 +589,7 @@
                       </mat-select>
                     </mat-form-field>
               </div>
-              <div class="col-4 m-t-20">
+              <div class="col-6 m-t-20">
                   <mat-form-field class="w-100">
                       <mat-label>Esta Pregunta es obligatoria.</mat-label>
                       <mat-select [(ngModel)]="model_datos_pregunta.Obligatoria">
@@ -598,15 +598,7 @@
                       </mat-select>
                     </mat-form-field>
               </div>
-              <div class="col-4 m-t-20" *ngIf="model_datos_pregunta.Forma ==='SI/NO' || model_datos_pregunta.Forma ==='SI/NO/NA' || model_datos_pregunta.Forma ==='SI/NO/NS' || model_datos_pregunta.Forma ==='ML' || model_datos_pregunta.Forma ==='MLC'">
-                <mat-form-field class="w-100">
-                    <mat-label>Respuesta Positiva</mat-label>
-                    <mat-select [(ngModel)]="model_datos_pregunta.Respuesta">
-                      <mat-option value="SR">Sin Respuesta</mat-option>
-                      <mat-option value="{{resp}}" *ngFor="let resp of model_datos_pregunta.Respuestas">{{resp}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-            </div>
+              
             <div class="col-12 m-t-20" *ngIf="  model_datos_pregunta.Forma ==='ML' || model_datos_pregunta.Forma ==='MLC'">
               <mat-form-field class="w-100">
                   <mat-label>Posibles Respuestas</mat-label>
@@ -675,13 +667,84 @@
                           <input class="w-100" [(ngModel)]="model_datos_pregunta.Peso" placeholder="Puntaje" matInput>
                       </mat-form-field>
                   </div>
-                  
+                <div class="col-6 m-t-20"
+                *ngIf="model_datos_pregunta.Forma === 'FECHA'">
+                <div class="row">
+                    <div class="col-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>Seleccione un indicador</mat-label>
+                        <mat-select [(ngModel)]="select_indicador_tipo"  >
+                          <mat-option value="Selecciona">Selecciona</mat-option>
+                          <mat-option value="mayor">Mayor que</mat-option>
+                          <mat-option value="mayorigual">Mayor Igual que</mat-option>
+                          <mat-option value="menor">Menor que</mat-option>
+                          <mat-option value="menorigual">Menor Igual que</mat-option>
+                          <mat-option value="igual">Igual que</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field class="w-100">
+                        <input class="w-100" [owlDateTime]="fechah" [owlDateTimeTrigger]="fechah"   [(ngModel)]="cantidad_indicador"  placeholder="Fecha" matInput>
+                        <mat-icon matSuffix >calendar_today</mat-icon>
+                        <owl-date-time #fechah [pickerType]="'calendar'"></owl-date-time>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 m-t-20"
+                *ngIf="model_datos_pregunta.Forma === 'HORA'">
+                <div class="row">
+                    <div class="col-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>Seleccione un indicador</mat-label>
+                        <mat-select [(ngModel)]="select_indicador_tipo"  >
+                          <mat-option value="Selecciona">Selecciona</mat-option>
+                          <mat-option value="mayor">Mayor que</mat-option>
+                          <mat-option value="mayorigual">Mayor Igual que</mat-option>
+                          <mat-option value="menor">Menor que</mat-option>
+                          <mat-option value="menorigual">Menor Igual que</mat-option>
+                          <mat-option value="igual">Igual que</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field class="w-100">
+                        <input class="w-100" [owlDateTimeTrigger]="hora"  [owlDateTime]="hora"  [(ngModel)]="cantidad_indicador"  placeholder="Hora" matInput>
+                        <mat-icon   matSuffix>query_builder</mat-icon>
+                        <owl-date-time #hora [pickerType]="'timer'"></owl-date-time>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 m-t-20"
+                *ngIf="model_datos_pregunta.Forma === 'F/H'">
+                <div class="row">
+                    <div class="col-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>Seleccione un indicador</mat-label>
+                        <mat-select [(ngModel)]="select_indicador_tipo"  >
+                          <mat-option value="Selecciona">Selecciona</mat-option>
+                          <mat-option value="mayor">Mayor que</mat-option>
+                          <mat-option value="mayorigual">Mayor Igual que</mat-option>
+                          <mat-option value="menor">Menor que</mat-option>
+                          <mat-option value="menorigual">Menor Igual que</mat-option>
+                          <mat-option value="igual">Igual que</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field class="w-100">
+                        <input class="w-100" [owlDateTime]="horafecha"  [owlDateTimeTrigger]="horafecha"   [(ngModel)]="cantidad_indicador"  placeholder="Fecha Y Hora" matInput>
+                        <mat-icon  matSuffix>calendar_today</mat-icon>
+                        <owl-date-time #horafecha></owl-date-time>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
                 <div class="col-6 m-t-20" 
                 *ngIf="
-                model_datos_pregunta.Forma === 'NUMERO' || 
-                model_datos_pregunta.Forma === 'FECHA' || 
-                model_datos_pregunta.Forma === 'F/H' || 
-                model_datos_pregunta.Forma === 'HORA' ||
+                model_datos_pregunta.Forma === 'NUMERO' ||  
                 model_datos_pregunta.Forma === 'DESLIZA' ||
                 model_datos_pregunta.Forma === 'START'
                 ">
@@ -700,13 +763,23 @@
                       </mat-form-field>
                     </div>
                     <div class="col-6">
+                        
                       <mat-form-field class="w-100">
-                        <input class="w-100" [(ngModel)]="cantidad_indicador"  placeholder="Cantidad" matInput>
-                    </mat-form-field>
+                        <input class="w-100"  [(ngModel)]="cantidad_indicador"  placeholder="Cantidad" matInput>
+                        
+                      </mat-form-field>
                     </div>
                   </div>
                 </div>
-                
+                <div class="col-6 m-t-20" *ngIf="model_datos_pregunta.Forma ==='SI/NO' || model_datos_pregunta.Forma ==='SI/NO/NA' || model_datos_pregunta.Forma ==='SI/NO/NS' || model_datos_pregunta.Forma ==='ML' || model_datos_pregunta.Forma ==='MLC'">
+                  <mat-form-field class="w-100">
+                      <mat-label>Respuesta Positiva</mat-label>
+                      <mat-select [(ngModel)]="model_datos_pregunta.Respuesta">
+                        <mat-option value="SR">Sin Respuesta</mat-option>
+                        <mat-option value="{{resp}}" *ngFor="let resp of model_datos_pregunta.Respuestas">{{resp}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+              </div>
               </div>
               <div class="col-12 p-t-20  text-right">
                   <div class="btn-group" role="group" aria-label="Basic example">
@@ -724,7 +797,7 @@
   </div>
 </div>
 <div class="container-fluid fondomodal" *ngIf="cmodaledguardarplantilla" >
-    <div class="container ">
+    <div class="container">
         <div class="row">
           <div class="col-6 card m-auto">
             <div class="row text-monse p-b-20 p-t-20">
@@ -759,4 +832,61 @@
     <div class="spinner-border text-primary" role="status">
       <span class="sr-only">Loading...</span>
     </div>
+  </div>
+  <div class="container-fluid fondomodal" *ngIf="cmodalnotificaciones" >
+      <div class="container">
+          <div class="row">
+              <div class="col-8 card m-auto" style="padding: 0;">
+                  <div class="card-header bg-primary text-monse text-white">
+                      Agregar Notificaciones
+                  </div>
+                  <div class="card-body container-fluid">
+                    <div class="row">
+                        <mat-form-field class="col-6">
+                            <input type="text" placeholder="Nombre de Usuario" [(ngModel)]="usuario_notificacion" matInput  [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                              <mat-option  *ngFor="let option of all_user" [value]="option.ID">
+                                  {{option.Nombre + ' ' +option.Apellidos}}
+                              </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field class="col-4">
+                            <mat-label>Condición</mat-label>
+                            <mat-select [(ngModel)]="condicion_notificacion">
+                                <mat-option selected  value="sn">
+                                    Selecciona
+                                  </mat-option>
+                                <mat-option  value="1">
+                                  Pregunta Contestada
+                                </mat-option>
+                                <mat-option  value="0">
+                                  Respuesta Negativa
+                                </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                          <div class="col-2">
+                            <button class="btn btn-primary" (click)='addnotificacion()'>Agregar</button>
+                          </div>
+                          <mat-list class="col-12">
+                              <mat-list-item *ngFor="let notificacion of listnotif; let i = index">
+                                  <i  mat-list-icon class="fas fa-user"></i>
+                                  <h4 mat-line>{{dameusuario(notificacion.usuario)}}</h4>
+                                  <p mat-line>Condición: {{(notificacion.condicion==='0')?'Respuesta Negativa':'Pregunta Contestada'}}</p>
+                                 
+                                  <button (click)="eliminarnotificacion(i)" mat-icon-button >
+                                      <mat-icon  class="text-danger">delete</mat-icon>
+                                  </button>
+                              </mat-list-item>
+                              
+                          </mat-list>
+                    </div>
+                  </div>
+                  <div class="card-footer text-right">
+                      <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-danger">Cerrar</button>                          
+                        </div>
+                    </div>
+              </div>
+          </div>
+      </div>
   </div>

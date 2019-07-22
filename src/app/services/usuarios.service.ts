@@ -51,4 +51,7 @@ return this.http.post(environment.urlserverp + 'deleteuserfin', datos);
    transferir_calificaciones(datos){
     return this.http.post(environment.urlserverp + 'transfierecalificacion', datos);
    }
+   resendpassword(datos) {
+    return this.http.post(environment.urlserverp + 'resendpassword', datos);
+   }
 }

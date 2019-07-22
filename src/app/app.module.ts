@@ -53,7 +53,7 @@ import { VistapreviaComponent } from './pages/encuestas/vistaprevia/vistaprevia.
 import { HomeComponent } from './pages/home/home.component';
 import {MenuaComponent} from './componets/menua/menua.component';
 import { PreciosComponent  } from './components/precios/precios.component';
-import { RegistroComponent } from "./components/registro/registro.component";
+import { RegistroComponent } from './components/registro/registro.component';
 import { PregistroComponent } from './pages/pregistro/pregistro.component';
 import { ChangepassComponent } from './pages/changepass/changepass.component';
 import { ActivarcuentaComponent } from './pages/activarcuenta/activarcuenta.component';
@@ -61,7 +61,12 @@ import { MenubComponent } from './components/menub/menub.component';
 import { Cregistro3Component } from './components/cregistro3/cregistro3.component';
 import { Registro3Component } from './pages/registro3/registro3.component';
 import { PpreciosComponent } from './pages/pprecios/pprecios.component';
+import {NgxMaskModule, IConfig} from 'ngx-mask';
+
+import { OwlDateTimeModule, OwlNativeDateTimeModule,OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+ 
 @NgModule({
+  
   declarations: [
     AppComponent,
     MenuComponent,
@@ -110,6 +115,8 @@ import { PpreciosComponent } from './pages/pprecios/pprecios.component';
     PpreciosComponent
   ],
   imports: [
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     CommonModule,
     BrowserModule,
     AppRoutingModule,
@@ -118,6 +125,7 @@ import { PpreciosComponent } from './pages/pprecios/pprecios.component';
     BrowserAnimationsModule,
     NoopAnimationsModule,
     AppRoutingModule,
+    NgxMaskModule.forRoot(),
     NgbModule, NgbPaginationModule, NgbAlertModule
     , NgxSpinnerModule, ReactiveFormsModule, NgxPaginationModule,
     ChartsModule,
@@ -131,8 +139,9 @@ import { PpreciosComponent } from './pages/pprecios/pprecios.component';
 
 
   ],
-  providers: [ConectService, CookieService ],
+  providers: [ConectService, CookieService, {provide: OWL_DATE_TIME_LOCALE, useValue: 'es'}, ],
   bootstrap: [AppComponent ],
   exports: [],
 })
+
 export class AppModule { }

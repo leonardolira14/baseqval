@@ -15,6 +15,8 @@ import { element } from 'protractor';
   styleUrls: ['./logoge.component.scss']
 })
 export class LogogeComponent implements OnInit {
+  public alert_change_pass = false;
+  public modelcontra: any = {};
   spiner = false;
   usuario: Usuario = null;
   empresa: Empresa = null;
@@ -25,6 +27,7 @@ export class LogogeComponent implements OnInit {
   correo: string;
   razon_social: string;
   nombre_comercial: string;
+  Celular: string;
   r_f_c: string;
   nempleados: string;
   perfile: string;
@@ -65,6 +68,7 @@ export class LogogeComponent implements OnInit {
   ultimas_encuestas = [];
   grupos = [];
   grupo_usuario: any;
+  datos_pago: any;
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -118,7 +122,6 @@ export class LogogeComponent implements OnInit {
    this.spiner = true;
     if (localStorage.usuarioqval) {
       const dusuarios = JSON.parse(localStorage.usuarioqval);
-
       this.usuario = new Usuario(
         dusuarios['Id'],
         dusuarios['nombre'],
@@ -129,9 +132,11 @@ export class LogogeComponent implements OnInit {
         dusuarios['Usuario'],
         dusuarios['Correo'],
         dusuarios['funciones'],
-        dusuarios['Imagen']
+        dusuarios['Imagen'],
+        dusuarios['Celular']
         );
       const dempresa = JSON.parse(localStorage.empresa);
+     
       this.empresa = new Empresa(
         dempresa['IDEmpresa'],
         dempresa['Rason_Social'],
@@ -148,8 +153,10 @@ export class LogogeComponent implements OnInit {
         dempresa['Cp'],
         dempresa['Estado'],
         dempresa['Telefono'],
-        dempresa['Banner']
+        dempresa['Banner'],
+        dempresa['Paquete']
         );
+        this.datos_pago = JSON.parse(this.empresa.getpaquete());
       this.Banner = this.empresa.getBanner();
       this.logo_banner = 'assets/img/bg_second.jpg';
         if (this.Banner !== '') {
@@ -160,17 +167,16 @@ export class LogogeComponent implements OnInit {
         if (this.Logoempresa !==  '') {
           this.logo_logo  = environment.urlserverp + 'assets/img/logoempresa/' + this.Logoempresa;
          }
-      
       this.nombreus = this.usuario.getNombre();
       this.apellidos = this.usuario.getApellido();
       this.grupo_usuario = this.usuario.getConfig();
       this.LogoUsuario = this.usuario.getAvatar();
-     
+      this.Celular = this.usuario.getCelular();
       this.logo_avatar  = 'assets/img/elgestor.png';
         if ((this.LogoUsuario !== '') && (this.LogoUsuario !== null) ) {
           this.logo_avatar = environment.urlserverp + 'assets/img/usuarios/avatar/' + this.LogoUsuario;
          }
-         console.log(this.LogoUsuario,this.logo_avatar);
+         console.log(this.LogoUsuario, this.logo_avatar);
       this.puesto = this.usuario.getPuesto();
       this.correo = this.usuario.getCorreo();
       this.razon_social = this.empresa.getRazon();
@@ -239,6 +245,7 @@ export class LogogeComponent implements OnInit {
    form.append('correo', this.correo);
    form.append('puesto', this.puesto);
    form.append('num', this.usuario.getId());
+   form.append('celular', this.Celular);
    this.http.updateusu(form)
    .subscribe((pass) => {
      if (pass['ok'] === true) {
@@ -246,6 +253,7 @@ export class LogogeComponent implements OnInit {
       this.usuario.updateApellido(this.apellidos);
       this.usuario.updatePuesto(this.puesto);
       this.usuario.updateCorreo(this.correo);
+      this.usuario.updateCelular(this.Celular);
       this.guardarUsuario('.alert-datosus');
       this.datsus = false;
     }
@@ -381,5 +389,33 @@ this.grupos.forEach((elementin) => {
   }
 });
 return nombre;
+}
+cambiar_pas() {
+  if (this.modelcontra.anterior === undefined) {
+    swal('Error!', 'El campo contraseña anteriror es necesario', 'error');
+  } else if (this.modelcontra.nueva === undefined) {
+    swal('Error!', 'El campo contraseña nueva es necesario', 'error');
+  } else if (this.modelcontra.repetir === undefined) {
+    swal('Error!', 'El campo confirmar contraseña  es necesario', 'error');
+  } else if (this.modelcontra.nueva !== this.modelcontra.repetir) {
+    swal('Error!', 'Las contraseñas nueva y confirmar contraseña no son iguales', 'error');
+  } else if (this.modelcontra.nueva.length < 6) {
+    swal('Error!', 'La contraseña debe ser mayor a 6 caracteres', 'error');
+  } else {
+    const dusuarios = JSON.parse(localStorage.usuarioqval);
+    console.log(dusuarios);
+    this.modelcontra['IDEmpresa'] = dusuarios['empresa'];
+    this.modelcontra['IDUsuario'] = dusuarios['Id'];
+    this.http.cambio_pass(this.modelcontra)
+    .subscribe(data => {
+      console.log(data);
+      if (data['response']['code'] === 1990) {
+        swal('Error!', data['response']['result'], 'error');
+      } else {
+        swal('Exito!', 'Datos Actualizados...', 'success');
+      }
+    });
+
+  }
 }
 }

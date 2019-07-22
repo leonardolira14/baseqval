@@ -61,6 +61,7 @@ public estados: any[] = [];
 public grupos: any[] = [];
 public deleteclientid = '';
 public selected: any;
+public remoto = true;
   constructor(
     public http: ClientesService,
     private spinner: NgxSpinnerService,
@@ -198,6 +199,11 @@ public selected: any;
     if (this.cliente.IDCliente !== '') {
       if (this.cliente['Nombre'] === undefined || this.cliente['Nombre'] === '') {
         swal('Error!', 'Ingresa una Razon Social', 'error');
+        return ;
+      }
+      if (this.remoto === true && this.cliente.Telcontact === null) {
+        console.log(this.cliente.Telcontact)
+        swal('Error!', 'Ingresa un número de celular para poder mandar mensajes de texto.', 'error');
         return ;
       }
       formData.append('datos', JSON.stringify(this.cliente));

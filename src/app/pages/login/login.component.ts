@@ -12,13 +12,13 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-    user:string;
-    pas:string;
+    user: string;
+    pas: string;
     usuario: Usuario = null;
-    empresa: Empresa=null;
-    record= true;
-  constructor(private cookieService: CookieService,private http:ConectService,public router:Router,private spinner: NgxSpinnerService)  {
-    this.user='';
+    empresa: Empresa = null;
+    record = true;
+  constructor(private cookieService: CookieService, private http: ConectService, public router: Router, private spinner: NgxSpinnerService)  {
+    this.user = '';
     this.pas = '';
   }
    ngOnInit() {
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     recpas() {
       this.router.navigateByUrl('/recpass');
     }
-    goto(ir){
+    goto(ir) {
       this.router.navigateByUrl(ir);
     }
 
@@ -51,8 +51,8 @@ export class LoginComponent implements OnInit {
        console.log(res);
       if (res['pass'] !== 0) {
 
-        this.usuario = new Usuario(res['datos']['IDUsuario'], res['datos']['Nombre'], res['datos']['Apellidos'], res['datos']['IDEmpresa'], res['datos']['Puesto'], res['datos']['IDConfig'], res['datos']['Usuario'], res['datos']['Correo'], res['datos']['funciones'],res['datos']['Imagen']);
-        this.empresa = new Empresa(res['empresa']['IDEmpresa'], res['empresa']['RazonSocial'], res['empresa']['NombreComercial'], res['empresa']['RFC'], res['empresa']['TipoEmpresa'], res['empresa']['NoEmpleados'], res['empresa']['FacturacionAnual'], res['empresa']['Descripcion'], res['empresa']['Calleynum'], res['empresa']['Colonia'], res['empresa']['Logo'], res['empresa']['Municipio'], res['empresa']['CP'], res['empresa']['Estado'], res['empresa']['Telefono'], res['empresa']['Banner']);
+        this.usuario = new Usuario(res['datos']['IDUsuario'], res['datos']['Nombre'], res['datos']['Apellidos'], res['datos']['IDEmpresa'], res['datos']['Puesto'], res['datos']['IDConfig'], res['datos']['Usuario'], res['datos']['Correo'], res['datos']['funciones'], res['datos']['Imagen'], res['datos'['Celular']]);
+        this.empresa = new Empresa(res['empresa']['IDEmpresa'], res['empresa']['RazonSocial'], res['empresa']['NombreComercial'], res['empresa']['RFC'], res['empresa']['TipoEmpresa'], res['empresa']['NoEmpleados'], res['empresa']['FacturacionAnual'], res['empresa']['Descripcion'], res['empresa']['Calleynum'], res['empresa']['Colonia'], res['empresa']['Logo'], res['empresa']['Municipio'], res['empresa']['CP'], res['empresa']['Estado'], res['empresa']['Telefono'], res['empresa']['Banner'],res['empresa']['Paquete']);
         this.guardarUsuario();
       } else {
         this.spinner.hide();

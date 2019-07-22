@@ -35,23 +35,27 @@
                       <span>Còdigo QR</span>
                     </button>
                   <button (click)="open(usuario.ID)"  mat-menu-item>
-                    <mat-icon>edit</mat-icon>
+                    <mat-icon>create</mat-icon>
                     <span>Editar</span>
                   </button>
                   <button  (click)="addfunciones(usuario.ID,datfunus)" mat-menu-item>
                     <mat-icon>portrait</mat-icon>
                     <span>Asignar Funciones</span>
                   </button>
+                  <button  (click)="enviarpassword(usuario.ID)" mat-menu-item>
+                    <mat-icon>https</mat-icon>
+                    <span>Enviar Contraseña</span>
+                  </button>
                   <button (click)="open_transfiere(usuario.ID)"   mat-menu-item>
                       <mat-icon>cached</mat-icon>
                       <span>Transferir Calificaciones</span>
                     </button>
                   <button (click)="delete(usuario.ID,usuario.Estado === '1' ? '0':'1')" mat-menu-item>
-                    <mat-icon>{{usuario.Estado === '1' ? 'warning':'done' }}</mat-icon>
+                    <mat-icon>{{usuario.Estado === '1' ? 'clear':'done' }}</mat-icon>
                     <span>{{usuario.Estado === '1' ? 'Desactivar':'Activar' }}</span>
                   </button>
                   <button (click)="alertdele(usuario.ID)" mat-menu-item>
-                      <mat-icon>warning</mat-icon>
+                      <mat-icon>clear</mat-icon>
                       <span>Eliminar</span>
                     </button>
                 </mat-menu>
@@ -132,12 +136,13 @@
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field class="col-6">
-                    <input matInput placeholder="Numero de Celular" [(ngModel)]="user.Celular" name="Celular" [ngModelOptions]="{standalone: true}"  value="">
+                    <input matInput mask='(000) 000-0000' placeholder="Numero de Celular" [(ngModel)]="user.Celular" name="Celular" [ngModelOptions]="{standalone: true}"  value="">
                 </mat-form-field>
               </div>
               <div class="col-12 m-t-20 text-right">
                   <div class="btn-group" role="group" aria-label="Basic example">
                       <button (click)="datsus=false" type="button" class="btn btn-outline-danger mr-3">Cerrar</button>
+                      <button (click)="addfunciones(user.Id,datfunus)" type="button" class="btn btn-outline-secondary mr-3">Asignar Funciones</button>
                       <button (click)="enviarform()" type="button" class="btn btn-succes">Guardar</button>
                     </div>
               </div>

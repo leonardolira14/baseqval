@@ -33,19 +33,19 @@
                   <mat-menu #menu="matMenu">
                     <button (click)="open(datsgrups,grupo.IDGrupo,grupo.Tipo)" mat-menu-item>
                         <mat-icon>
-                            build
+                            create
                         </mat-icon>
                       <span> Editar</span>
                     </button>
                     <button (click)="eliminar(grupo.IDGrupo,grupo.Status==0 ? '1' :'0')" mat-menu-item>
                         <mat-icon>
-                            {{ grupo.Status==0 ? 'done' :'highlight_off' }}
+                            {{ grupo.Status==0 ? 'done' :'clear' }}
                         </mat-icon>
                       <span> {{ grupo.Status==0 ? ' Activar' :' Desactivar' }}</span>
                     </button>
                     <button (click)="alertdele(grupo.IDGrupo)" mat-menu-item>
                         <mat-icon>
-                            info
+                            clear
                         </mat-icon>
                       <span> Eliminar</span>
                     </button>
@@ -54,8 +54,18 @@
             <mat-card-content>
               <small class="text-muted">Nombre:</small>
               <p> {{grupo.Nombre}}</p>
-              <p class="text-muted text-center">{{(grupo.Tipo==='I')?'Interno':'Externos'}}</p>
+              <small class="text-muted">Tipo de Grupo:</small>
+              <p class="ml-3">{{(grupo.Tipo==='I')?'Interno':'Externos'}}</p>
+              <small class="text-muted">No de Miembros:</small>
+              <p class="ml-3">{{grupo.NoMiembros}}</p>
             </mat-card-content>
+            <mat-card-actions class="text-center">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" (click)="eliminar(grupo.IDGrupo,grupo.Status==0 ? '1' :'0')" class="btn btn-primary mr-3">{{ grupo.Status==0 ? ' Activar' :' Desactivar' }}</button>
+                    <button type="button" (click)="open(datsgrups,grupo.IDGrupo,grupo.Tipo)" class="btn btn-outline-primary">Editar</button>
+                    
+                  </div>
+            </mat-card-actions>
         </mat-card>
     </div>
     <div class="col-12 text-center m-t-30">
@@ -98,7 +108,7 @@
                 <label class="custom-control-label" for="interno">Interno</label>
               </div>
             </div>
-            <div class="col-6  ">
+            <div class="col-6 ">
              
               <div class="custom-control custom-radio">
                 <input type="radio" [(ngModel)]="model.tipog"  id="externo" name="tipog" value="E" class="custom-control-input">
@@ -108,7 +118,7 @@
           </div>
       </div>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer mt-3">
     <button (click)="modal.close()" class="btn btn-danger mr-3">Cerrar</button>
     <button (click)="enviarform()" class="btn btn btn-outline-primary ">Guardar</button>
      

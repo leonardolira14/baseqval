@@ -30,6 +30,12 @@
                                 </p>
                                 
                             </div>
+                            <div class="col-12 m-t-20 descrip">
+                                <span class="">Paquete Contratado: {{(datos_pago.Producto==='empresarial_anual')?'Empresarial Anual':'Empresarial Mensual'}}</span>
+                                <p>
+                                    <span class="">Pago {{(datos_pago.Producto==='empresarial_anual')?'Anual':'Mensual'}}: {{datos_pago.Precio | currency}} </span>
+                                </p>  
+                            </div>
                         </div>
                     </div>
                     <mat-divider class="col-12 m-t-30 m-b-30" [inset]="true"></mat-divider>
@@ -37,8 +43,12 @@
                     {{perfile}}
                     </div>
                     <div class="col-12 text-center">
-                            <button class="btn btn-primary text-white" (click)="open_datos_empresa()"><i class="fas fa-pen"></i> Editar Datos</button>
-                        </div>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-primary mr-3">Cambiar Plan</button>
+                                    <button class="btn btn-outline-primary text-white" (click)="open_datos_empresa()"> Editar Datos</button>
+                                </div>
+                            
+                    </div>
                 </div>
             </div>
             <div class="col-4 m-t-30">
@@ -113,7 +123,7 @@
                         <div class="col-12 card p-t-20 p-b-20  m-b-20 ">
                             <div class="row d-flex justify-content-center">
                                 <div class="col-12 text-monse text-center">
-                                    No hay actividad. Es hora de enviar un encuesta.
+                                    No hay actividad. Es hora de crear un cuestionario.
                                 </div>
                                 <div class="col-12 text-monse text-center mt-3">
                                     <button class="btn btn-succes" (click)="goto('encuestas/select/N')">Nueva Encuesta</button>
@@ -152,6 +162,9 @@
                                             <div class="col-12  text-center">
                                                 <button (click)="datsus = true" class="btn btn-outline-primary">Editar Datos</button>
                                             </div>
+                                            <div class="col-12  text-center m-t-20">
+                                                <button (click)="alert_change_pass = true" class="btn btn-outline-primary">Cambiar Contraseña</button>
+                                            </div>
                                         </div>
                                     </div>
                          </div>
@@ -182,11 +195,11 @@
                         <img src="{{logo_logo}}" class="avatar" alt="">
                      </div>
                     <div class="col-12 text-center mt-3">
-                        <div (click)="logoempresa.click()" class="btn btn-outline-succes">Cambiar Avatar</div>
+                        <div (click)="logoempresa.click()" class="btn btn-outline-primary">Cambiar Avatar</div>
                         <input accept="image/gif, image/jpeg, image/png" (change)="change_img_logo(logoempresa.files)" class="d-none" type="file" #logoempresa>
                     </div>
                     <div class="col-12 text-center mt-3">
-                            <div (click)="bannerempresa.click()"  class="btn btn-outline-succes">Cambiar Banner</div>
+                            <div (click)="bannerempresa.click()"  class="btn btn-outline-primary">Cambiar Banner</div>
                             <input (change)="change_img_banner(bannerempresa.files)" accept="image/gif, image/jpeg, image/png" type="file" class="d-none" #bannerempresa>
                     </div>
                 </div>
@@ -288,7 +301,7 @@
                     <img src="{{logo_avatar}}"  mat-card-avatar  class="avatar">
                 </div>
                 <div class="col-12 text-center m-t-20">
-                    <button type="button" (click)="img_avatar.click()" class="btn btn-outline-succes">Cambiar Avatar</button>
+                    <button type="button" (click)="img_avatar.click()" class="btn btn-outline-primary">Cambiar Avatar</button>
                     <input type="file" (change)="change_img_avatar(img_avatar.files)" accept="image/gif, image/jpeg, image/png" #img_avatar class="d-none">
                 </div>
   
@@ -304,13 +317,13 @@
                       <input matInput placeholder="Apellidos"  name="apellidos" [(ngModel)]="apellidos" value="">
                   </mat-form-field>
                   <mat-form-field class="col-6">
-                      <input matInput placeholder="Correo Electrónico" [(ngModel)]="correo"  aria-describedby="" placeholder="Correo Electronico"   value="">
+                      <input matInput placeholder="Correo Electrónico" [(ngModel)]="correo"  aria-describedby=""    value="">
                   </mat-form-field>
                   <mat-form-field class="col-6">
                       <input matInput placeholder="Usuario" disabled  [(ngModel)]="correo" name="correo"  value="">
                   </mat-form-field>
                   <mat-form-field class="col-6">
-                      <input matInput placeholder="Puesto" [(ngModel)]="puesto"  aria-describedby="" placeholder="Puesto">
+                      <input matInput placeholder="Puesto" [(ngModel)]="puesto"  aria-describedby="" >
                   </mat-form-field>
                   <mat-form-field class="col-6">
                       <mat-label>Grupo</mat-label>
@@ -318,12 +331,14 @@
                           <mat-option *ngFor="let grupo of grupos" value="{{grupo.IDGrupo}}">{{grupo.Nombre}}</mat-option>
                       </mat-select>
                   </mat-form-field>
-                  
+                  <mat-form-field class="col-6">
+                    <input matInput  placeholder="Número Celular"  mask='(000) 000-0000' [(ngModel)]="Celular"  aria-describedby="" >
+                </mat-form-field>
                 </div>
                 <div class="col-12 m-t-20 text-right">
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button (click)="datsus=false" type="button" class="btn btn-outline-danger mr-3">Cerrar</button>
-                        <button (click)="updatedataus()" type="button" class="btn btn-succes">Guardar</button>
+                        <button (click)="updatedataus()" type="button" class="btn btn-primary">Guardar</button>
                       </div>
                 </div>
             </div>
@@ -399,6 +414,13 @@
                                           class="form-control" name="puesto" [(ngModel)]="puesto"  aria-describedby="" placeholder="Puesto">
                                 </div>
                         </div> 
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="">Número Celular *</label>
+                                <input type="text"
+                                      class="form-control" mask='(000) 000-0000' name="Celular" [(ngModel)]="Celular"  aria-describedby="" placeholder="">
+                            </div>
+                    </div> 
                     </form>
                 </div>
             </div>
@@ -414,3 +436,34 @@
       <span class="sr-only">Loading...</span>
     </div>
 </div>
+<div class="container-fluid fondomodal" *ngIf="alert_change_pass">
+    <div class="container">
+        <div class="row">
+            <div class="col-6 card m-auto">
+              <div class="row">
+                <div class="col-12 m-b-20 m-t-20">
+                  <span class="text-monse"><h5>Cambio de Contraseña</h5></span>
+                </div>
+                <mat-form-field class="col-12">
+                    <input matInput type="password" [(ngModel)]="modelcontra.anterior" placeholder="Contraseña Anterior" value="">
+                </mat-form-field>
+                <mat-form-field class="col-12">
+                    <input matInput  type="password" [(ngModel)]="modelcontra.nueva" placeholder="Nueva Contraseña" value="">
+                </mat-form-field>
+                <mat-form-field class="col-12">
+                    <input matInput  type="password" [(ngModel)]="modelcontra.repetir"  placeholder="Repetir Contraseña" value="">
+                </mat-form-field>
+                <div class="col-12 text-right p-b-20">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-outline-danger mr-3" (click)="alert_change_pass = ! alert_change_pass">Cancelar</button>
+                        <button type="button" class="btn btn-succes"(click)="cambiar_pas()" >Guardar</button>
+                    </div>
+                </div>
+                <div class="col-12">
+                  <small classs="text-muted">Nota: La contraseña debe ser mayor a 6 caracteres, debe contener una letra mayúscula, una minúscula, un carácter especial</small>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>

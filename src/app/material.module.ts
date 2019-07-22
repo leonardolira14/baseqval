@@ -26,7 +26,8 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
-    MatTabsModule
+    MatTabsModule,
+    MatAutocompleteModule
 } from '@angular/material';
 @NgModule({
     imports: [
@@ -56,7 +57,8 @@ import {
         MatNativeDateModule,
         MatMenuModule,
         MatSlideToggleModule,
-        MatTabsModule
+        MatTabsModule,
+        MatAutocompleteModule
     ],
     providers: [
         MatDatepickerModule,
@@ -88,7 +90,8 @@ import {
         MatNativeDateModule,
         MatMenuModule,
         MatSlideToggleModule,
-        MatTabsModule
+        MatTabsModule,
+        MatAutocompleteModule
     ]
 
 })

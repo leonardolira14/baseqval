@@ -9,6 +9,7 @@ export class Usuario {
     private Id: any;
     private funciones: any;
     private Imagen: string;
+    private Celular:string;
     constructor(
         id: string,
         nombre: string,
@@ -19,7 +20,8 @@ export class Usuario {
         usuario: string,
         correo: string,
         funciones: any,
-        Imagen: any
+        Imagen: any,
+        Celular: any
         ) {
         this.Id = id;
         this.nombre = nombre;
@@ -31,6 +33,7 @@ export class Usuario {
         this.Correo = correo;
         this.funciones = funciones;
         this.Imagen = Imagen;
+        this.Celular = Celular;
     }
     getAvatar() {
         return this.Imagen;
@@ -76,6 +79,12 @@ export class Usuario {
     }
     getCorreo() {
         return this.Correo;
+    }
+    getCelular(){
+        return this.Celular;
+    }
+    updateCelular(celular){
+        this.Celular = celular;
     }
     updateCorreo(correo) {
         this.Correo = correo;

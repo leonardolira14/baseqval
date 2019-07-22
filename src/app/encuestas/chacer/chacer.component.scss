@@ -150,6 +150,9 @@
         border-bottom: 1px solid #D0D2D3;
         padding: 16px 16px 16px 24px;
         cursor: pointer;
+        &:hover{
+            background: map-get($gamagrises,gris1);
+        }
     }
 }
 .icono_ayuda{

@@ -392,4 +392,17 @@ export class CusuariosComponent implements OnInit {
   filtrogrupo() {
     this.listausuarios = this.ListaUsuarios.buscar_grupo(this.selected);
   }
+  enviarpassword(idusuario) {
+    console.log(idusuario);
+    this.spiner=true;
+    const datos = {Usuario: idusuario};
+    this.http.resendpassword(datos)
+    .subscribe(respuesta => {
+      this.spiner=false;
+      swal('Exito', respuesta['ok'], 'success');
+    }, error => {
+      this.spiner=false;
+      swal('Error', JSON.parse(error), 'error');
+    });
+  }
 }

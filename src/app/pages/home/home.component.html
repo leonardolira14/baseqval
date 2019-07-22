@@ -27,11 +27,11 @@
             <div class="card w-100" >
                 <img src="/assets/img/img1.JPG" class="card-img-top" alt="...">
                 <div class="card-body">
-                  <h6 class="card-text">Personaliza cuestionarios e indicadores</h6>
+                  <h6 class="card-text">Crea indicadores y cuestionarios y encuentra las causas reales.</h6>
                   <div class="conatiner-fluid">
                     <div class="row">
                         <div class="col-12 text-right">
-                          <button class="btn btn-primary">Ver Detalle</button>
+                          <button class="btn btn-primary" (click)="modal_cuestionario=true">Ver Detalle</button>
                         </div>
                     </div>
                   </div>
@@ -43,12 +43,12 @@
             <div class="card w-100" >
                 <img src="/assets/img/img2.JPG" class="card-img-top" alt="...">
                 <div class="card-body">
-                  <h6 class="card-text">Genera informes basados en varios cuestionarios</h6>
+                  <h6 class="card-text">Personaliza reportes.</h6>
                 
                 <div class="conatiner-fluid">
                     <div class="row">
-                        <div class="col-12 text-right">
-                          <button class="btn btn-primary">Ver Detalle</button>
+                        <div class="col-12 text-right mt-3">
+                          <button class="btn btn-primary" (click)="modal_reportes=true">Ver Detalle</button>
                         </div>
                     </div>
                   </div>
@@ -59,11 +59,11 @@
             <div class="card w-100" >
                 <img src="/assets/img/img3.JPG" class="card-img-top" alt="...">
                 <div class="card-body">
-                  <h6 class="card-text">Genera grupos de usuario y/o Clientes</h6>
+                  <h6 class="card-text">Genera grupos de Usuarios y/o Clientes y Proveedores</h6>
                   <div class="conatiner-fluid">
                     <div class="row">
                         <div class="col-12 text-right">
-                          <button class="btn btn-primary">Ver Detalle</button>
+                          <button class="btn btn-primary" (click)="modal_grupos=true">Ver Detalle</button>
                         </div>
                     </div>
                   </div>
@@ -130,7 +130,7 @@
         </div>
     </div>
 </div>
-<div class="container-fluid m-t-40 m-b-40">
+<div class="container-fluid m-t-40 m-b-40" id="precios">
         <div class="row bg-banner p-t-40 p-b-40">
             <div class="col-12 text-white text-monse">
                     <h2>Precios</h2>
@@ -155,19 +155,40 @@
 </div>
 <div class="container">
     <div class="row d-flex justify-content-center">
-        <div class="col-3 m-t-30">
+        <div class="col-4 m-t-30">
             <div class="card">
-                <img src="/assets/img/apps1.png" class="card-img-top">
                 <div class="card-body">
                         <h5 class="card-title text-primary text-monse text-center">Usuario</h5>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <a class=" col-12 mt-3" target="_blank" href="https://play.google.com/store/apps/details?id=com.admyo.qvalv2">
+                                  <img src="/src/assets/img/google-play-badge.png" class="img-fluid" alt="">    
+                                </a>
+                                      
+                                <a class=" col-12 mt-3" href="#">
+                                    <img src="/src/assets/img/apptoredesc.png" class="img-fluid" alt="">    
+                                  </a>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
-        <div class="col-3 m-t-30">
+        <div class="col-4 m-t-30">
             <div class="card">
-                    <img src="/assets/img/apps1.png" class="card-img-top">
+                    
                     <div class="card-body">
                             <h5 class="card-title text-primary text-monse text-center">Gestor</h5>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <a class=" col-12 mt-3"  href="#">
+                                            <img src="/src/assets/img/google play desac.png" class="img-fluid" alt="">    
+                                      </a>
+                                                
+                                    <a class=" col-12 mt-3"  href="#">
+                                      <img src="/src/assets/img/apptoredesc.png" class="img-fluid" alt="">    
+                                    </a>
+                                </div>
+                            </div>
                     </div>
             </div>
         </div>
@@ -186,7 +207,7 @@
 <div class="container">
         <div class="row">
             <div class="col-5 text-primary text-prosto text-center p-20">
-                    <h5> + de 150 Empresas participando</h5>
+                    <h5> + de 20 Empresas participando</h5>
             </div>
             <div class="col-5 text-primary text-prosto text-center p-20">
                     <h5>+ de 300 consultas de perfil mensuales</h5>
@@ -194,14 +215,14 @@
             <div class="col-12 bg-primary hpx-2">
             </div>
             <div class="col-5 text-primary text-prosto text-center p-20">
-                <h5>+ de 8,000 empresas calificadas</h5>
+                <h5>+ de 2,000 empresas calificadas</h5>
                 
             </div>
             
-            <div class="col-5 text-primary text-prosto text-center p-20"><h5>+ de 15 giros representados</h5></div>
+            <div class="col-5 text-primary text-prosto text-center p-20"><h5>+ de 7 giros representados</h5></div>
         </div>
     </div>
-    <div class="container-fluid m-t-50 m-b-50">
+    <div class="container-fluid m-t-50 m-b-50" id="recursos">
         <div class="row bg-banner p-t-40 p-b-40">
             <div class="col-12 text-white text-monse">
                 <h2>Recursos</h2>
@@ -211,4 +232,132 @@
             </div>
         </div> 
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                    <h3 class="text-prosto text-primary">WebCasts Funcionamiento QVAL</h3>
+            </div>
+                <div class="col-6 m-t-20">
+                        <div class="card bg-gris1">
+                            <div class="card-body">
+                                <iframe width="100%" height="350" src="https://www.youtube.com/embed/FN0TrKRdEqM"></iframe>
+                                <h5 class="card-title text-primary text-monse">Crear Cuenta</h5>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-6 m-t-20">
+                        <div class="card bg-gris1">
+                            <div class="card-body">
+                                <iframe width="100%" height="350" src="https://www.youtube.com/embed/YMk6ROPIIqQ" ></iframe>
+                                <h5 class="card-title text-primary text-monse">Crear un Grupo</h5>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-6 m-t-20">
+                    <div class="card bg-gris1">
+                        <div class="card-body">
+                                <iframe width="100%" height="350" src="https://www.youtube.com/embed/xWvtCrlAO0o"></iframe>
+                                <h5 class="card-title text-primary text-monse">Crear cuestionarios</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 m-t-20">
+                        <div class="card bg-gris1">
+                            <div class="card-body">
+                                    <iframe width="100%" height="350" src="https://www.youtube.com/embed/rddMgn9Ogog" ></iframe>
+                                    <h5 class="card-title text-primary text-monse">Uso de App</h5>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+<div class="preload-modal" *ngIf="modal_cuestionario">
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+                <div class="card col-6" style="padding: 0">
+                        <div class="card-header bg-primary text-monse">
+                                <h6>Crea indicadores y cuestionarios y encuentra las causas reales</h6>
+                        </div>
+                        <div class="card-body container-fluid">
+                                <div class="row">
+                                    <div class="col-12 text-monse">
+                                       Quieres determinar porque tus principales variables u objetivos de negocio no están desempeñando adecuadamente. Crea y mide las causas que pueden llevar a analizar ese bajo desempeño
+                                    </div>
+                                    <div class="col-12 text-monse m-t-30">
+                                        <ul>
+                                            <li>Análisis de procesos</li>
+                                            <li>Formación y retención de conceptos</li>
+                                            <li>Desarrollo de reportes</li>
+                                            <li>Análisis de productos y servicios</li>
+                                            <li>Análisis de personas y empresas</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12 text-right">
+                                        <div class="btn btn-danger" (click)="modal_cuestionario=false">Cerrar</div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+    
+</div>
+<div class="preload-modal" *ngIf="modal_reportes">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-center">
+                    <div class="card col-6" style="padding: 0">
+                            <div class="card-header bg-primary text-monse">
+                                    <h6>Personaliza reportes</h6>
+                            </div>
+                            <div class="card-body container-fluid">
+                                    <div class="row">
+                                        <div class="col-12 text-monse">
+                                                Personaliza tus reportes o informes, puedes generar de
+                                        </div>
+                                        <div class="col-12 text-monse m-t-30">
+                                            <ul>
+                                                <li>Una respuesta a un cuestionario (Ej. Reportes de calidad de un producto)</li>
+                                                <li>Un cuestionario (Ej. Reportes de calidad de un proveedor)</li>
+                                                <li>Muchos cuestionarios (Ej. Reportes a clientes, uniendo reportes de compras, calidad y operaciones)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            <div class="btn btn-danger" (click)="modal_reportes=false">Cerrar</div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+        
+    </div>
+<div class="preload-modal" *ngIf="modal_grupos">
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-center">
+                        <div class="card col-6" style="padding: 0">
+                                <div class="card-header bg-primary text-monse">
+                                        <h6>Genera grupos de Usuarios y/o Clientes y Proveedores</h6>
+                                </div>
+                                <div class="card-body container-fluid">
+                                        <div class="row">
+                                            <div class="col-12 text-monse">
+                                                    Personaliza tus grupos de personas internas y externas
+                                            </div>
+                                            <div class="col-12 text-monse m-t-30">
+                                                <ul>
+                                                    <li>Crea cuantos grupos necesites</li>
+                                                    <li>Asigna empleados, clientes y proveedores a grupos</li>
+                                                    <li>Analiza y compara comportamientos y procesos de forma directa</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-12 text-right">
+                                                <div class="btn btn-danger" (click)="modal_grupos=false">Cerrar</div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                </div>
+            </div>
+            
+        </div>
 <app-footer></app-footer>

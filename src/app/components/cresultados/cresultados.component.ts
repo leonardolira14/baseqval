@@ -143,8 +143,7 @@ export class CresultadosComponent implements OnInit {
       }
       this.rangedate = fechainicio + '-' + fechafin;
     }
-    console.log(this.rangedate);
-    // console.log(this.residcuetion);
+   
       this.http.getresumen(this.residcuetion, this.rangedate, this.datosempresa['IDEmpresa'])
       .subscribe((resp) => {
         this.IDCuestionario = this.residcuetion;

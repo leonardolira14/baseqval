@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {  SwalComponent } from '@toverux/ngx-sweetalert2';
+import swal from 'sweetalert2';
 
 export const grupointernos = new GruposList();
 export const grupoexternos = new GruposList();
@@ -162,6 +163,10 @@ closemodel(content) {
     if (this.funcionesusuario[1] === '0') {
       this.errorralert.show();
       return;
+    }
+    if (this.model['tipog'] === undefined) {
+      swal('Error', 'Selecciona un tipo de grupo para continuar.', 'error');
+      return ;
     }
     this.spinner.show();
     if (this.model['grupo'] !== '') {

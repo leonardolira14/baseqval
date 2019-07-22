@@ -16,7 +16,8 @@ export class Empresa {
     private Estado:string;
     private Telefono:string;
     private Banner: string;
-    constructor(id, rz, nc, rfc, tpe, ne, faca, per, calle, col, logo, mon, cp, est, tel, banner) {
+    private Paquete:string;
+    constructor(id, rz, nc, rfc, tpe, ne, faca, per, calle, col, logo, mon, cp, est, tel, banner,paquete) {
         this.IDEmpresa = id;
         this.Rason_Social = rz;
         this.RFC = rfc;
@@ -33,6 +34,7 @@ export class Empresa {
         this.Estado = est;
         this.Telefono = tel;
         this.Banner = banner;
+        this.Paquete = paquete;
     }
     getBanner() {
         return this.Banner;
@@ -129,6 +131,12 @@ export class Empresa {
     }
     updateTelefono(tele) {
         this.Telefono = tele;
+    }
+    getpaquete() {
+        return this.Paquete;
+    }
+    updatepaquete(paquete){
+        this.Paquete = paquete;
     }
 
 }

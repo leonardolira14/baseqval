@@ -63,31 +63,33 @@
     
     <div class="row">
         <div class="col-3 m-b-20" *ngFor="let  encuesta of tdencuestas ">
-            <div  class="card w-100 card-avatar">
-                <div class="card-header bg-white">
+            <div  class="card w-100 card-avatar {{encuesta.Estado==1? 'bg-white':'bg-gris1'}}">
+                <div class="card-header {{encuesta.Estado==1? 'bg-white':'bg-gris1'}}">
                   <div class="row">
                       <div class="col-10 text-center">
                           <span class="text-nombre ">{{encuesta.Nombre}}</span>
                       </div>
                        <div class="col-1 text-center">
-                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <button color="primary" mat-icon-button [matMenuTriggerFor]="menu">
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu">
                             <button (click)="desactivar(encuesta.IDCuestionario,encuesta.Estado === '1' ? '0':'1')"  mat-menu-item>
-                                <mat-icon><i matTooltip="Activar o Desactivar esta encuesta" class="fas fa-question-circle"></i></mat-icon>
+                                <mat-icon matTooltip="Activar o Desactivar esta encuesta" >
+                                    {{encuesta.Estado==1? 'clear':'done'}} 
+                                </mat-icon>
                                 <span>{{encuesta.Estado==1? 'Desactivar':'Activar'}}</span>
                               </button>
                             <button (click)="editar_encuesta(encuesta.IDCuestionario)"   mat-menu-item>
-                              <mat-icon><i matTooltip="Editar los datos de esta encuesta" class="fas fa-question-circle"></i></mat-icon>
+                              <mat-icon matTooltip="Editar los datos de esta encuesta">create</mat-icon>
                               <span>Editar</span>
                             </button>
                             <button (click)="open_modalgrupos(encuesta.IDCuestionario)"  mat-menu-item>
-                                <mat-icon><i matTooltip="Agregar a un grupo" class="fas fa-question-circle"></i></mat-icon>
+                                <mat-icon matTooltip="Agregar a un grupo">folder</mat-icon>
                                 <span>Asignar familia</span>
                               </button>
                             <button (click)="goto('resultados/'+encuesta.IDCuestionario)"  mat-menu-item>
-                                  <mat-icon><i matTooltip="Ver resultados de encuesta" class="fas fa-question-circle"></i></mat-icon>
+                                  <mat-icon  matTooltip="Ver resultados de encuesta">trending_up</mat-icon>
                                   <span>Resultados</span>
                               </button>
                            <!--- <button (click)="muestranotificaciones(encuesta.IDCuestionario)"  mat-menu-item>
@@ -95,15 +97,15 @@
                               <span>Activar Notificaciones</span>
                             </button>--->
                             <button  (click)="most_url(encuesta.IDCuestionario)" mat-menu-item>
-                                <mat-icon><i  matTooltip="Mostrar la dirección url de esta encuesta para compartir" class="fas fa-question-circle"></i></mat-icon>
+                                <mat-icon matTooltip="Mostrar la dirección url de esta encuesta para compartir">send</mat-icon>
                                 <span>Mostrar URL </span>
                               </button>
                             <button (click)="alertdeleteresp(encuesta.IDCuestionario)" mat-menu-item>
-                                <mat-icon><i  matTooltip="Elimina permanentemente todas las respuestas que recibió esta encuesta. Las preguntas, el formato y la lógica no sufrirán cambios." class="fas fa-question-circle"></i></mat-icon>
+                                <mat-icon matTooltip="Elimina permanentemente todas las respuestas que recibió esta encuesta. Las preguntas, el formato y la lógica no sufrirán cambios.">clear</mat-icon>
                                 <span>Eliminar Respuestas </span>
                               </button>
                             <button  (click)="alertdele(encuesta.IDCuestionario)" mat-menu-item>
-                                <mat-icon><i matTooltip="Eliminar todo los datos relacionados con esta encuesta" class="fas fa-question-circle"></i></mat-icon>
+                                <mat-icon matTooltip="Eliminar todo los datos relacionados con esta encuesta">clear</mat-icon>
                                 <span>Eliminar Cuestionario</span>
                               </button>
                           </mat-menu>
@@ -115,19 +117,19 @@
                 <div  class="card-body row">
                   
                   <div class="col-12 m-t-20 text-center">
-                    <span class="text-titulo-secundario ">Grupo Emisor</span>
+                    <span class="text-titulo-secundario text-blackk">Grupo Emisor</span>
                   </div>
                   <div class="col-12 text-center">
                       <span class="text-subtitulo-secundario text-muted">{{encuesta.Emisor}}</span>
                   </div>
                   <div class="col-12 m-t-20 text-center">
-                      <span class="text-titulo-secundario ">Grupo Receptor</span>
+                      <span class="text-titulo-secundario text-blackk">Grupo Receptor</span>
                     </div>
                     <div class="col-12 text-center">
                         <span class="text-subtitulo-secundario text-muted">{{encuesta.Receptor}}</span>
                     </div>
                   </div>
-                <div class="card-footer bg-white">
+                <div class="card-footer {{encuesta.Estado==1? 'bg-white':'bg-gris1'}}">
                     <div class="btn-group d-flex" role="group" aria-label="Basic example">
                         <button type="button" (click)="editar_encuesta(encuesta.IDCuestionario)"  class="btn btn-outline-primary mr-3">Editar</button>
                         <button type="button"  (click)="goto('resultados/'+encuesta.IDCuestionario)" class="btn btn-outline-primary ">Resultados</button>
@@ -171,7 +173,7 @@
         <div class="row d-flex justify-content-center align-items-lg-center">
           <div class="col-6">
               <mat-form-field class="w-100">
-                  <input [(ngModel)]="modelnewgrupo.Nombre" matInput placeholder="Nombre de Grupo" value="">
+                  <input [(ngModel)]="modelnewgrupo.Nombre" matInput placeholder="Nombre de Familia" value="">
               </mat-form-field>
           </div>
           <div class="col-6 text-right">

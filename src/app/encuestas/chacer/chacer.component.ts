@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 import { Observable, of } from 'rxjs';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 @Component({
   selector: 'app-chacer',
   templateUrl: './chacer.component.html',
@@ -24,6 +25,8 @@ export class ChacerComponent implements OnInit {
    vista_tablet = false;
    vista_pc = true;
   public selectcatego = 'Todas las Categorias';
+  public cmodalnotificaciones = false;
+  public listnotif = [];
   cantidad_indicador: any;
   select_indicador_tipo = 'Selecciona';
   datosusuario = [];
@@ -50,7 +53,7 @@ export class ChacerComponent implements OnInit {
   visible_catego = true;
   visible_pregunta = false;
   palabra_catego = '';
-  // tslint:disable-next-line:max-line-length
+  all_user = [];
   model_datos_pregunta = {};
   index_edit = '';
   indicador = false;
@@ -79,8 +82,16 @@ export class ChacerComponent implements OnInit {
   ];
   public lineChartLegend = true;
   public lineChartType = 'line';
-
-  constructor(private params: ActivatedRoute, private httpcuestionarios: CuestionariosService, private route: Router, private modalService: NgbModal, private _formBuilder: FormBuilder, private http: PreguntasService) {
+  public usuario_notificacion = '';
+  public condicion_notificacion = 'sn';
+  public indexaddnotificacion = 0;
+  constructor(
+    private params: ActivatedRoute,
+    private httpcuestionarios: CuestionariosService,
+    private route: Router,
+    private modalService: NgbModal,
+    private _formBuilder: FormBuilder,
+    private http: PreguntasService) {
     this.datosempresa = JSON.parse(localStorage.empresa);
     this.datosusuario = JSON.parse(localStorage.usuarioqval);
 
@@ -139,6 +150,7 @@ export class ChacerComponent implements OnInit {
     .subscribe((data) => {
       this.perfilesInternos = data['pinternos'];
       this.perfilesExternos = data['pexternos'];
+      this.all_user = data['usuarios'];
       this.allcategorias = data['ok'];
       this.allcategoriastb = data['ok'];
       this.spiner = false;
@@ -167,8 +179,16 @@ export class ChacerComponent implements OnInit {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
      this.listapregunta.push(event.previousContainer.data[event.previousIndex]);
-     console.log(this.listapregunta);
+     this.revisanotficacion();
     }
+  }
+  revisanotficacion() {
+    this.listapregunta.forEach(pregunta => {
+      if (pregunta['listanotificaciones'] === undefined) {
+        pregunta['listanotificaciones'] = [];
+      }
+    });
+    console.log(this.listapregunta);
   }
 
   cambio_categoria(e) {
@@ -231,7 +251,7 @@ export class ChacerComponent implements OnInit {
 
     this.limpiar_pregunta();
     const copia = this.listapregunta.slice(id);
-    console.log(copia);
+
     this.index_edit = id;
     id = '';
     this.list_tags = [];
@@ -247,6 +267,8 @@ export class ChacerComponent implements OnInit {
 
     this.indicador = this.model_datos_pregunta['indicador'];
     if (this.indicador) {
+
+
       this.select_indicador_tipo = this.model_datos_pregunta['detalleindicador'][0]['condicion'];
       this.cantidad_indicador = this.model_datos_pregunta['detalleindicador'][0]['cantidad'];
     }
@@ -266,6 +288,8 @@ export class ChacerComponent implements OnInit {
         this.model_datos_pregunta['Respuestas'] = [this.minino_desliza, this.maximo_desliza];
     }
     this.listapregunta[this.index_edit] = this.model_datos_pregunta;
+    this.listapregunta[this.index_edit]['detalleindicador'][0]['condicion'] = this.select_indicador_tipo;
+    this.listapregunta[this.index_edit]['detalleindicador'][0]['cantidad'] = this.cantidad_indicador;
     this.posible_tag = '';
     this.list_tags = [];
     this.model_datos_pregunta = {};
@@ -485,13 +509,14 @@ export class ChacerComponent implements OnInit {
         this.model_datos_pregunta['indicador'] = false;
         this.model_datos_pregunta['detalleindicador'] = [];
       }
+        this.model_datos_pregunta['listanotificaciones'] = [];
         this.listapregunta.push(this.model_datos_pregunta);
         this.model_datos_pregunta = {};
         this.cmodaledpreg = false;
         this.indicador = false;
         this.select_indicador_tipo = 'Selecciona';
         this.cantidad_indicador = '';
-        console.log(this.indicador);
+        console.log(this.model_datos_pregunta);
     }
 
     limpiar_pregunta() {
@@ -623,6 +648,47 @@ export class ChacerComponent implements OnInit {
         this.allcategoriastb = this.allcategorias.filter((item) => {
           return item.Nombre.toLocaleLowerCase().includes(this.palabra_catego.toLocaleLowerCase());
        });
+    }
+    notificaciones_pregunta(id) {
+      this.indexaddnotificacion = id;
+      this.cmodalnotificaciones = true;
+      this.listnotif = this.listapregunta[this.indexaddnotificacion]['listanotificaciones'];
+    }
+    cerrar_modal_notificaciones() {
+      this.indexaddnotificacion = 0;
+      this.cmodalnotificaciones = false;
+      this.listnotif = [];
+    }
+    displayFn(user?): string | undefined {
+      console.log(user);
+      let nombre = '';
+      if (user !== undefined && user !== null || user !== '') {
+        nombre = this.dameusuario(user);
+      }
+      return nombre;
+    }
+
+    addnotificacion() {
+      console.log(this.indexaddnotificacion);
+      const notificaciones = {usuario: this.usuario_notificacion, condicion: this.condicion_notificacion};
+      this.listnotif.push(notificaciones);
+      console.log(this.listapregunta[this.indexaddnotificacion]);
+      this.usuario_notificacion = '';
+      this.condicion_notificacion = 'sn';
+    }
+    dameusuario(id?) {
+      console.log(this.all_user);
+      let nombre = '';
+      this.all_user.forEach(usuario => {
+          if (usuario.ID === id) {
+           nombre = usuario.Nombre + ' ' + usuario.Apellidos;
+           return false ;
+          }
+      });
+      return nombre;
+    }
+    eliminarnotificacion(index) {
+      console.log(index);
     }
 
 }

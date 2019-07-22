@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
+  public modal_cuestionario = false;
+  public modal_reportes = false;
+  public modal_grupos = false;
   constructor(
     private router: Router,
   ) { }
