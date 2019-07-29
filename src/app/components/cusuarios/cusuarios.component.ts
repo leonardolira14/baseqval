@@ -140,7 +140,9 @@ export class CusuariosComponent implements OnInit {
           this.datsus = false;
           this.ngOnInit();
         } else {
-          console.log(resp['ok']);
+          this.datsus = false;
+          swal('Exito', 'Usuario registrado', 'success');
+          this.ngOnInit();
         }
 
       });
@@ -394,14 +396,14 @@ export class CusuariosComponent implements OnInit {
   }
   enviarpassword(idusuario) {
     console.log(idusuario);
-    this.spiner=true;
+    this.spiner = true;
     const datos = {Usuario: idusuario};
     this.http.resendpassword(datos)
     .subscribe(respuesta => {
-      this.spiner=false;
+      this.spiner = false;
       swal('Exito', respuesta['ok'], 'success');
     }, error => {
-      this.spiner=false;
+      this.spiner = false;
       swal('Error', JSON.parse(error), 'error');
     });
   }

@@ -665,9 +665,14 @@ export class ChacerComponent implements OnInit {
        });
     }
     notificaciones_pregunta(id) {
+
       this.indexaddnotificacion = id;
       this.cmodalnotificaciones = true;
-      this.listnotif = this.listapregunta[this.indexaddnotificacion]['listanotificaciones'];
+      if ( typeof(this.listapregunta[this.indexaddnotificacion]['listanotificaciones'])  === 'string' ) {
+        this.listnotif = JSON.parse(this.listapregunta[this.indexaddnotificacion]['listanotificaciones']);
+      } else {
+        this.listnotif = this.listapregunta[this.indexaddnotificacion]['listanotificaciones'];
+      }
     }
     cerrar_modal_notificaciones() {
       this.indexaddnotificacion = 0;
@@ -689,18 +694,20 @@ export class ChacerComponent implements OnInit {
     }
 
     addnotificacion() {
-      if(this.condicion_notificacion === 'sn'){
+      if (this.condicion_notificacion === 'sn') {
         swal('Error', 'Selecciona una condición para continuar.', 'error');
         return;
       }
       const notificaciones = {usuario: this.id_usuario_notificacion, nombre: this.usuario_notificacion, condicion: this.condicion_notificacion};
       this.listnotif.push(notificaciones);
+      // tslint:disable-next-line: no-unused-expression
+      this.listapregunta[this.indexaddnotificacion]['listanotificaciones'] = this.listnotif;
       console.log(this.listapregunta[this.indexaddnotificacion]);
       this.id_usuario_notificacion = '';
       this.usuario_notificacion = '';
       this.condicion_notificacion = 'sn';
     }
- 
+
     dameusuariohtml(id?) {
       console.log(this.all_user);
       let nombre = '';

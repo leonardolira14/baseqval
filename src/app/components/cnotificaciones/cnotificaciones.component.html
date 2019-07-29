@@ -1,174 +1,81 @@
 <div class="container">
   <div class="row m-t-30">
-    <mat-form-field class="col-6">
+    <mat-form-field class="col-4">
       <mat-label>Cuestionarios</mat-label>
-        <mat-select>
-          <mat-option>Selecciona</mat-option>
-          <mat-option value="option1">Option 1</mat-option>
+        <mat-select (selectionChange)="filter_cuestionario($event)">
+          <mat-option value='sn'>Selecciona</mat-option>
+          <mat-option *ngFor="let cuestionario of cuestionarios" [value]="cuestionario.IDCuestionario">{{cuestionario.Nombre}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-4">
+      <mat-label>Grupo Emisor</mat-label>
+        <mat-select (selectionChange)="filter_emisor($event)">
+          <mat-option value='sn'>Selecciona</mat-option>
+          <mat-optgroup  label="Internos">
+            <mat-option *ngFor="let interno of gruposinternos" [value]="interno.IDGrupo">{{interno.Nombre}}</mat-option>
+          </mat-optgroup>
+          <mat-optgroup  label="Externo">
+            <mat-option *ngFor="let externo of gruposexternos" [value]="externo.IDGrupo">{{externo.Nombre}}</mat-option>
+          </mat-optgroup>
+          
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="col-4">
+      <mat-label>Grupo Receptor</mat-label>
+        <mat-select (selectionChange)="filter_receptor($event)">
+          <mat-option value='sn'>Selecciona</mat-option>
+          <mat-optgroup  label="Internos">
+            <mat-option *ngFor="let interno of gruposinternos" [value]="interno.IDGrupo">{{interno.Nombre}}</mat-option>
+          </mat-optgroup>
+          <mat-optgroup  label="Externo">
+            <mat-option *ngFor="let externo of gruposexternos" [value]="externo.IDGrupo">{{externo.Nombre}}</mat-option>
+          </mat-optgroup>
         </mat-select>
     </mat-form-field>
     
   </div>
   <div class="row">
-    <div class="col-3">
+    <div class="col-3" *ngFor="let notificacion of notificaciones">
       <mat-card class="w-100">
         <mat-card-header>
-            <mat-card-subtitle class="text-center" > ¿Como Te llamas?</mat-card-subtitle> 
+            <mat-card-subtitle class="text-center" >Pregunta Notificación</mat-card-subtitle> 
         </mat-card-header>
         <mat-card-content>
           <p>
             <small>Cuestionario:</small>
+            <br>
+              <span>{{notificacion.NombreCuestionario}}</span>
           </p>
           <p>
              <small>Usuario Receptor:</small>
+             <br>
+              <span>{{notificacion.NombreReceptor}}</span>
           </p>
           <p>
              <small>Fecha Notificación:</small>
+             <br>
+              <span>{{notificacion.Fecha}}</span>
           </p>
           <mat-divider></mat-divider>
           <p class="m-t-20">
               <small>Pregunta Notificació:</small>
+              <br>
+              <span>{{notificacion.Pregunta}}</span>
           </p>
           <p>
               <small>Respuesta Notificació:</small>
+              <br>
+              <span>{{notificacion.Respuesta}}</span>
           </p>
         </mat-card-content>
         <mat-card-actions>
             <div class="btn-group text-center" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-primary mr-3" >Ver Cuestionario</button>
-                <button type="button" class="btn btn-danger">Borrar</button>
+                <button type="button" class="btn btn-primary mr-3" (click)="cuestionario(notificacion.IDCuestionario)" >Ver Cuestionario</button>
+                <button type="button" class="btn btn-danger" (click)="borrar(notificacion.IDNotificacion)">Borrar</button>
                 
               </div>
           </mat-card-actions>
       </mat-card>
     </div>
-    <div class="col-3">
-        <mat-card class="w-100">
-          <mat-card-header>
-              <mat-card-subtitle class="text-center" > ¿Como Te llamas?</mat-card-subtitle> 
-          </mat-card-header>
-          <mat-card-content>
-            <p>
-              <small>Cuestionario:</small>
-            </p>
-            <p>
-               <small>Usuario Receptor:</small>
-            </p>
-            <p>
-               <small>Fecha Notificación:</small>
-            </p>
-            <mat-divider></mat-divider>
-            <p class="m-t-20">
-                <small>Pregunta Notificació:</small>
-            </p>
-            <p>
-                <small>Respuesta Notificació:</small>
-            </p>
-          </mat-card-content>
-          <mat-card-actions>
-              <div class="btn-group text-center" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-primary mr-3" >Ver Cuestionario</button>
-                  <button type="button" class="btn btn-danger">Borrar</button>
-                  
-                </div>
-            </mat-card-actions>
-        </mat-card>
-      </div>
-      <div class="col-3">
-          <mat-card class="w-100">
-            <mat-card-header>
-                <mat-card-subtitle class="text-center" > ¿Como Te llamas?</mat-card-subtitle> 
-            </mat-card-header>
-            <mat-card-content>
-              <p>
-                <small>Cuestionario:</small>
-              </p>
-              <p>
-                 <small>Usuario Receptor:</small>
-              </p>
-              <p>
-                 <small>Fecha Notificación:</small>
-              </p>
-              <mat-divider></mat-divider>
-              <p class="m-t-20">
-                  <small>Pregunta Notificació:</small>
-              </p>
-              <p>
-                  <small>Respuesta Notificació:</small>
-              </p>
-            </mat-card-content>
-            <mat-card-actions>
-                <div class="btn-group text-center" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-primary mr-3" >Ver Cuestionario</button>
-                    <button type="button" class="btn btn-danger">Borrar</button>
-                    
-                  </div>
-              </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="col-3">
-            <mat-card class="w-100">
-              <mat-card-header>
-                  <mat-card-subtitle class="text-center" > ¿Como Te llamas?</mat-card-subtitle> 
-              </mat-card-header>
-              <mat-card-content>
-                <p>
-                  <small>Cuestionario:</small>
-                </p>
-                <p>
-                   <small>Usuario Receptor:</small>
-                </p>
-                <p>
-                   <small>Fecha Notificación:</small>
-                </p>
-                <mat-divider></mat-divider>
-                <p class="m-t-20">
-                    <small>Pregunta Notificació:</small>
-                </p>
-                <p>
-                    <small>Respuesta Notificació:</small>
-                </p>
-              </mat-card-content>
-              <mat-card-actions>
-                  <div class="btn-group text-center" role="group" aria-label="Basic example">
-                      <button type="button" class="btn btn-primary mr-3" >Ver Cuestionario</button>
-                      <button type="button" class="btn btn-danger">Borrar</button>
-                      
-                    </div>
-                </mat-card-actions>
-            </mat-card>
-          </div>
-          <div class="col-3">
-              <mat-card class="w-100">
-                <mat-card-header>
-                    <mat-card-subtitle class="text-center" > ¿Como Te llamas?</mat-card-subtitle> 
-                </mat-card-header>
-                <mat-card-content>
-                  <p>
-                    <small>Cuestionario:</small>
-                  </p>
-                  <p>
-                     <small>Grupo Receptor:</small>
-                  </p>
-                  <p>
-                     <small>Fecha Notificación:</small>
-                  </p>
-                  <mat-divider></mat-divider>
-                  <p class="m-t-20">
-                      <small>Pregunta Notificació:</small>
-                  </p>
-                  <p>
-                      <small>Respuesta Notificació:</small>
-                  </p>
-                </mat-card-content>
-                <mat-card-actions>
-                    <div class="btn-group text-center" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-primary mr-3" >Ver Cuestionario</button>
-                        <button type="button" class="btn btn-danger">Borrar</button>
-                        
-                      </div>
-                  </mat-card-actions>
-              </mat-card>
-            </div>
   </div>
 </div>
