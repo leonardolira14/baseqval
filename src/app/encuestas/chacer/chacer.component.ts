@@ -129,11 +129,12 @@ export class ChacerComponent implements OnInit {
     this.spiner = true;
     if (this.params.snapshot.paramMap.get('encuesta') === 'N') {
       this.stepper.selectedIndex = 1;
+      console.log(this.params.snapshot.paramMap.get('encuesta'));
     } else {
       const datosvar = {IDCuestionario: this.params.snapshot.paramMap.get('encuesta'), IDEmpresa: this.datosempresa['IDEmpresa']};
       this.httpcuestionarios.getdatos_encuesta(datosvar)
       .subscribe((resp) => {
-
+       
         this.model_general = resp;
         const _lineChartData: Array<any> = new Array(this.lineChartData.length);
         let  _labels: Array<any> = new Array();
@@ -151,8 +152,10 @@ export class ChacerComponent implements OnInit {
       });
     }
     const datos = {IDEmpresa: this.datosempresa['IDEmpresa'] };
+    
     this.http.getcategotia(datos)
     .subscribe((data) => {
+      console.log(data);
       this.perfilesInternos = data['pinternos'];
       this.perfilesExternos = data['pexternos'];
       this.all_user = data['usuarios'];
@@ -282,8 +285,6 @@ export class ChacerComponent implements OnInit {
 
     this.indicador = this.model_datos_pregunta['indicador'];
     if (this.indicador) {
-
-
       this.select_indicador_tipo = this.model_datos_pregunta['detalleindicador'][0]['condicion'];
       this.cantidad_indicador = this.model_datos_pregunta['detalleindicador'][0]['cantidad'];
     }
@@ -417,11 +418,10 @@ export class ChacerComponent implements OnInit {
         swal('Error!', 'Ingresa una respuesta valida', 'error');
 
       } else if (this.model_datos_pregunta['Respuesta'] === undefined || ( this.model_datos_pregunta['Respuesta'] === '') ) {
-
         if (this.indicador === true ) {
              swal('Error!', 'Ingresa una respuesta positiva, para poder cumplir las reglas de un indicador', 'error');
-        } else {
-          swal('Error!', 'Ingresa una respuesta positiva o selecciona "Sin Respuesta"', 'error');
+        } else{
+          this.adicionar_pregunta();
         }
       }  else {
         if (this.model_datos_pregunta['Respuesta'] === 'SR' && this.indicador === true) {
