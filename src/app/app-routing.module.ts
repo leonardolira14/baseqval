@@ -20,6 +20,7 @@ import { ActivarcuentaComponent } from './pages/activarcuenta/activarcuenta.comp
 import { Registro3Component } from './pages/registro3/registro3.component';
 import { PpreciosComponent } from './pages/pprecios/pprecios.component';
 import { PnotificacionesComponent } from './pages/pnotificaciones/pnotificaciones.component';
+import { UsuariosplusComponent } from './pages/usuariosplus/usuariosplus.component';
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'datosregistro', component: PregistroComponent},
@@ -41,7 +42,8 @@ const appRoutes: Routes = [
   {path: 'activarcuenta/:token', component: ActivarcuentaComponent},
   {path: 'pago', component: Registro3Component },
   {path: 'precios', component: PpreciosComponent },
-  {path: 'notificaciones', component: PnotificacionesComponent }
+  {path: 'notificaciones', component: PnotificacionesComponent },
+  {path: 'usuariosplus/:empresa', component: UsuariosplusComponent }
 
 ];
 @NgModule({

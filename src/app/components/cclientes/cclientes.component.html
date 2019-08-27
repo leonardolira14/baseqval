@@ -36,6 +36,10 @@
                           <mat-icon>view_column</mat-icon>
                           <span>Còdigo QR</span>
                         </button>
+                        <button routerLink="/usuariosplus/{{clint.IDCliente}}"  mat-menu-item>
+                            <mat-icon>people_alt</mat-icon>
+                            <span>Usuarios Plus</span>
+                          </button>
                       <button (click)="requestuser(clint.IDCliente)"  mat-menu-item>
                         <mat-icon>edit</mat-icon>
                         <span>Editar</span>

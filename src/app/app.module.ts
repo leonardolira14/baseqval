@@ -66,6 +66,8 @@ import {NgxMaskModule, IConfig} from 'ngx-mask';
 import { OwlDateTimeModule, OwlNativeDateTimeModule,OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 import { PnotificacionesComponent } from './pages/pnotificaciones/pnotificaciones.component';
 import { CnotificacionesComponent } from './components/cnotificaciones/cnotificaciones.component';
+import { CusuariosplusComponent } from './components/cusuariosplus/cusuariosplus.component';
+import { UsuariosplusComponent } from './pages/usuariosplus/usuariosplus.component';
  
 @NgModule({
   
@@ -116,7 +118,9 @@ import { CnotificacionesComponent } from './components/cnotificaciones/cnotifica
     Registro3Component,
     PpreciosComponent,
     PnotificacionesComponent,
-    CnotificacionesComponent
+    CnotificacionesComponent,
+    CusuariosplusComponent,
+    UsuariosplusComponent
   ],
   imports: [
     OwlDateTimeModule,

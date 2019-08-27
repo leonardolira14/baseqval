@@ -12,8 +12,6 @@ export class UsuariosList {
         return Usuario;
     }
     public busquedapalabra(palabra: string) {
-        // console.log(this.lista);
-
         return this.lista.filter(usuario => usuario.Nombre.toLocaleLowerCase().includes(palabra.toLocaleLowerCase()));
     }
     public getLista() {
