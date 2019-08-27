@@ -27,7 +27,7 @@
                   <span>Enviar Contraseña</span>
                 </button>
                
-                <button (click)="delete(usuario.IDUsuario,usuario.Estado === '1' ? '0':'1')" mat-menu-item>
+                <button (click)="change_status(usuario.IDUsuario,usuario.Status === '1' ? '0':'1')" mat-menu-item>
                   <mat-icon>{{usuario.Status === '1' ? 'clear':'done' }}</mat-icon>
                   <span>{{usuario.Status === '1' ? 'Desactivar':'Activar' }}</span>
                 </button>

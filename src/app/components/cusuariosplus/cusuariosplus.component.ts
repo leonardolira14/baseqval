@@ -33,6 +33,8 @@ public user: Userplus = {
 
 };
 
+
+
 constructor(
     private params: ActivatedRoute,
     public http: UsuariosplusService,
@@ -40,7 +42,21 @@ constructor(
   ) {
     this.idempresa = this.params.snapshot.paramMap.get('empresa');
 }
-
+create(numero, idusuario) {
+  swal({
+    title: 'Eliminar usuaurio',
+    text: '¿Estas seguro de eliminar este usuario?, cuenta con '+numero +' registros.',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, Acepto'
+  }).then((result) => {
+    if (result.value) {
+      this.delete(idusuario);
+    }
+  });
+}
   ngOnInit() {
     const datos = {IDEmpresa: this.idempresa};
     this.http.getall(datos)
@@ -53,7 +69,7 @@ constructor(
 
     });
   }
-  
+
   change_img_avatar(files) {
     if (files.length === 0) {
       return;
@@ -88,15 +104,26 @@ constructor(
           this.datsus = false;
           swal('Exito', 'Usuario registrado', 'success');
           this.ngOnInit();
+      }, error => {
+        console.log(error);
+        swal('Error', 'Contactar al programador', 'error');
       });
     } else {
       this.http.update(formData)
       .subscribe(data => {
         console.log(data);
+        this.datsus = false;
+          swal('Exito', 'Datos Actualizados', 'success');
+          this.ngOnInit();
+      }, error => {
+        console.log(error);
+        swal('Error', 'Contactar al programador', 'error');
       });
     }
   }
+
   buscarusuario() {
+    this.usuarios = this.ListaUsuarios.buscqueda_palabra(this.palabra);
   }
   open(IDuser) {
     console.log(IDuser);
@@ -118,14 +145,43 @@ constructor(
     this.datsus = true;
 
   }
-  
-  enviarpassword() {
 
+  enviarpassword(IDUsuario) {
+    const datos = {usuario: IDUsuario};
+    const datos_code = {datos: window.btoa(JSON.stringify(datos))};
+    this.http.send_passwodor(datos_code)
+    .subscribe(data => {
+      swal('Exito', 'Contraseña enviada al correo electrònico', 'success');
+    }, error => {
+      console.log(error);
+      swal('Error', 'Contactar al programador', 'error');
+    }
+    );
   }
-  delete() {
-
+  delete(IDUsuario) {
+    const datos = {usuario: IDUsuario, empresa: this.datosempresa['IDEmpresa']};
+    const datos_code = {datos: window.btoa(JSON.stringify(datos))};
+    this.http.delete(datos_code)
+    .subscribe(data => {
+      swal('Exito', 'Datos Actualizados', 'success');
+      this.ngOnInit();
+    });
   }
-  alertdele() {
-
+  alertdele(IDUsuario) {
+    const datos = {usuario: IDUsuario, empresa: this.datosempresa['IDEmpresa']};
+    const datos_code = {datos: window.btoa(JSON.stringify(datos))};
+    this.http.get_reg_num(datos_code)
+    .subscribe(data => {
+      this.create(data["response"]["num"], IDUsuario)
+    });
+  }
+  change_status(IDUsuario, status) {
+    const datos = {usuario: IDUsuario, status};
+    const datos_code = {datos: window.btoa(JSON.stringify(datos))};
+    this.http.change_status(datos_code)
+    .subscribe(data => {
+      swal('Exito', 'Datos Actualizados', 'success');
+      this.ngOnInit();
+    });
   }
 }
