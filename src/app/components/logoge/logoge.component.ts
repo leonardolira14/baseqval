@@ -156,7 +156,11 @@ export class LogogeComponent implements OnInit {
         dempresa['Banner'],
         dempresa['Paquete']
         );
-        this.datos_pago = JSON.parse(this.empresa.getpaquete());
+        if(this.empresa.getpaquete() !== ''){
+          this.datos_pago = JSON.parse(this.empresa.getpaquete());
+        }
+        
+        
       this.Banner = this.empresa.getBanner();
       this.logo_banner = 'assets/img/bg_second.jpg';
         if (this.Banner !== '') {

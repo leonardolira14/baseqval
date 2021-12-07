@@ -68,6 +68,9 @@ import { PnotificacionesComponent } from './pages/pnotificaciones/pnotificacione
 import { CnotificacionesComponent } from './components/cnotificaciones/cnotificaciones.component';
 import { CusuariosplusComponent } from './components/cusuariosplus/cusuariosplus.component';
 import { UsuariosplusComponent } from './pages/usuariosplus/usuariosplus.component';
+import { CgraficaspComponent } from './components/cresultados/cgraficasp/cgraficasp.component';
+import { GraficaspComponent } from './pages/resultados/graficasp/graficasp.component';
+
  
 @NgModule({
   
@@ -120,7 +123,9 @@ import { UsuariosplusComponent } from './pages/usuariosplus/usuariosplus.compone
     PnotificacionesComponent,
     CnotificacionesComponent,
     CusuariosplusComponent,
-    UsuariosplusComponent
+    UsuariosplusComponent,
+    CgraficaspComponent,
+    GraficaspComponent,
   ],
   imports: [
     OwlDateTimeModule,

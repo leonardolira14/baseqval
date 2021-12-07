@@ -29,13 +29,17 @@
                     <th scope="col">Respuesta Positiva</th>
                     <th scope="col"># de Respuestas</th>
                     <th scope="col"># de R. Positivas</th>
+                    <th scope="col">Acciones</th>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let pregunta of table">
+                    <tr  *ngFor="let pregunta of table">
                       <td >{{pregunta.pregunta}}</td>
                       <td >{{pregunta.respuesta}}</td>
                       <td>{{pregunta.vecescontestada}}</td>
                       <td >{{pregunta.numrespuestascorrectas}}</td>
+                      <td  ><button  *ngIf="muestabt(pregunta.Forma)" routerLink="/graficapregunta/{{pregunta.IDPreguta}}/{{residcuetion}}/M" mat-mini-fab color="warn" aria-label="Example icon button with a plus one icon">
+                        <mat-icon>multiline_chart</mat-icon>
+                      </button></td>
                     </tr>
                   <tbody>
               </table>
@@ -46,7 +50,7 @@
             </div>
             <div class="col-12 m-t-30">
                 <div class="d-block grafica">
-                    <canvas baseChart
+                    <canvas #grf baseChart
                             [datasets]="lineChartData"
                             [labels]="lineChartLabels"
                             [options]="lineChartOptions"

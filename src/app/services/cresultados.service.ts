@@ -21,4 +21,7 @@ export class CresultadosService {
    getdetailstable(id,fecha,empresa){
     return this.http.post(environment.urlserverp+"getdetailsresumen",{id,fecha,empresa})
    }
+   getdetallepregunta(data){
+    return this.http.post(environment.urlserverp+"detalleprunta",data)
+   }
 }

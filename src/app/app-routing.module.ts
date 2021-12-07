@@ -21,6 +21,7 @@ import { Registro3Component } from './pages/registro3/registro3.component';
 import { PpreciosComponent } from './pages/pprecios/pprecios.component';
 import { PnotificacionesComponent } from './pages/pnotificaciones/pnotificaciones.component';
 import { UsuariosplusComponent } from './pages/usuariosplus/usuariosplus.component';
+import { GraficaspComponent } from './pages/resultados/graficasp/graficasp.component';
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'datosregistro', component: PregistroComponent},
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
   {path: 'pago', component: Registro3Component },
   {path: 'precios', component: PpreciosComponent },
   {path: 'notificaciones', component: PnotificacionesComponent },
-  {path: 'usuariosplus/:empresa', component: UsuariosplusComponent }
+  {path: 'usuariosplus/:empresa', component: UsuariosplusComponent },
+  {path: 'graficapregunta/:pregunta/:cuestionario/:tiempo', component: GraficaspComponent }
 
 ];
 @NgModule({

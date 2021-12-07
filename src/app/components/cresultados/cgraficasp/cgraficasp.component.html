@@ -1,0 +1,76 @@
+<div class="container grupos m-t-30">
+  <div class="row d-flex align-items-center">
+    <div class="col-9">
+      <h4>Grafica de Respuesta</h4>
+    </div>
+  </div>
+</div>
+
+
+<div class="container m-t-5">
+  <div class="row">
+    <div class="col-12 mt-5">
+     <div class="card">
+       <div class="card-header">
+         Datos de la pregunta
+       </div>
+       <div class="card-body">
+        <div class="row">
+          <div class="col-12 mb-5">
+            <h6>{{datos_pregunta.Pregunta}}</h6>
+          </div>
+          <div class="col-4">
+            <h6>Tipo Pregunta: {{datos_pregunta.Forma}}</h6>
+          </div>
+          <div class="col-4">
+            <h6>Respuesta Correcta: {{datos_pregunta.Respuesta}}</h6>
+          </div>
+          <div class="col-4">
+            <h6>Peso: {{datos_pregunta.Peso}}</h6>
+          </div>
+        </div>
+       </div>
+     </div>
+    </div>
+    <div class="col-12 text-center mt-5">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button (click)="ir('M')" type="button" class="btn btn-secondary">Últimos 30 días</button>
+        <button   (click)="ir('A')" type="button" class="btn btn-secondary">Año</button>
+        <button  (click)="mostrarR =!mostrarR"  type="button" class="btn btn-secondary">Rango de Fechas</button>
+      </div>
+    </div>
+    <div class="col-4 mt-4 text-center" *ngIf="mostrarR">
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha Inicial</mat-label>
+        <input [(ngModel)]="FechaInicial" matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-4 mt-4 text-center" *ngIf="mostrarR">
+      <mat-form-field appearance="fill"  >
+        <mat-label>Fecha Final</mat-label>
+        <input [(ngModel)]="FechaFinal"  matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div> 
+    <div class="col-4 mt-4 text-right" *ngIf="mostrarR">
+      <button class="btn btn-primary" (click)="datafecha()">Enviar</button>
+    </div>
+    
+    <div class="col-12 m-t-30">
+      <div class="d-block grafica">
+          <canvas baseChart
+                  [datasets]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [options]="lineChartOptions"
+                  [colors]="lineChartColors"
+                  [legend]="lineChartLegend"
+                  [chartType]="lineChartType"
+                  ></canvas>
+        </div>
+      <small class="text-muted m-t-30">Grafica de la pregunta.</small>
+  </div>
+  </div>
+</div>

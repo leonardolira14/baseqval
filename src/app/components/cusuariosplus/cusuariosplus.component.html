@@ -6,7 +6,7 @@
       </mat-form-field>
     </div>
     <div class="col-5 text-right">
-      <button mat-mini-fab (click)="open()" class="bg-secondary text-white"><i class="material-icons">add</i></button>
+      <button mat-mini-fab (click)="open('')" class="bg-secondary text-white"><i class="material-icons">add</i></button>
   </div>
   <div class="col-3  m-b-20" *ngFor="let usuario of usuarios | paginate: {itemsPerPage: 20, currentPage: pageActual}; index as i">
     <mat-card class="w-100 card-avatar">  

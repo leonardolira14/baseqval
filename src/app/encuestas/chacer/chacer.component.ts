@@ -646,15 +646,16 @@ export class ChacerComponent implements OnInit {
       }
     }
     guardar_encuesta() {
-      this.spiner = true;
+     // this.spiner = true;
       this.model_cuestionario['Cuestionario'] = this.listapregunta;
       this.model_cuestionario['IDEmpresa'] = this.datosempresa['IDEmpresa'];
+      this.model_cuestionario['list_empresas'] = [];
       this.httpcuestionarios.save(this.model_cuestionario)
       .subscribe((data) => {
         swal('Exito!', 'La encuesta ha sido registrada con exito', 'success');
         this.route.navigateByUrl('/encuestas');
       }, (error) => {
-        this.spiner = true;
+        //this.spiner = true;
         swal('Error!', 'Error al contactar con el servidor', 'error');
       });
     }

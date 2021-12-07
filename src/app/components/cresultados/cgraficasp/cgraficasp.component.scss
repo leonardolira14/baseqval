@@ -1,0 +1,8 @@
+
+
+@import '../../../../styles.scss';
+
+.card-header{
+    background: map-get($colors, primary );
+    color:#fff;
+}

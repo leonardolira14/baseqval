@@ -155,6 +155,7 @@ export class CresultadosComponent implements OnInit {
         this.chart.chart.config.data.labels = _labels;
         this.chart.chart.update();
         this.table = resp['table'];
+        console.log(this.table);
         this.detallesresumen[0]['Nombre'] = resp['detalles']['Nombre'];
         this.detallesresumen[0]['Status'] = resp['detalles']['Status'];
         this.detallesresumen[0]['Emisor'] = resp['detalles']['Emisor'];
@@ -192,6 +193,13 @@ export class CresultadosComponent implements OnInit {
       this.opencalendar(modal);
     } else {
        this.router.navigateByUrl('/graficas/' + this.IDCuestionario);
+    }
+  }
+  muestabt(tipo){
+    if(tipo==='F/H' || tipo ==='FECHA'|| tipo === 'HORA'){
+      return false;
+    }else{
+      return true;
     }
   }
 }

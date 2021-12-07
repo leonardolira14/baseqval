@@ -13,6 +13,7 @@ import swal from 'sweetalert2';
 
 export class CusuariosplusComponent implements OnInit {
 public  ListaUsuarios = new UsuariosList();
+pageActual = 1;
 public datsus = false;
 public palabra = '';
 public  usuarios = [];
